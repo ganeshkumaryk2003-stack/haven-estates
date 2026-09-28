@@ -1,0 +1,665 @@
+// Haven Estates - Prisma schema
+// Money is stored as Decimal(14, 2); timestamps are timestamptz (UTC).
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ---------------------------------------------------------------------------
+// Enums
+// ---------------------------------------------------------------------------
+
+enum UserRole {
+  BUYER
+  SELLER
+  AGENT
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+}
+
+enum AuthTokenType {
+  EMAIL_VERIFICATION
+  PASSWORD_RESET
+}
+
+enum ListingType {
+  SALE
+  RENT
+}
+
+enum PropertyType {
+  HOUSE
+  APARTMENT
+  CONDO
+  TOWNHOUSE
+  LAND
+  COMMERCIAL
+  OTHER
+}
+
+enum PropertyStatus {
+  DRAFT
+  PENDING_REVIEW
+  ACTIVE
+  UNDER_OFFER
+  RESERVED
+  SOLD
+  RENTED
+  REJECTED
+  ARCHIVED
+}
+
+enum FurnishedStatus {
+  UNFURNISHED
+  SEMI_FURNISHED
+  FURNISHED
+}
+
+enum AreaUnit {
+  SQFT
+  SQM
+}
+
+enum EnquiryStatus {
+  NEW
+  READ
+  REPLIED
+  CLOSED
+  SPAM
+}
+
+enum ContactMethod {
+  EMAIL
+  PHONE
+  MESSAGE
+}
+
+enum ConnectionStatus {
+  ACTIVE
+  ARCHIVED
+  BLOCKED
+}
+
+enum OfferStatus {
+  PENDING
+  COUNTERED
+  ACCEPTED
+  REJECTED
+  WITHDRAWN
+  EXPIRED
+}
+
+enum FinancingMethod {
+  CASH
+  MORTGAGE
+  MIXED
+  OTHER
+}
+
+enum ReservationStatus {
+  PENDING_PAYMENT
+  DEPOSIT_PAID
+  COMPLETED
+  CANCELLED
+  EXPIRED
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
+  EXPIRED
+  REFUNDED
+}
+
+enum NotificationType {
+  NEW_ENQUIRY
+  NEW_MESSAGE
+  NEW_OFFER
+  COUNTER_OFFER
+  OFFER_ACCEPTED
+  OFFER_REJECTED
+  OFFER_WITHDRAWN
+  OFFER_EXPIRED
+  RESERVATION_PAID
+  RESERVATION_FAILED
+  RESERVATION_UPDATED
+  LISTING_APPROVED
+  LISTING_REJECTED
+  PROPERTY_STATUS_CHANGED
+  ACCOUNT
+  SYSTEM
+}
+
+enum ReportReason {
+  INACCURATE
+  SCAM
+  DUPLICATE
+  INAPPROPRIATE
+  ALREADY_SOLD
+  OTHER
+}
+
+enum ReportStatus {
+  OPEN
+  RESOLVED
+  DISMISSED
+}
+
+enum AttachmentKind {
+  IMAGE
+  DOCUMENT
+}
+
+// ---------------------------------------------------------------------------
+// Users & auth
+// ---------------------------------------------------------------------------
+
+model User {
+  id            String     @id @default(cuid())
+  name          String?
+  email         String     @unique
+  emailVerified DateTime?
+  image         String?
+  passwordHash  String?
+  role          UserRole   @default(BUYER)
+  status        UserStatus @default(ACTIVE)
+  suspendedAt   DateTime?
+  suspendReason String?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  accounts   Account[]
+  sessions   Session[]
+  authTokens AuthToken[]
+  profile    Profile?
+
+  properties        Property[]                @relation("PropertyOwner")
+  favorites         Favorite[]
+  enquiriesSent     Enquiry[]                 @relation("EnquirySender")
+  enquiriesReceived Enquiry[]                 @relation("EnquiryRecipient")
+  buyerConnections  Connection[]              @relation("ConnectionBuyer")
+  sellerConnections Connection[]              @relation("ConnectionSeller")
+  participants      ConversationParticipant[]
+  messages          Message[]
+  offersMade        Offer[]                   @relation("OfferBuyer")
+  offersReceived    Offer[]                   @relation("OfferSeller")
+  reservationsMade  Reservation[]             @relation("ReservationBuyer")
+  reservationsSold  Reservation[]             @relation("ReservationSeller")
+  notifications     Notification[]
+  reports           PropertyReport[]          @relation("ReportReporter")
+  resolvedReports   PropertyReport[]          @relation("ReportResolver")
+  auditLogs         AuditLog[]
+  reviewedProps     Property[]                @relation("PropertyReviewer")
+
+  @@index([role])
+  @@index([status])
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// Hashed single-use tokens for email verification and password resets.
+model AuthToken {
+  id        String        @id @default(cuid())
+  userId    String
+  type      AuthTokenType
+  tokenHash String        @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime      @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, type])
+}
+
+model Profile {
+  id                  String   @id @default(cuid())
+  userId              String   @unique
+  phone               String?
+  bio                 String?
+  company             String?
+  location            String?
+  website             String?
+  onboardingCompleted Boolean  @default(false)
+  emailOnEnquiry      Boolean  @default(true)
+  emailOnMessage      Boolean  @default(true)
+  emailOnOffer        Boolean  @default(true)
+  emailOnReservation  Boolean  @default(true)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// ---------------------------------------------------------------------------
+// Properties
+// ---------------------------------------------------------------------------
+
+model Property {
+  id              String          @id @default(cuid())
+  slug            String          @unique
+  title           String
+  description     String
+  listingType     ListingType
+  propertyType    PropertyType
+  status          PropertyStatus  @default(DRAFT)
+  price           Decimal         @db.Decimal(14, 2)
+  currency        String          @default("USD")
+  depositAmount   Decimal         @db.Decimal(14, 2)
+  address         String
+  city            String
+  state           String
+  postalCode      String
+  country         String
+  latitude        Float?
+  longitude       Float?
+  bedrooms        Int             @default(0)
+  bathrooms       Float           @default(0)
+  parkingSpaces   Int             @default(0)
+  interiorArea    Int?
+  lotArea         Int?
+  areaUnit        AreaUnit        @default(SQFT)
+  yearBuilt       Int?
+  furnished       FurnishedStatus @default(UNFURNISHED)
+  availableFrom   DateTime?
+  floorPlanUrl    String?
+  videoUrl        String?
+  virtualTourUrl  String?
+  featured        Boolean         @default(false)
+  viewCount       Int             @default(0)
+  favoriteCount   Int             @default(0)
+  publishedAt     DateTime?
+  soldAt          DateTime?
+  reviewedAt      DateTime?
+  reviewedById    String?
+  rejectionReason String?
+  ownerId         String
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  owner        User                 @relation("PropertyOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  reviewedBy   User?                @relation("PropertyReviewer", fields: [reviewedById], references: [id], onDelete: SetNull)
+  images       PropertyImage[]
+  amenities    PropertyAmenity[]
+  favorites    Favorite[]
+  enquiries    Enquiry[]
+  conversations Conversation[]
+  offers       Offer[]
+  reservations Reservation[]
+  reports      PropertyReport[]
+  connections  ConnectionProperty[]
+
+  @@index([status, publishedAt])
+  @@index([ownerId, status])
+  @@index([listingType, propertyType, status])
+  @@index([city, state, country])
+  @@index([price])
+  @@index([featured, status])
+}
+
+model PropertyImage {
+  id         String   @id @default(cuid())
+  propertyId String
+  url        String
+  storageKey String
+  alt        String?
+  width      Int?
+  height     Int?
+  position   Int      @default(0)
+  createdAt  DateTime @default(now())
+
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@index([propertyId, position])
+}
+
+model Amenity {
+  id       String  @id @default(cuid())
+  slug     String  @unique
+  name     String
+  category String?
+  icon     String?
+
+  properties PropertyAmenity[]
+}
+
+model PropertyAmenity {
+  propertyId String
+  amenityId  String
+
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  amenity  Amenity  @relation(fields: [amenityId], references: [id], onDelete: Cascade)
+
+  @@id([propertyId, amenityId])
+  @@index([amenityId])
+}
+
+model Favorite {
+  id         String   @id @default(cuid())
+  userId     String
+  propertyId String
+  createdAt  DateTime @default(now())
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, propertyId])
+  @@index([propertyId])
+}
+
+// ---------------------------------------------------------------------------
+// Enquiries & connections
+// ---------------------------------------------------------------------------
+
+model Enquiry {
+  id               String        @id @default(cuid())
+  propertyId       String
+  senderId         String
+  recipientId      String
+  subject          String
+  message          String
+  phone            String?
+  preferredContact ContactMethod @default(EMAIL)
+  status           EnquiryStatus @default(NEW)
+  repliedAt        DateTime?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  property  Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  sender    User     @relation("EnquirySender", fields: [senderId], references: [id], onDelete: Cascade)
+  recipient User     @relation("EnquiryRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+
+  @@index([recipientId, status, createdAt])
+  @@index([senderId, createdAt])
+  @@index([propertyId])
+}
+
+model Connection {
+  id                String           @id @default(cuid())
+  buyerId           String
+  sellerId          String
+  status            ConnectionStatus @default(ACTIVE)
+  archivedById      String?
+  blockedById       String?
+  lastInteractionAt DateTime         @default(now())
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+
+  buyer      User                 @relation("ConnectionBuyer", fields: [buyerId], references: [id], onDelete: Cascade)
+  seller     User                 @relation("ConnectionSeller", fields: [sellerId], references: [id], onDelete: Cascade)
+  properties ConnectionProperty[]
+
+  @@unique([buyerId, sellerId])
+  @@index([sellerId, status])
+  @@index([buyerId, status])
+}
+
+model ConnectionProperty {
+  connectionId String
+  propertyId   String
+  createdAt    DateTime @default(now())
+
+  connection Connection @relation(fields: [connectionId], references: [id], onDelete: Cascade)
+  property   Property   @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@id([connectionId, propertyId])
+}
+
+// ---------------------------------------------------------------------------
+// Messaging
+// ---------------------------------------------------------------------------
+
+model Conversation {
+  id                 String    @id @default(cuid())
+  // Deterministic key "<userA>:<userB>:<propertyId|general>" so a pair of users
+  // only ever has one conversation per property.
+  pairKey            String    @unique
+  propertyId         String?
+  lastMessageAt      DateTime?
+  lastMessagePreview String?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  property     Property?                 @relation(fields: [propertyId], references: [id], onDelete: SetNull)
+  participants ConversationParticipant[]
+  messages     Message[]
+
+  @@index([lastMessageAt])
+}
+
+model ConversationParticipant {
+  id             String    @id @default(cuid())
+  conversationId String
+  userId         String
+  lastReadAt     DateTime?
+  joinedAt       DateTime  @default(now())
+
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([conversationId, userId])
+  @@index([userId])
+}
+
+model Message {
+  id             String   @id @default(cuid())
+  conversationId String
+  senderId       String
+  body           String
+  createdAt      DateTime @default(now())
+
+  conversation Conversation        @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender       User                @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  attachments  MessageAttachment[]
+
+  @@index([conversationId, createdAt])
+}
+
+model MessageAttachment {
+  id          String         @id @default(cuid())
+  messageId   String
+  url         String
+  storageKey  String
+  name        String
+  contentType String
+  size        Int
+  kind        AttachmentKind
+  createdAt   DateTime       @default(now())
+
+  message Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
+
+  @@index([messageId])
+}
+
+// ---------------------------------------------------------------------------
+// Offers, reservations & payments
+// ---------------------------------------------------------------------------
+
+model Offer {
+  id             String           @id @default(cuid())
+  propertyId     String
+  buyerId        String
+  sellerId       String
+  amount         Decimal          @db.Decimal(14, 2)
+  currency       String           @default("USD")
+  financing      FinancingMethod?
+  conditions     String?
+  message        String?
+  expiresAt      DateTime
+  status         OfferStatus      @default(PENDING)
+  counterAmount  Decimal?         @db.Decimal(14, 2)
+  counterMessage String?
+  counteredAt    DateTime?
+  respondedAt    DateTime?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  property    Property     @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  buyer       User         @relation("OfferBuyer", fields: [buyerId], references: [id], onDelete: Cascade)
+  seller      User         @relation("OfferSeller", fields: [sellerId], references: [id], onDelete: Cascade)
+  reservation Reservation?
+
+  @@index([propertyId, status])
+  @@index([buyerId, status])
+  @@index([sellerId, status])
+  @@index([status, expiresAt])
+}
+
+model Reservation {
+  id                      String            @id @default(cuid())
+  reference               String            @unique
+  propertyId              String
+  offerId                 String            @unique
+  buyerId                 String
+  sellerId                String
+  depositAmount           Decimal           @db.Decimal(14, 2)
+  currency                String            @default("USD")
+  status                  ReservationStatus @default(PENDING_PAYMENT)
+  stripeCheckoutSessionId String?           @unique
+  paidAt                  DateTime?
+  completedAt             DateTime?
+  cancelledAt             DateTime?
+  cancelReason            String?
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime          @updatedAt
+
+  property Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  offer    Offer     @relation(fields: [offerId], references: [id], onDelete: Cascade)
+  buyer    User      @relation("ReservationBuyer", fields: [buyerId], references: [id], onDelete: Cascade)
+  seller   User      @relation("ReservationSeller", fields: [sellerId], references: [id], onDelete: Cascade)
+  payments Payment[]
+
+  @@index([propertyId, status])
+  @@index([buyerId])
+  @@index([sellerId])
+}
+
+model Payment {
+  id                      String        @id @default(cuid())
+  reservationId           String
+  amount                  Decimal       @db.Decimal(14, 2)
+  currency                String        @default("USD")
+  status                  PaymentStatus @default(PENDING)
+  provider                String        @default("stripe")
+  stripeCheckoutSessionId String?       @unique
+  stripePaymentIntentId   String?       @unique
+  receiptUrl              String?
+  failureReason           String?
+  createdAt               DateTime      @default(now())
+  updatedAt               DateTime      @updatedAt
+
+  reservation Reservation @relation(fields: [reservationId], references: [id], onDelete: Cascade)
+
+  @@index([reservationId])
+}
+
+// Processed Stripe webhook events (idempotency guard).
+model StripeEvent {
+  id          String   @id
+  type        String
+  processedAt DateTime @default(now())
+}
+
+// ---------------------------------------------------------------------------
+// Notifications, reports & audit
+// ---------------------------------------------------------------------------
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  type      NotificationType
+  title     String
+  body      String
+  href      String?
+  data      Json?
+  readAt    DateTime?
+  createdAt DateTime         @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, readAt])
+  @@index([userId, createdAt])
+}
+
+model PropertyReport {
+  id           String       @id @default(cuid())
+  propertyId   String
+  reporterId   String
+  reason       ReportReason
+  details      String?
+  status       ReportStatus @default(OPEN)
+  resolvedById String?
+  resolvedAt   DateTime?
+  resolution   String?
+  createdAt    DateTime     @default(now())
+
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  reporter   User     @relation("ReportReporter", fields: [reporterId], references: [id], onDelete: Cascade)
+  resolvedBy User?    @relation("ReportResolver", fields: [resolvedById], references: [id], onDelete: SetNull)
+
+  @@unique([propertyId, reporterId])
+  @@index([status, createdAt])
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String?
+  action     String
+  targetType String
+  targetId   String
+  metadata   Json?
+  ipAddress  String?
+  createdAt  DateTime @default(now())
+
+  actor User? @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([targetType, targetId])
+  @@index([actorId, createdAt])
+  @@index([createdAt])
+}
