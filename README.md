@@ -298,3 +298,16 @@ NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=""
 
 # Development password used by `npm run db:seed` for every demo account
 SEED_PASSWORD="Password123!"
+
+
+-------
+
+DATABASE_URL="postgresql://haven_user:your-password@localhost:5432/haven?schema=public"
+AUTH_SECRET="<paste output of: openssl rand -base64 32>"
+AUTH_TRUST_HOST="true"
+NEXT_PUBLIC_APP_URL="https://yourdomain.com"
+NODE_ENV="production"
+EMAIL_DRIVER="resend"
+RESEND_API_KEY="re_..."
+STORAGE_DRIVER="local"
+STORAGE_LOCAL_DIR="/var/www/haven-storage"
