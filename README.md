@@ -250,3 +250,30 @@ A minimal Dockerfile would be: `node:24-alpine`, `npm ci`, `npm run build`, `CMD
 - **ESLint 9** is pinned because `eslint-config-next`'s bundled `eslint-plugin-react` is not yet compatible with ESLint 10. `npm audit` reports advisories in the Prisma CLI's dev-only dependencies (`mysql2`, `deepmerge-ts`); they are not part of the runtime bundle.
 - **Orphaned uploads**: photos uploaded to an abandoned listing form stay in storage. A periodic cleanup job comparing `PropertyImage.storageKey`/`MessageAttachment.storageKey` with the bucket would remove them.
 - **No SMTP driver** is bundled (to avoid a dependency with open advisories); Mailpit (HTTP API) covers local development and Resend covers production. Adding SMTP is a single new class in `src/lib/email/index.ts`.
+
+- ##LOGS
+- 2026-09-29T07:05:40.773496183Z ==> It looks like we don't have access to your repo, but we'll try to clone it anyway.
+2026-09-29T07:05:40.773519119Z ==> Cloning from https://github.com/ganeshkumaryk2003-stack/haven-estates
+2026-09-29T07:05:42.492279739Z ==> Checking out commit 95c90b94f55af4a3375e5b86892abbd0af9d6fd3 in branch main
+2026-09-29T07:05:44.178933158Z ==> Requesting Node.js version >=20.19.0
+2026-09-29T07:05:44.360305918Z ==> Using Node.js version 26.10.0 via /opt/render/project/src/package.json
+2026-09-29T07:05:44.36031449Z ==> Docs on specifying a Node.js version: https://render.com/docs/node-version
+2026-09-29T07:05:44.360419886Z ==> Installing Node.js version 26.10.0...
+2026-09-29T07:05:45.539676957Z ==> Running build command 'npm install; npm run build'...
+2026-09-29T07:06:04.656433676Z 
+2026-09-29T07:06:04.656461184Z > haven-estates@1.0.0 postinstall
+2026-09-29T07:06:04.656466602Z > prisma generate
+2026-09-29T07:06:04.656468656Z 
+2026-09-29T07:06:05.41178544Z Failed to load config file "/opt/render/project/src" as a TypeScript/JavaScript module. Error: PrismaConfigEnvError: Cannot resolve environment variable: DATABASE_URL.
+2026-09-29T07:06:05.430787932Z npm error code 1
+2026-09-29T07:06:05.430825894Z npm error path /opt/render/project/src
+2026-09-29T07:06:05.430900091Z npm error command failed
+2026-09-29T07:06:05.431047962Z npm error command sh -c prisma generate
+2026-09-29T07:06:05.43299659Z npm error A complete log of this run can be found in: /opt/render/.cache/_logs/2026-09-29T07_05_45_600Z-debug-0.log
+2026-09-29T07:06:05.644914662Z 
+2026-09-29T07:06:05.644929603Z > haven-estates@1.0.0 build
+2026-09-29T07:06:05.644931401Z > prisma generate && next build
+2026-09-29T07:06:05.644932821Z 
+2026-09-29T07:06:06.282564342Z Failed to load config file "/opt/render/project/src" as a TypeScript/JavaScript module. Error: PrismaConfigEnvError: Cannot resolve environment variable: DATABASE_URL.
+2026-09-29T07:06:06.326134211Z ==> Build failed 😞
+2026-09-29T07:06:06.326146434Z ==> Common ways to troubleshoot your deploy: https://render.com/docs/troubleshooting-deploys
