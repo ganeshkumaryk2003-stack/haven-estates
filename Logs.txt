@@ -1,50 +1,85 @@
-2026-09-29T08:30:21.403116479Z   run `npm fund` for details
-2026-09-29T08:30:21.4844051Z 
-2026-09-29T08:30:21.48441729Z 13 vulnerabilities (9 moderate, 4 high)
-2026-09-29T08:30:21.484418916Z 
-2026-09-29T08:30:21.484420696Z To address all issues (including breaking changes), run:
-2026-09-29T08:30:21.484422262Z   npm audit fix --force
-2026-09-29T08:30:21.484423515Z 
-2026-09-29T08:30:21.484425186Z Run `npm audit` for details.
-2026-09-29T08:30:26.079289086Z 
-2026-09-29T08:30:26.079318451Z up to date, audited 1134 packages in 4s
-2026-09-29T08:30:26.079326424Z 
-2026-09-29T08:30:26.07936868Z 235 packages are looking for funding
-2026-09-29T08:30:26.079403017Z   run `npm fund` for details
-2026-09-29T08:30:26.169991235Z 
-2026-09-29T08:30:26.170016005Z 13 vulnerabilities (5 moderate, 8 high)
-2026-09-29T08:30:26.170017615Z 
-2026-09-29T08:30:26.17001978Z To address all issues (including breaking changes), run:
-2026-09-29T08:30:26.170021595Z   npm audit fix --force
-2026-09-29T08:30:26.170022801Z 
-2026-09-29T08:30:26.170024418Z Run `npm audit` for details.
-2026-09-29T08:30:27.188260124Z ==> Uploading build...
-2026-09-29T08:30:59.004801138Z ==> Uploaded in 20.9s. Compression took 11.0s
-2026-09-29T08:30:59.016654665Z ==> Build successful 🎉
-2026-09-29T08:31:01.359383992Z ==> Deploying...
-2026-09-29T08:31:01.62890463Z ==> Setting WEB_CONCURRENCY=1 by default, based on available CPUs in the instance
-2026-09-29T08:32:15.274401441Z ==> No open ports detected, continuing to scan...
-2026-09-29T08:32:15.710597328Z ==> Docs on specifying a port: https://render.com/docs/web-services#port-binding
-2026-09-29T08:32:17.525900922Z ==> Running 'npm run start'
-2026-09-29T08:32:18.632835121Z 
-2026-09-29T08:32:18.632870454Z > haven-estates@1.0.0 start
-2026-09-29T08:32:18.632878144Z > next start
-2026-09-29T08:32:18.632882355Z 
-2026-09-29T08:32:20.934059096Z ▲ Next.js 16.3.6
-2026-09-29T08:32:20.93437653Z - Local:         http://localhost:10000
-2026-09-29T08:32:20.93438904Z - Network:       http://10.29.76.77:10000
-2026-09-29T08:32:20.934758647Z ✓ Ready in 1200ms
-2026-09-29T08:32:21.528837794Z ✓ Running next.config.ts took 592ms
-2026-09-29T08:32:21.534206892Z [Error: ENOENT: no such file or directory, open '/opt/render/project/src/.next/prerender-manifest.json'] {
-2026-09-29T08:32:21.534224614Z   errno: -2,
-2026-09-29T08:32:21.534229444Z   code: 'ENOENT',
-2026-09-29T08:32:21.534233274Z   syscall: 'open',
-2026-09-29T08:32:21.534237664Z   path: '/opt/render/project/src/.next/prerender-manifest.json'
-2026-09-29T08:32:21.534241245Z }
-2026-09-29T08:32:22.152499863Z ==> Your service is live 🎉
-2026-09-29T08:32:22.439936415Z ==> 
-2026-09-29T08:32:22.442728642Z ==> ///////////////////////////////////////////////////////////
-2026-09-29T08:32:22.445157162Z ==> 
-2026-09-29T08:32:22.448094316Z ==> Available at your primary URL https://haven-estates.onrender.com
-2026-09-29T08:32:22.450473214Z ==> 
-2026-09-29T08:32:22.453520233Z ==> ///////////////////////////////////////////////////////////
+2026-09-29T08:42:44.635472094Z ==> Downloading cache...
+2026-09-29T08:42:44.662741064Z ==> It looks like we don't have access to your repo, but we'll try to clone it anyway.
+2026-09-29T08:42:44.662751827Z ==> Cloning from https://github.com/ganeshkumaryk2003-stack/haven-estates
+2026-09-29T08:42:45.733859684Z ==> Checking out commit 0a9181a7c8f223c28217eb0c45b45863e3211232 in branch main
+2026-09-29T08:43:07.777375553Z ==> Downloaded 1.1GB in 4s. Extraction took 19s.
+2026-09-29T08:43:08.845221342Z ==> Requesting Node.js version >=20.19.0
+2026-09-29T08:43:08.94292747Z ==> Using Node.js version 26.10.0 via /opt/render/project/src/package.json
+2026-09-29T08:43:08.942942987Z ==> Docs on specifying a Node.js version: https://render.com/docs/node-version
+2026-09-29T08:43:08.94306037Z ==> Installing Node.js version 26.10.0...
+2026-09-29T08:43:12.157148345Z ==> Running build command 'npm install; npm ci; npm i --save-dev prisma@latest; npm i @prisma/client@latest; npm run build'...
+2026-09-29T08:43:20.621162281Z 
+2026-09-29T08:43:20.62118311Z > haven-estates@1.0.0 postinstall
+2026-09-29T08:43:20.621186247Z > prisma generate
+2026-09-29T08:43:20.621187662Z 
+2026-09-29T08:43:21.261733443Z Loaded Prisma config from prisma.config.ts.
+2026-09-29T08:43:21.261750581Z 
+2026-09-29T08:43:21.345029573Z Prisma schema loaded from prisma/schema.prisma.
+2026-09-29T08:43:21.766350159Z 
+2026-09-29T08:43:21.766368064Z ✔ Generated Prisma Client (7.10.0) to ./src/generated/prisma in 223ms
+2026-09-29T08:43:21.766369781Z 
+2026-09-29T08:43:21.844331181Z 
+2026-09-29T08:43:21.844350177Z added 82 packages, removed 260 packages, changed 6 packages, and audited 956 packages in 10s
+2026-09-29T08:43:21.844367799Z 
+2026-09-29T08:43:21.844456911Z 193 packages are looking for funding
+2026-09-29T08:43:21.844517777Z   run `npm fund` for details
+2026-09-29T08:43:21.941742404Z 
+2026-09-29T08:43:21.941759064Z 4 high severity vulnerabilities
+2026-09-29T08:43:21.941760735Z 
+2026-09-29T08:43:21.94176264Z To address all issues (including breaking changes), run:
+2026-09-29T08:43:21.94176464Z   npm audit fix --force
+2026-09-29T08:43:21.941765982Z 
+2026-09-29T08:43:21.941767273Z Run `npm audit` for details.
+2026-09-29T08:43:39.824361798Z 
+2026-09-29T08:43:39.824382772Z > haven-estates@1.0.0 postinstall
+2026-09-29T08:43:39.824386103Z > prisma generate
+2026-09-29T08:43:39.824388765Z 
+2026-09-29T08:43:40.694305722Z Loaded Prisma config from prisma.config.ts.
+2026-09-29T08:43:40.694322833Z 
+2026-09-29T08:43:40.826395005Z Prisma schema loaded from prisma/schema.prisma.
+2026-09-29T08:43:41.222084632Z 
+2026-09-29T08:43:41.222108123Z ✔ Generated Prisma Client (7.10.0) to ./src/generated/prisma in 231ms
+2026-09-29T08:43:41.222110547Z 
+2026-09-29T08:43:41.310204141Z 
+2026-09-29T08:43:41.310227733Z added 955 packages, and audited 956 packages in 19s
+2026-09-29T08:43:41.310230547Z 
+2026-09-29T08:43:41.310258544Z 193 packages are looking for funding
+2026-09-29T08:43:41.31028668Z   run `npm fund` for details
+2026-09-29T08:43:41.414734845Z 
+2026-09-29T08:43:41.414753654Z 4 high severity vulnerabilities
+2026-09-29T08:43:41.414757251Z 
+2026-09-29T08:43:41.414760041Z To address all issues (including breaking changes), run:
+2026-09-29T08:43:41.414762674Z   npm audit fix --force
+2026-09-29T08:43:41.414764844Z 
+2026-09-29T08:43:41.414767425Z Run `npm audit` for details.
+2026-09-29T08:44:34.165649599Z 
+2026-09-29T08:44:34.165673795Z added 260 packages, removed 82 packages, changed 6 packages, and audited 1134 packages in 53s
+2026-09-29T08:44:34.165691444Z 
+2026-09-29T08:44:34.165755318Z 235 packages are looking for funding
+2026-09-29T08:44:34.165858854Z   run `npm fund` for details
+2026-09-29T08:44:34.269471134Z 
+2026-09-29T08:44:34.26949023Z 13 vulnerabilities (9 moderate, 4 high)
+2026-09-29T08:44:34.269492074Z 
+2026-09-29T08:44:34.269493802Z To address all issues (including breaking changes), run:
+2026-09-29T08:44:34.269495603Z   npm audit fix --force
+2026-09-29T08:44:34.269497035Z 
+2026-09-29T08:44:34.269498895Z Run `npm audit` for details.
+2026-09-29T08:44:38.433591569Z 
+2026-09-29T08:44:38.433606535Z up to date, audited 1134 packages in 4s
+2026-09-29T08:44:38.433620092Z 
+2026-09-29T08:44:38.433676649Z 235 packages are looking for funding
+2026-09-29T08:44:38.433721688Z   run `npm fund` for details
+2026-09-29T08:44:38.520082359Z 
+2026-09-29T08:44:38.520090578Z 13 vulnerabilities (5 moderate, 8 high)
+2026-09-29T08:44:38.520092343Z 
+2026-09-29T08:44:38.52009419Z To address all issues (including breaking changes), run:
+2026-09-29T08:44:38.520096223Z   npm audit fix --force
+2026-09-29T08:44:38.520097586Z 
+2026-09-29T08:44:38.520099923Z Run `npm audit` for details.
+2026-09-29T08:44:38.648083479Z 
+2026-09-29T08:44:38.648100176Z > haven-estates@1.0.0 build
+2026-09-29T08:44:38.648102487Z > prisma generate && next build
+2026-09-29T08:44:38.648104804Z 
+2026-09-29T08:44:39.30920391Z {"kind":"result","envelope":{"ok":false,"commandId":"","error":{"code":"CLI.UNKNOWN_COMMAND","severity":"error","summary":"No command registered for `generate`","nextActions":[{"kind":"run-command","label":"List every command","command":"prisma --help"}]},"diagnostics":[],"nextActions":[{"kind":"run-command","label":"List every command","command":"prisma --help"}]},"commandId":"","timestamp":"2026-09-29T08:44:39.308Z"}
+2026-09-29T08:44:39.353672975Z ==> Build failed 😞
+2026-09-29T08:44:39.353689382Z ==> Common ways to troubleshoot your deploy: https://render.com/docs/troubleshooting-deploys
