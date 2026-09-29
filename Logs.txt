@@ -1,0 +1,200 @@
+2026-09-29T07:57:05.678253463Z ==> Using Node.js version 26.10.0 via /opt/render/project/src/package.json
+2026-09-29T07:57:05.678270518Z ==> Docs on specifying a Node.js version: https://render.com/docs/node-version
+2026-09-29T07:57:05.678347251Z ==> Installing Node.js version 26.10.0...
+2026-09-29T07:57:06.892954575Z ==> Running build command 'npm install; npm run build; '...
+2026-09-29T07:57:25.693009886Z 
+2026-09-29T07:57:25.693026646Z > haven-estates@1.0.0 postinstall
+2026-09-29T07:57:25.693030757Z > prisma generate
+2026-09-29T07:57:25.693032126Z 
+2026-09-29T07:57:26.488412793Z Loaded Prisma config from prisma.config.ts.
+2026-09-29T07:57:26.488436076Z 
+2026-09-29T07:57:26.580682373Z Prisma schema loaded from prisma/schema.prisma.
+2026-09-29T07:57:26.960231438Z 
+2026-09-29T07:57:26.960247623Z ✔ Generated Prisma Client (7.10.0) to ./src/generated/prisma in 202ms
+2026-09-29T07:57:26.960249735Z 
+2026-09-29T07:57:27.047160162Z 
+2026-09-29T07:57:27.047179485Z added 955 packages, and audited 956 packages in 20s
+2026-09-29T07:57:27.047196736Z 
+2026-09-29T07:57:27.04733006Z 193 packages are looking for funding
+2026-09-29T07:57:27.047366661Z   run `npm fund` for details
+2026-09-29T07:57:27.137487433Z 
+2026-09-29T07:57:27.13749538Z 4 high severity vulnerabilities
+2026-09-29T07:57:27.137497171Z 
+2026-09-29T07:57:27.137498601Z To address all issues (including breaking changes), run:
+2026-09-29T07:57:27.137500681Z   npm audit fix --force
+2026-09-29T07:57:27.137501912Z 
+2026-09-29T07:57:27.137503397Z Run `npm audit` for details.
+2026-09-29T07:57:27.356795326Z 
+2026-09-29T07:57:27.356813102Z > haven-estates@1.0.0 build
+2026-09-29T07:57:27.35681607Z > prisma generate && next build
+2026-09-29T07:57:27.356818418Z 
+2026-09-29T07:57:27.982425144Z Loaded Prisma config from prisma.config.ts.
+2026-09-29T07:57:27.98244008Z 
+2026-09-29T07:57:28.066162365Z Prisma schema loaded from prisma/schema.prisma.
+2026-09-29T07:57:28.480644168Z ┌─────────────────────────────────────────────────────────┐
+2026-09-29T07:57:28.480659877Z │  Update available 7.10.0 -> 8.0.0-rc.17                 │
+2026-09-29T07:57:28.480662537Z │                                                         │
+2026-09-29T07:57:28.480665557Z │  This is a major update - please follow the guide at    │
+2026-09-29T07:57:28.480667197Z 
+2026-09-29T07:57:28.480667872Z │  https://pris.ly/d/major-version-upgrade                │
+2026-09-29T07:57:28.480671807Z │                                                         │
+2026-09-29T07:57:28.480674159Z │  Run the following to update                            │
+2026-09-29T07:57:28.480676703Z │    npm i --save-dev prisma@latest                       │
+2026-09-29T07:57:28.48067873Z │    npm i @prisma/client@latest                          │
+2026-09-29T07:57:28.480686944Z └─────────────────────────────────────────────────────────┘
+2026-09-29T07:57:28.480696003Z ✔ Generated Prisma Client (7.10.0) to ./src/generated/prisma in 218ms
+2026-09-29T07:57:28.480697368Z 
+2026-09-29T07:57:28.837000127Z ▲ Next.js 16.3.6 (Turbopack)
+2026-09-29T07:57:28.837209849Z - Environments: .env
+2026-09-29T07:57:28.859377621Z ✓ Running next.config.ts took 22ms
+2026-09-29T07:57:28.85956806Z ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
+2026-09-29T07:57:28.868079835Z 
+2026-09-29T07:57:28.894083426Z   Creating an optimized production build ...
+2026-09-29T07:57:45.400260101Z 
+2026-09-29T07:57:45.400296841Z > Build error occurred
+2026-09-29T07:57:45.403888775Z Error: Turbopack build failed with 7 errors:
+2026-09-29T07:57:45.403898332Z ./src/app/api/files/[...key]/route.ts:2:1
+2026-09-29T07:57:45.403900128Z Error: Module not found: Can't resolve '@/lib/storage'
+2026-09-29T07:57:45.403901793Z   1 | import { NextResponse } from "next/server";
+2026-09-29T07:57:45.40390333Z > 2 | import { storage } from "@/lib/storage";
+2026-09-29T07:57:45.403905185Z     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-09-29T07:57:45.403906583Z   3 |
+2026-09-29T07:57:45.403908106Z   4 | export const runtime = "nodejs";
+2026-09-29T07:57:45.403909481Z   5 |
+2026-09-29T07:57:45.403910681Z 
+2026-09-29T07:57:45.403912075Z Import map: aliased to relative './src/lib/storage' inside of [project]/
+2026-09-29T07:57:45.403913206Z 
+2026-09-29T07:57:45.403914298Z 
+2026-09-29T07:57:45.403915579Z https://nextjs.org/docs/messages/module-not-found
+2026-09-29T07:57:45.403916684Z 
+2026-09-29T07:57:45.403918073Z 
+2026-09-29T07:57:45.403919368Z ./src/app/api/uploads/route.ts:5:1
+2026-09-29T07:57:45.403920685Z Error: Module not found: Can't resolve '@/lib/storage'
+2026-09-29T07:57:45.403923693Z   3 | import { ALLOWED_IMAGE_TYPES, MAX_ATTACHMENT_SIZE_BYTES, MAX_IMAGE_SIZE_BYTES } from "@/lib...
+2026-09-29T07:57:45.403925317Z   4 | import { checkRateLimit, RATE_LIMITS } from "@/lib/rate-limit";
+2026-09-29T07:57:45.403926906Z > 5 | import { buildStorageKey, storage } from "@/lib/storage";
+2026-09-29T07:57:45.403928166Z     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-09-29T07:57:45.403929395Z   6 | import { isPdf, processImage, sniffImageType } from "@/lib/storage/images";
+2026-09-29T07:57:45.403930623Z   7 |
+2026-09-29T07:57:45.403932042Z   8 | export const runtime = "nodejs";
+2026-09-29T07:57:45.403933131Z 
+2026-09-29T07:57:45.403934435Z Import map: aliased to relative './src/lib/storage' inside of [project]/
+2026-09-29T07:57:45.403935598Z 
+2026-09-29T07:57:45.40393668Z 
+2026-09-29T07:57:45.403938035Z https://nextjs.org/docs/messages/module-not-found
+2026-09-29T07:57:45.403939137Z 
+2026-09-29T07:57:45.403940222Z 
+2026-09-29T07:57:45.403941544Z ./src/server/actions/profile.ts:9:1
+2026-09-29T07:57:45.403942812Z Error: Module not found: Can't resolve '@/lib/storage'
+2026-09-29T07:57:45.403944088Z    7 | import { prisma } from "@/lib/prisma";
+2026-09-29T07:57:45.403950683Z    8 | import { enforceRateLimit } from "@/lib/rate-limit";
+2026-09-29T07:57:45.403952098Z >  9 | import { buildStorageKey, storage } from "@/lib/storage";
+2026-09-29T07:57:45.403953386Z      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-09-29T07:57:45.403954649Z   10 | import { processImage, sniffImageType } from "@/lib/storage/images";
+2026-09-29T07:57:45.403956544Z   11 | import { notificationPreferencesSchema, onboardingSchema, profileSchema } from "@/validati...
+2026-09-29T07:57:45.403957924Z   12 |
+2026-09-29T07:57:45.403959072Z 
+2026-09-29T07:57:45.403960335Z Import map: aliased to relative './src/lib/storage' inside of [project]/
+2026-09-29T07:57:45.403961451Z 
+2026-09-29T07:57:45.403962535Z 
+2026-09-29T07:57:45.403963777Z https://nextjs.org/docs/messages/module-not-found
+2026-09-29T07:57:45.403964902Z 
+2026-09-29T07:57:45.403965988Z 
+2026-09-29T07:57:45.403967579Z ./src/server/services/messaging.ts:7:1
+2026-09-29T07:57:45.403968833Z Error: Module not found: Can't resolve '@/lib/storage'
+2026-09-29T07:57:45.403970088Z    5 | import { prisma } from "@/lib/prisma";
+2026-09-29T07:57:45.403971385Z    6 | import { publishToUser, publishToUsers } from "@/lib/realtime";
+2026-09-29T07:57:45.403972664Z >  7 | import { assertOwnedStorageKey, storage } from "@/lib/storage";
+2026-09-29T07:57:45.403973925Z      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-09-29T07:57:45.403975254Z    8 | import { truncate } from "@/lib/utils";
+2026-09-29T07:57:45.40397653Z    9 | import { ensureConnection, isBlockedBetween } from "@/server/services/connections";
+2026-09-29T07:57:45.403977902Z   10 | import { notify } from "@/server/services/notifications";
+2026-09-29T07:57:45.403979011Z 
+2026-09-29T07:57:45.403980268Z Import map: aliased to relative './src/lib/storage' inside of [project]/
+2026-09-29T07:57:45.403981373Z 
+2026-09-29T07:57:45.403982435Z 
+2026-09-29T07:57:45.403983653Z Import traces:
+2026-09-29T07:57:45.403985041Z   #1 [Server Component]:
+2026-09-29T07:57:45.403986314Z     ./src/server/services/messaging.ts
+2026-09-29T07:57:45.403987547Z     ./src/app/(site)/messages/page.tsx
+2026-09-29T07:57:45.40398864Z 
+2026-09-29T07:57:45.403989942Z   #2 [Server Component]:
+2026-09-29T07:57:45.403991222Z     ./src/server/services/messaging.ts
+2026-09-29T07:57:45.403992468Z     ./src/server/actions/messaging.ts
+2026-09-29T07:57:45.403993557Z 
+2026-09-29T07:57:45.403994828Z https://nextjs.org/docs/messages/module-not-found
+2026-09-29T07:57:45.40399594Z 
+2026-09-29T07:57:45.403997063Z 
+2026-09-29T07:57:45.403998264Z ./src/server/services/properties.ts:9:1
+2026-09-29T07:57:45.403999502Z Error: Module not found: Can't resolve '@/lib/storage'
+2026-09-29T07:57:45.404000775Z    7 | import { prisma, type DbClient } from "@/lib/prisma";
+2026-09-29T07:57:45.404002053Z    8 | import { propertySlug } from "@/lib/slug";
+2026-09-29T07:57:45.404003299Z >  9 | import { assertOwnedStorageKey, storage } from "@/lib/storage";
+2026-09-29T07:57:45.404004507Z      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-09-29T07:57:45.404015891Z   10 | import { audit } from "@/server/services/audit";
+2026-09-29T07:57:45.404017355Z   11 | import { notify } from "@/server/services/notifications";
+2026-09-29T07:57:45.404018719Z   12 | import type { PaginatedResult, PropertyCardDTO, PropertyDetailDTO } from "@/types/dto";
+2026-09-29T07:57:45.404019842Z 
+2026-09-29T07:57:45.404021153Z Import map: aliased to relative './src/lib/storage' inside of [project]/
+2026-09-29T07:57:45.404022254Z 
+2026-09-29T07:57:45.404023328Z 
+2026-09-29T07:57:45.404024542Z Import traces:
+2026-09-29T07:57:45.404025781Z   #1 [Server Component]:
+2026-09-29T07:57:45.404026957Z     ./src/server/services/properties.ts
+2026-09-29T07:57:45.404028239Z     ./src/app/(site)/properties/new/page.tsx
+2026-09-29T07:57:45.404029312Z 
+2026-09-29T07:57:45.40403052Z   #2 [Server Component]:
+2026-09-29T07:57:45.404031775Z     ./src/server/services/properties.ts
+2026-09-29T07:57:45.404032955Z     ./src/server/actions/properties.ts
+2026-09-29T07:57:45.404034041Z 
+2026-09-29T07:57:45.404035376Z https://nextjs.org/docs/messages/module-not-found
+2026-09-29T07:57:45.404036455Z 
+2026-09-29T07:57:45.404037527Z 
+2026-09-29T07:57:45.404038718Z ./src/app/api/uploads/route.ts:6:1
+2026-09-29T07:57:45.404040001Z Error: Module not found: Can't resolve '@/lib/storage/images'
+2026-09-29T07:57:45.404041284Z   4 | import { checkRateLimit, RATE_LIMITS } from "@/lib/rate-limit";
+2026-09-29T07:57:45.404042559Z   5 | import { buildStorageKey, storage } from "@/lib/storage";
+2026-09-29T07:57:45.404043879Z > 6 | import { isPdf, processImage, sniffImageType } from "@/lib/storage/images";
+2026-09-29T07:57:45.404045199Z     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-09-29T07:57:45.404046413Z   7 |
+2026-09-29T07:57:45.404047633Z   8 | export const runtime = "nodejs";
+2026-09-29T07:57:45.404048824Z   9 |
+2026-09-29T07:57:45.404049953Z 
+2026-09-29T07:57:45.404051258Z Import map: aliased to relative './src/lib/storage/images' inside of [project]/
+2026-09-29T07:57:45.404052359Z 
+2026-09-29T07:57:45.404053424Z 
+2026-09-29T07:57:45.404054704Z https://nextjs.org/docs/messages/module-not-found
+2026-09-29T07:57:45.404055864Z 
+2026-09-29T07:57:45.404056981Z 
+2026-09-29T07:57:45.404058239Z ./src/server/actions/profile.ts:10:1
+2026-09-29T07:57:45.404059513Z Error: Module not found: Can't resolve '@/lib/storage/images'
+2026-09-29T07:57:45.404060718Z    8 | import { enforceRateLimit } from "@/lib/rate-limit";
+2026-09-29T07:57:45.404061993Z    9 | import { buildStorageKey, storage } from "@/lib/storage";
+2026-09-29T07:57:45.404063239Z > 10 | import { processImage, sniffImageType } from "@/lib/storage/images";
+2026-09-29T07:57:45.404064595Z      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-09-29T07:57:45.404065895Z   11 | import { notificationPreferencesSchema, onboardingSchema, profileSchema } from "@/validati...
+2026-09-29T07:57:45.404067512Z   12 |
+2026-09-29T07:57:45.404068819Z   13 | export async function updateProfileAction(input: unknown): Promise<ActionResult> {
+2026-09-29T07:57:45.404071755Z 
+2026-09-29T07:57:45.40407309Z Import map: aliased to relative './src/lib/storage/images' inside of [project]/
+2026-09-29T07:57:45.404074214Z 
+2026-09-29T07:57:45.404075292Z 
+2026-09-29T07:57:45.404076556Z https://nextjs.org/docs/messages/module-not-found
+2026-09-29T07:57:45.404077653Z 
+2026-09-29T07:57:45.404078784Z 
+2026-09-29T07:57:45.404080068Z     at <unknown> (./src/app/api/files/[...key]/route.ts:2:1)
+2026-09-29T07:57:45.404081384Z     at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+2026-09-29T07:57:45.404082706Z     at <unknown> (./src/app/api/uploads/route.ts:5:1)
+2026-09-29T07:57:45.404083882Z     at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+2026-09-29T07:57:45.404085099Z     at <unknown> (./src/server/actions/profile.ts:9:1)
+2026-09-29T07:57:45.404086322Z     at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+2026-09-29T07:57:45.404087537Z     at <unknown> (./src/server/services/messaging.ts:7:1)
+2026-09-29T07:57:45.404088718Z     at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+2026-09-29T07:57:45.404089866Z     at <unknown> (./src/server/services/properties.ts:9:1)
+2026-09-29T07:57:45.404091063Z     at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+2026-09-29T07:57:45.404092247Z     at <unknown> (./src/app/api/uploads/route.ts:6:1)
+2026-09-29T07:57:45.404093433Z     at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+2026-09-29T07:57:45.404094607Z     at <unknown> (./src/server/actions/profile.ts:10:1)
+2026-09-29T07:57:45.404095847Z     at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+2026-09-29T07:57:45.558553792Z ==> Build failed 😞
+2026-09-29T07:57:45.558567851Z ==> Common ways to troubleshoot your deploy: https://render.com/docs/troubleshooting-deploys
