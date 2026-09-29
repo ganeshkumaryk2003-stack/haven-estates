@@ -9,10 +9,6 @@ next-env.d.ts
 # generated prisma client
 src/generated
 
-# env files
-.env
-.env.*
-!.env.example
 
 # uploads (local storage driver)
 storage
