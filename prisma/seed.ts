@@ -127,7 +127,7 @@ async function main() {
         propertyType: seed.propertyType,
         status: seed.status,
         price: seed.price,
-        currency: "USD",
+        currency: "INR",
         depositAmount: seed.deposit,
         address: seed.address,
         city: seed.city,
@@ -242,7 +242,7 @@ async function main() {
   ]);
   await conversation("sofia", "daniel", 16, [
     { from: "sofia", body: "What is the current HOA fee on the Brickell unit, and is short-term letting allowed?", hoursAgo: 21 },
-    { from: "daniel", body: "HOA is $1,180/month including valet. Minimum lease term in the building is 6 months, so no short-term.", hoursAgo: 20 },
+    { from: "daniel", body: "HOA is ₹1,180/month including valet. Minimum lease term in the building is 6 months, so no short-term.", hoursAgo: 20 },
   ]);
   await conversation("tom", "daniel", 11, [
     { from: "tom", body: "Beautiful house. Would you consider an offer contingent on the sale of my Capitol Hill condo?", hoursAgo: 9 },
@@ -281,7 +281,7 @@ async function main() {
   // Pending offer on the Austin craftsman (seller maria, buyer priya)
   await prisma.offer.create({
     data: {
-      propertyId: prop(0), buyerId: u("priya").id, sellerId: u("maria").id, amount: 725000, currency: "USD", financing: "MORTGAGE",
+      propertyId: prop(0), buyerId: u("priya").id, sellerId: u("maria").id, amount: 725000, currency: "INR", financing: "MORTGAGE",
       conditions: "Subject to inspection and mortgage approval within 21 days.", message: "We love the house and can be flexible on the closing date.",
       expiresAt: addDays(new Date(), 6), status: "PENDING", createdAt: subHours(new Date(), 20),
     },
@@ -289,7 +289,7 @@ async function main() {
   // Countered offer on Highlands home (seller james, buyer marcus)
   await prisma.offer.create({
     data: {
-      propertyId: prop(3), buyerId: u("marcus").id, sellerId: u("james").id, amount: 1120000, currency: "USD", financing: "MIXED",
+      propertyId: prop(3), buyerId: u("marcus").id, sellerId: u("james").id, amount: 1120000, currency: "INR", financing: "MIXED",
       conditions: "Closing no earlier than 1 November.", expiresAt: addDays(new Date(), 4), status: "COUNTERED",
       counterAmount: 1165000, counterMessage: "Sellers can meet you at 1.165M with the November closing.", counteredAt: subHours(new Date(), 6), createdAt: subHours(new Date(), 30),
     },
@@ -297,47 +297,47 @@ async function main() {
   // Accepted offer on LoDo loft (UNDER_OFFER) - buyer tom, not yet reserved
   await prisma.offer.create({
     data: {
-      propertyId: prop(4), buyerId: u("tom").id, sellerId: u("james").id, amount: 672000, currency: "USD", financing: "CASH",
+      propertyId: prop(4), buyerId: u("tom").id, sellerId: u("james").id, amount: 672000, currency: "INR", financing: "CASH",
       expiresAt: addDays(new Date(), 10), status: "ACCEPTED", respondedAt: subHours(new Date(), 40), createdAt: subHours(new Date(), 50),
     },
   });
   // Rejected offer on Queen Anne (buyer tom)
   await prisma.offer.create({
     data: {
-      propertyId: prop(11), buyerId: u("tom").id, sellerId: u("daniel").id, amount: 2200000, currency: "USD", financing: "MORTGAGE",
+      propertyId: prop(11), buyerId: u("tom").id, sellerId: u("daniel").id, amount: 2200000, currency: "INR", financing: "MORTGAGE",
       conditions: "Contingent on the sale of my current condo.", expiresAt: addDays(new Date(), 3), status: "REJECTED", respondedAt: subHours(new Date(), 7), createdAt: subHours(new Date(), 10),
     },
   });
   // Expired offer (buyer marcus on Wash Park duplex)
   await prisma.offer.create({
     data: {
-      propertyId: prop(5), buyerId: u("marcus").id, sellerId: u("james").id, amount: 900000, currency: "USD",
+      propertyId: prop(5), buyerId: u("marcus").id, sellerId: u("james").id, amount: 900000, currency: "INR",
       expiresAt: subDays(new Date(), 2), status: "EXPIRED", respondedAt: subDays(new Date(), 2), createdAt: subDays(new Date(), 9),
     },
   });
   // Withdrawn offer (buyer sofia on Coconut Grove)
   await prisma.offer.create({
     data: {
-      propertyId: prop(17), buyerId: u("sofia").id, sellerId: u("daniel").id, amount: 2650000, currency: "USD", financing: "CASH",
+      propertyId: prop(17), buyerId: u("sofia").id, sellerId: u("daniel").id, amount: 2650000, currency: "INR", financing: "CASH",
       expiresAt: addDays(new Date(), 5), status: "WITHDRAWN", respondedAt: subDays(new Date(), 1), createdAt: subDays(new Date(), 3),
     },
   });
   // Accepted + reserved (deposit paid) on La Jolla condo (buyer sofia)
   const reservedOffer = await prisma.offer.create({
     data: {
-      propertyId: prop(14), buyerId: u("sofia").id, sellerId: u("daniel").id, amount: 1600000, currency: "USD", financing: "CASH",
+      propertyId: prop(14), buyerId: u("sofia").id, sellerId: u("daniel").id, amount: 1600000, currency: "INR", financing: "CASH",
       expiresAt: addDays(new Date(), 20), status: "ACCEPTED", respondedAt: subDays(new Date(), 6), createdAt: subDays(new Date(), 8),
     },
   });
   const reservation = await prisma.reservation.create({
     data: {
       reference: "HVN-SEED0001", propertyId: prop(14), offerId: reservedOffer.id, buyerId: u("sofia").id, sellerId: u("daniel").id,
-      depositAmount: 16500, currency: "USD", status: "DEPOSIT_PAID", stripeCheckoutSessionId: "cs_test_seed_lajolla_0001", paidAt: subDays(new Date(), 5), createdAt: subDays(new Date(), 5),
+      depositAmount: 16500, currency: "INR", status: "DEPOSIT_PAID", stripeCheckoutSessionId: "cs_test_seed_lajolla_0001", paidAt: subDays(new Date(), 5), createdAt: subDays(new Date(), 5),
     },
   });
   await prisma.payment.create({
     data: {
-      reservationId: reservation.id, amount: 16500, currency: "USD", status: "SUCCEEDED", stripeCheckoutSessionId: "cs_test_seed_lajolla_0001",
+      reservationId: reservation.id, amount: 16500, currency: "INR", status: "SUCCEEDED", stripeCheckoutSessionId: "cs_test_seed_lajolla_0001",
       stripePaymentIntentId: "pi_test_seed_lajolla_0001", createdAt: subDays(new Date(), 5),
     },
   });
@@ -345,18 +345,18 @@ async function main() {
   // Completed reservation for the sold West Loop penthouse (buyer marcus)
   const soldOffer = await prisma.offer.create({
     data: {
-      propertyId: prop(20), buyerId: u("marcus").id, sellerId: u("james").id, amount: 1450000, currency: "USD", financing: "MORTGAGE",
+      propertyId: prop(20), buyerId: u("marcus").id, sellerId: u("james").id, amount: 1450000, currency: "INR", financing: "MORTGAGE",
       expiresAt: subDays(new Date(), 30), status: "ACCEPTED", respondedAt: subDays(new Date(), 45), createdAt: subDays(new Date(), 50),
     },
   });
   const completed = await prisma.reservation.create({
     data: {
       reference: "HVN-SEED0002", propertyId: prop(20), offerId: soldOffer.id, buyerId: u("marcus").id, sellerId: u("james").id,
-      depositAmount: 15000, currency: "USD", status: "COMPLETED", stripeCheckoutSessionId: "cs_test_seed_westloop_0002", paidAt: subDays(new Date(), 44), completedAt: subDays(new Date(), 5), createdAt: subDays(new Date(), 44),
+      depositAmount: 15000, currency: "INR", status: "COMPLETED", stripeCheckoutSessionId: "cs_test_seed_westloop_0002", paidAt: subDays(new Date(), 44), completedAt: subDays(new Date(), 5), createdAt: subDays(new Date(), 44),
     },
   });
   await prisma.payment.create({
-    data: { reservationId: completed.id, amount: 15000, currency: "USD", status: "SUCCEEDED", stripeCheckoutSessionId: "cs_test_seed_westloop_0002", stripePaymentIntentId: "pi_test_seed_westloop_0002", createdAt: subDays(new Date(), 44) },
+    data: { reservationId: completed.id, amount: 15000, currency: "INR", status: "SUCCEEDED", stripeCheckoutSessionId: "cs_test_seed_westloop_0002", stripePaymentIntentId: "pi_test_seed_westloop_0002", createdAt: subDays(new Date(), 44) },
   });
 
   // ---------------------------------------------------------------------- report
@@ -372,15 +372,15 @@ async function main() {
   console.log("→ Notifications & audit log");
   const notifications = [
     { user: "maria", type: "NEW_ENQUIRY" as const, title: `New enquiry about ${propertyTitle(0)}`, body: "Priya Nair wrote: “Viewing this weekend?”", href: "/dashboard/enquiries", read: true, hoursAgo: 30 },
-    { user: "maria", type: "NEW_OFFER" as const, title: `New offer on ${propertyTitle(0)}`, body: "Priya Nair offered $725,000.", href: "/dashboard/offers", read: false, hoursAgo: 20 },
+    { user: "maria", type: "NEW_OFFER" as const, title: `New offer on ${propertyTitle(0)}`, body: "Priya Nair offered ₹7,25,000.", href: "/dashboard/offers", read: false, hoursAgo: 20 },
     { user: "maria", type: "NEW_MESSAGE" as const, title: "New message from Priya Nair", body: "Perfect, see you Saturday. Is there flexibility on the closing date?", href: "/messages", read: true, hoursAgo: 23 },
     { user: "priya", type: "NEW_MESSAGE" as const, title: "New message from Maria Santos", body: "Absolutely, a 45-day close is fine for us.", href: "/messages", read: false, hoursAgo: 2 },
-    { user: "marcus", type: "COUNTER_OFFER" as const, title: `Counteroffer on ${propertyTitle(3)}`, body: "The seller countered with $1,165,000.", href: "/dashboard/offers", read: false, hoursAgo: 6 },
+    { user: "marcus", type: "COUNTER_OFFER" as const, title: `Counteroffer on ${propertyTitle(3)}`, body: "The seller countered with ₹11,65,000.", href: "/dashboard/offers", read: false, hoursAgo: 6 },
     { user: "marcus", type: "OFFER_EXPIRED" as const, title: "Offer expired", body: `Your offer on "${propertyTitle(5)}" expired.`, href: "/dashboard/offers", read: true, hoursAgo: 48 },
-    { user: "tom", type: "OFFER_ACCEPTED" as const, title: "Offer accepted 🎉", body: `Your offer of $672,000 on "${propertyTitle(4)}" was accepted. You can now reserve the property.`, href: "/dashboard/offers", read: false, hoursAgo: 40 },
+    { user: "tom", type: "OFFER_ACCEPTED" as const, title: "Offer accepted 🎉", body: `Your offer of ₹6,72,000 on "${propertyTitle(4)}" was accepted. You can now reserve the property.`, href: "/dashboard/offers", read: false, hoursAgo: 40 },
     { user: "tom", type: "OFFER_REJECTED" as const, title: "Offer declined", body: `The seller declined your offer on "${propertyTitle(11)}".`, href: "/dashboard/offers", read: false, hoursAgo: 7 },
-    { user: "sofia", type: "RESERVATION_PAID" as const, title: "Deposit received", body: `Your $16,500 deposit for "${propertyTitle(14)}" is confirmed. Reference HVN-SEED0001.`, href: "/dashboard/reservations", read: true, hoursAgo: 120 },
-    { user: "daniel", type: "RESERVATION_PAID" as const, title: "Property reserved", body: `The buyer paid the $16,500 reservation deposit for "${propertyTitle(14)}".`, href: "/dashboard/reservations", read: false, hoursAgo: 120 },
+    { user: "sofia", type: "RESERVATION_PAID" as const, title: "Deposit received", body: `Your ₹16,500 deposit for "${propertyTitle(14)}" is confirmed. Reference HVN-SEED0001.`, href: "/dashboard/reservations", read: true, hoursAgo: 120 },
+    { user: "daniel", type: "RESERVATION_PAID" as const, title: "Property reserved", body: `The buyer paid the ₹16,500 reservation deposit for "${propertyTitle(14)}".`, href: "/dashboard/reservations", read: false, hoursAgo: 120 },
     { user: "daniel", type: "NEW_ENQUIRY" as const, title: `New enquiry about ${propertyTitle(16)}`, body: "Sofia Rossi wrote: “Rental yield details”", href: "/dashboard/enquiries", read: false, hoursAgo: 1 },
     { user: "lena", type: "NEW_ENQUIRY" as const, title: `New enquiry about ${propertyTitle(7)}`, body: "Tom Nguyen wrote: “Pet policy”", href: "/dashboard/enquiries", read: false, hoursAgo: 3 },
     { user: "maria", type: "LISTING_REJECTED" as const, title: "Listing needs changes", body: `"${propertyTitle(24)}" was not approved. Please attach the survey and confirm the lot size before resubmitting.`, href: "/dashboard/properties", read: true, hoursAgo: 300 },

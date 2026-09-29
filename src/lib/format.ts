@@ -1,13 +1,14 @@
 import { format, formatDistanceToNowStrict, isToday, isYesterday } from "date-fns";
+import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from "@/lib/constants";
 
 export function formatMoney(
   amount: number | string,
-  currency = "USD",
+  currency: string = DEFAULT_CURRENCY,
   options: { compact?: boolean; maximumFractionDigits?: number } = {},
 ) {
   const value = typeof amount === "string" ? Number(amount) : amount;
   if (!Number.isFinite(value)) return "—";
-  return new Intl.NumberFormat("en-US", {
+  return new Intl.NumberFormat(DEFAULT_LOCALE, {
     style: "currency",
     currency,
     notation: options.compact ? "compact" : "standard",
@@ -21,7 +22,7 @@ export function formatPrice(amount: number | string, currency: string, listingTy
 }
 
 export function formatNumber(value: number) {
-  return new Intl.NumberFormat("en-US").format(value);
+  return new Intl.NumberFormat(DEFAULT_LOCALE).format(value);
 }
 
 export function formatArea(value: number | null | undefined, unit: "SQFT" | "SQM" = "SQFT") {

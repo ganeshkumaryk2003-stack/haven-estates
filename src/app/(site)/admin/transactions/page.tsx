@@ -19,7 +19,7 @@ export default async function AdminTransactionsPage() {
     <>
       <PageHeader
         title="Transactions"
-        description={`Reservation deposits processed through Stripe. ${formatMoney(paidTotal, "USD")} collected across ${reservations.length} reservations. Mark a reservation complete once conveyancing finishes, or cancel it (refunds are issued in the Stripe dashboard).`}
+        description={`Reservation deposits processed through Stripe. ${formatMoney(paidTotal)} collected across ${reservations.length} reservations. Mark a reservation complete once conveyancing finishes, or cancel it (refunds are issued in the Stripe dashboard).`}
       />
       <Table>
         <TableHeader>

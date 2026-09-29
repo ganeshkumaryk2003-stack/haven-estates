@@ -290,7 +290,7 @@ model Property {
   propertyType    PropertyType
   status          PropertyStatus  @default(DRAFT)
   price           Decimal         @db.Decimal(14, 2)
-  currency        String          @default("USD")
+  currency        String          @default("INR")
   depositAmount   Decimal         @db.Decimal(14, 2)
   address         String
   city            String
@@ -527,7 +527,7 @@ model Offer {
   buyerId        String
   sellerId       String
   amount         Decimal          @db.Decimal(14, 2)
-  currency       String           @default("USD")
+  currency       String           @default("INR")
   financing      FinancingMethod?
   conditions     String?
   message        String?
@@ -559,7 +559,7 @@ model Reservation {
   buyerId                 String
   sellerId                String
   depositAmount           Decimal           @db.Decimal(14, 2)
-  currency                String            @default("USD")
+  currency                String            @default("INR")
   status                  ReservationStatus @default(PENDING_PAYMENT)
   stripeCheckoutSessionId String?           @unique
   paidAt                  DateTime?
@@ -584,7 +584,7 @@ model Payment {
   id                      String        @id @default(cuid())
   reservationId           String
   amount                  Decimal       @db.Decimal(14, 2)
-  currency                String        @default("USD")
+  currency                String        @default("INR")
   status                  PaymentStatus @default(PENDING)
   provider                String        @default("stripe")
   stripeCheckoutSessionId String?       @unique

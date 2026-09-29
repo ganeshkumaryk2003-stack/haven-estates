@@ -7,7 +7,7 @@ const validProperty = {
   listingType: "SALE",
   propertyType: "HOUSE",
   price: "749000",
-  currency: "USD",
+  currency: "INR",
   depositAmount: "7500",
   address: "4112 Avenue F",
   city: "Austin",

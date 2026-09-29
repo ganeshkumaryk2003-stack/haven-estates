@@ -17,6 +17,7 @@ import {
   PROPERTY_TYPES,
   PROPERTY_TYPE_LABELS,
 } from "@/lib/constants";
+import { formatMoney } from "@/lib/format";
 import { countActiveFilters, propertiesHref } from "@/lib/search-params";
 import type { AmenityDTO } from "@/types/dto";
 import type { PropertyFilters } from "@/validations/property";
@@ -254,8 +255,8 @@ export function ActiveFilterChips({ filters, amenities }: PropertyFiltersPanelPr
   for (const type of filters.propertyType ?? []) {
     chips.push({ key: `type-${type}`, label: PROPERTY_TYPE_LABELS[type], remove: { propertyType: filters.propertyType?.filter((entry) => entry !== type) } });
   }
-  if (filters.minPrice !== undefined) chips.push({ key: "minPrice", label: `Min $${filters.minPrice.toLocaleString()}`, remove: { minPrice: undefined } });
-  if (filters.maxPrice !== undefined) chips.push({ key: "maxPrice", label: `Max $${filters.maxPrice.toLocaleString()}`, remove: { maxPrice: undefined } });
+  if (filters.minPrice !== undefined) chips.push({ key: "minPrice", label: `Min ${formatMoney(filters.minPrice)}`, remove: { minPrice: undefined } });
+  if (filters.maxPrice !== undefined) chips.push({ key: "maxPrice", label: `Max ${formatMoney(filters.maxPrice)}`, remove: { maxPrice: undefined } });
   if (filters.bedrooms) chips.push({ key: "bedrooms", label: `${filters.bedrooms}+ beds`, remove: { bedrooms: undefined } });
   if (filters.bathrooms) chips.push({ key: "bathrooms", label: `${filters.bathrooms}+ baths`, remove: { bathrooms: undefined } });
   if (filters.minArea) chips.push({ key: "minArea", label: `Min ${filters.minArea.toLocaleString()} area`, remove: { minArea: undefined } });

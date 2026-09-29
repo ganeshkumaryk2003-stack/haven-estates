@@ -2,6 +2,7 @@ import { z } from "zod";
 import {
   AREA_UNITS,
   CURRENCIES,
+  DEFAULT_CURRENCY,
   FURNISHED_STATUSES,
   LISTING_TYPES,
   MAX_PROPERTY_IMAGES,
@@ -36,7 +37,7 @@ export const propertySchema = z
     listingType: z.enum(LISTING_TYPES),
     propertyType: z.enum(PROPERTY_TYPES),
     price: z.coerce.number().positive("Enter a price").max(999_999_999_999, "Price is too large"),
-    currency: z.enum(CURRENCIES).default("USD"),
+    currency: z.enum(CURRENCIES).default(DEFAULT_CURRENCY),
     depositAmount: z.coerce.number().min(50, "Deposit must be at least 50").max(999_999_999),
     address: z.string().trim().min(3, "Enter the street address").max(200),
     city: z.string().trim().min(2, "Enter the city").max(100),

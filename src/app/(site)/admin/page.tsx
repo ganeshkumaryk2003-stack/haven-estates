@@ -25,7 +25,7 @@ export default async function AdminOverviewPage() {
         <StatCard label="Enquiries" value={overview.enquiries} icon={Inbox} />
         <StatCard label="Offers" value={overview.offers} hint={`${overview.openOffers} open`} icon={HandCoins} />
         <StatCard label="Reservations" value={overview.reservations} icon={Receipt} href="/admin/transactions" />
-        <StatCard label="Deposits collected" value={formatMoney(overview.paidDepositTotal, "USD")} hint={`${overview.paidDepositCount} paid`} icon={Wallet} href="/admin/transactions" tone="primary" />
+        <StatCard label="Deposits collected" value={formatMoney(overview.paidDepositTotal)} hint={`${overview.paidDepositCount} paid`} icon={Wallet} href="/admin/transactions" tone="primary" />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">

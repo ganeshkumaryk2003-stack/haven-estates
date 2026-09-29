@@ -18,7 +18,7 @@ import { FormError, FormField, fieldA11y } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { UserAvatar } from "@/components/ui/user-avatar";
-import { FINANCING_LABELS } from "@/lib/constants";
+import { DEFAULT_CURRENCY, FINANCING_LABELS } from "@/lib/constants";
 import { formatDate, formatMoney, formatRelative } from "@/lib/format";
 import { counterOfferAction, decideOfferAction } from "@/server/actions/engagement";
 import type { OfferDTO } from "@/types/dto";
@@ -207,7 +207,7 @@ function CounterOfferDialog({ offer, onClose }: { offer: OfferDTO | null; onClos
         <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4" noValidate>
           <FormError message={error} />
           <input type="hidden" {...form.register("offerId")} />
-          <FormField id="counter-amount" label={`Counter amount (${offer?.currency ?? "USD"})`} error={form.formState.errors.counterAmount?.message} required>
+          <FormField id="counter-amount" label={`Counter amount (${offer?.currency ?? DEFAULT_CURRENCY})`} error={form.formState.errors.counterAmount?.message} required>
             <Input type="number" min={1} step="1" inputMode="decimal" {...fieldA11y("counter-amount", form.formState.errors.counterAmount?.message)} {...form.register("counterAmount")} />
           </FormField>
           <FormField id="counter-message" label="Message (optional)" error={form.formState.errors.counterMessage?.message}>

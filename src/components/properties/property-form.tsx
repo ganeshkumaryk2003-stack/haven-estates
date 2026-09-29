@@ -19,6 +19,7 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   AREA_UNITS,
   CURRENCIES,
+  DEFAULT_CURRENCY,
   FURNISHED_LABELS,
   FURNISHED_STATUSES,
   LISTING_TYPE_LABELS,
@@ -66,7 +67,7 @@ function toFormValues(property?: PropertyDetailDTO): PropertyFormValues {
       listingType: "SALE",
       propertyType: "HOUSE",
       price: "",
-      currency: "USD",
+      currency: DEFAULT_CURRENCY,
       depositAmount: "",
       address: "",
       city: "",
@@ -139,7 +140,7 @@ export function PropertyForm({ amenities, property, emailVerified }: PropertyFor
   const listingType = useWatch({ control: form.control, name: "listingType" });
   const propertyType = useWatch({ control: form.control, name: "propertyType" });
   const price = useWatch({ control: form.control, name: "price" });
-  const currency = useWatch({ control: form.control, name: "currency" }) ?? "USD";
+  const currency = useWatch({ control: form.control, name: "currency" }) ?? DEFAULT_CURRENCY;
   const images = useWatch({ control: form.control, name: "images" }) ?? [];
   const amenityIds = useWatch({ control: form.control, name: "amenityIds" }) ?? [];
 
@@ -322,7 +323,7 @@ export function PropertyForm({ amenities, property, emailVerified }: PropertyFor
                   control={form.control}
                   name="currency"
                   render={({ field }) => (
-                    <Select value={field.value ?? "USD"} onValueChange={field.onChange}>
+                    <Select value={field.value ?? DEFAULT_CURRENCY} onValueChange={field.onChange}>
                       <SelectTrigger id="currency">
                         <SelectValue />
                       </SelectTrigger>
@@ -584,8 +585,8 @@ function ReviewSummary({ form, amenities }: { form: ReturnType<typeof useForm<Pr
   const rows: [string, React.ReactNode][] = [
     ["Title", values.title || "—"],
     ["Type", `${PROPERTY_TYPE_LABELS[values.propertyType ?? "HOUSE"]} · ${LISTING_TYPE_LABELS[values.listingType ?? "SALE"]}`],
-    ["Price", values.price ? formatMoney(Number(values.price), values.currency ?? "USD") : "—"],
-    ["Deposit", values.depositAmount ? formatMoney(Number(values.depositAmount), values.currency ?? "USD") : "—"],
+    ["Price", values.price ? formatMoney(Number(values.price), values.currency ?? DEFAULT_CURRENCY) : "—"],
+    ["Deposit", values.depositAmount ? formatMoney(Number(values.depositAmount), values.currency ?? DEFAULT_CURRENCY) : "—"],
     ["Address", [values.address, values.city, values.state, values.postalCode, values.country].filter(Boolean).join(", ") || "—"],
     ["Rooms", `${values.bedrooms ?? 0} bed · ${values.bathrooms ?? 0} bath · ${values.parkingSpaces ?? 0} parking`],
     ["Area", values.interiorArea ? `${values.interiorArea} ${values.areaUnit === "SQM" ? "m²" : "sq ft"}` : "—"],

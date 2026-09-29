@@ -18,7 +18,7 @@ const property: PropertyCardDTO = {
   propertyType: "HOUSE",
   status: "ACTIVE",
   price: 749000,
-  currency: "USD",
+  currency: "INR",
   address: "4112 Avenue F",
   city: "Austin",
   state: "TX",
@@ -44,7 +44,7 @@ describe("PropertyCard", () => {
   it("renders the key facts and links to the listing", () => {
     render(<PropertyCard property={property} signedIn={false} />);
     expect(screen.getByRole("heading", { name: property.title })).toBeInTheDocument();
-    expect(screen.getByText("$749,000")).toBeInTheDocument();
+    expect(screen.getByText("₹7,49,000")).toBeInTheDocument();
     expect(screen.getByText("Austin, TX")).toBeInTheDocument();
     expect(screen.getByText("Featured")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: property.title })).toHaveAttribute("href", `/properties/${property.slug}`);
@@ -54,7 +54,7 @@ describe("PropertyCard", () => {
 
   it("shows monthly pricing for rentals and the status badge when requested", () => {
     render(<PropertyCard property={{ ...property, listingType: "RENT", price: 3450, status: "RESERVED" }} signedIn showStatus />);
-    expect(screen.getByText("$3,450/mo")).toBeInTheDocument();
+    expect(screen.getByText("₹3,450/mo")).toBeInTheDocument();
     expect(screen.getByText("Reserved")).toBeInTheDocument();
   });
 });

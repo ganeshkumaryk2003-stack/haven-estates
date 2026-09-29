@@ -34,10 +34,10 @@ describe("search params", () => {
 
 describe("money helpers", () => {
   it("converts decimal strings to Stripe minor units without floating point drift", () => {
-    expect(toMinorUnits("1250.50", "USD")).toBe(125050);
+    expect(toMinorUnits("1250.50", "INR")).toBe(125050);
     expect(toMinorUnits(19.99, "EUR")).toBe(1999);
     expect(toMinorUnits("5000", "JPY")).toBe(5000);
-    expect(toMinorUnits("0.1", "USD")).toBe(10);
+    expect(toMinorUnits("0.1", "INR")).toBe(10);
   });
 
   it("suggests a clamped 1% deposit for sales and one month for rentals", () => {

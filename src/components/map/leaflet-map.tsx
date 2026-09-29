@@ -5,6 +5,7 @@ import Link from "next/link";
 import L from "leaflet";
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import { DEFAULT_CURRENCY } from "@/lib/constants";
 import { formatPrice } from "@/lib/format";
 
 export interface MapMarker {
@@ -79,7 +80,7 @@ export default function LeafletMap({ markers, center, zoom = 12, className, inte
                 ) : null}
                 <p className="text-sm font-semibold leading-tight">{marker.title}</p>
                 {marker.price !== undefined ? (
-                  <p className="text-sm font-bold text-[#0f766e]">{formatPrice(marker.price, marker.currency ?? "USD", marker.listingType ?? "SALE")}</p>
+                  <p className="text-sm font-bold text-[#0f766e]">{formatPrice(marker.price, marker.currency ?? DEFAULT_CURRENCY, marker.listingType ?? "SALE")}</p>
                 ) : null}
                 {marker.href ? (
                   <Link href={marker.href} className="text-xs font-medium underline">

@@ -25,7 +25,12 @@ export const FINANCING_METHODS = ["CASH", "MORTGAGE", "MIXED", "OTHER"] as const
 export const REPORT_REASONS = ["INACCURATE", "SCAM", "DUPLICATE", "INAPPROPRIATE", "ALREADY_SOLD", "OTHER"] as const;
 export const USER_ROLES = ["BUYER", "SELLER", "AGENT", "ADMIN"] as const;
 export const SORT_OPTIONS = ["newest", "oldest", "price_asc", "price_desc", "popular"] as const;
-export const CURRENCIES = ["USD", "EUR", "GBP", "CAD", "AUD"] as const;
+export const CURRENCIES = ["INR"] as const;
+
+// Single source of truth for money rendering. DEFAULT_LOCALE drives digit grouping, so
+// "en-IN" is what produces lakh/crore groups (₹74,90,000) instead of ₹7,490,000.
+export const DEFAULT_CURRENCY: (typeof CURRENCIES)[number] = "INR";
+export const DEFAULT_LOCALE = "en-IN";
 
 export type ListingTypeValue = (typeof LISTING_TYPES)[number];
 export type PropertyTypeValue = (typeof PROPERTY_TYPES)[number];

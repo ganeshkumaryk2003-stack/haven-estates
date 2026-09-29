@@ -308,7 +308,7 @@ export const PROPERTIES: SeedProperty[] = [
     owner: "james",
     title: "Renovated Wash Park duplex - live in one, rent the other",
     description:
-      "Rare side-by-side duplex a block from Washington Park. Each unit has two bedrooms, one bathroom, a private entrance, laundry and its own fenced yard. Fully renovated in 2021 with new roofs, windows, electrical and plumbing.\n\nCurrently one unit is owner-occupied and the other rents for $2,650/month. Ideal for house-hacking or a long-term investment.",
+      "Rare side-by-side duplex a block from Washington Park. Each unit has two bedrooms, one bathroom, a private entrance, laundry and its own fenced yard. Fully renovated in 2021 with new roofs, windows, electrical and plumbing.\n\nCurrently one unit is owner-occupied and the other rents for ₹2,650/month. Ideal for house-hacking or a long-term investment.",
     listingType: "SALE",
     propertyType: "OTHER",
     status: "ACTIVE",
@@ -421,7 +421,7 @@ export const PROPERTIES: SeedProperty[] = [
     owner: "lena",
     title: "Energy-efficient 3-bed house in Sellwood",
     description:
-      "Net-zero-ready family home with a 7 kW solar array, heat pump and triple-glazed windows - average utility bill under $40. Three bedrooms, two bathrooms, an open kitchen-living room that opens onto a landscaped garden with raised beds.\n\nDetached studio with power and heat works as an office or guest room. Two blocks from the Springwater Corridor trail. Twelve-month lease, pets considered.",
+      "Net-zero-ready family home with a 7 kW solar array, heat pump and triple-glazed windows - average utility bill under ₹40. Three bedrooms, two bathrooms, an open kitchen-living room that opens onto a landscaped garden with raised beds.\n\nDetached studio with power and heat works as an office or guest room. Two blocks from the Springwater Corridor trail. Twelve-month lease, pets considered.",
     listingType: "RENT",
     propertyType: "HOUSE",
     status: "ACTIVE",
@@ -590,7 +590,7 @@ export const PROPERTIES: SeedProperty[] = [
     owner: "daniel",
     title: "North Park Spanish bungalow with casita",
     description:
-      "1930s Spanish revival bungalow on a corner lot in North Park with a separate one-bedroom casita (currently rented at $1,900/month). Main house has two bedrooms, an updated kitchen with Saltillo tile, arched doorways and a wood-burning fireplace.\n\nDrought-tolerant landscaping, a citrus grove and a covered patio with a built-in grill. Walk to 30th Street's breweries and restaurants.",
+      "1930s Spanish revival bungalow on a corner lot in North Park with a separate one-bedroom casita (currently rented at ₹1,900/month). Main house has two bedrooms, an updated kitchen with Saltillo tile, arched doorways and a wood-burning fireplace.\n\nDrought-tolerant landscaping, a citrus grove and a covered patio with a built-in grill. Walk to 30th Street's breweries and restaurants.",
     listingType: "SALE",
     propertyType: "HOUSE",
     status: "ACTIVE",
@@ -703,7 +703,7 @@ export const PROPERTIES: SeedProperty[] = [
     owner: "james",
     title: "Logan Square 3-flat - fully leased investment",
     description:
-      "Classic Chicago greystone three-flat on a wide Logan Square lot. Each unit has three bedrooms, one bathroom, a formal dining room and rear deck access. Fully leased with a gross annual rent of $84,000 and long-term tenants.\n\nSeparate utilities, newer boilers and a two-car garage. Two blocks from the Blue Line and the 606 trail.",
+      "Classic Chicago greystone three-flat on a wide Logan Square lot. Each unit has three bedrooms, one bathroom, a formal dining room and rear deck access. Fully leased with a gross annual rent of ₹84,000 and long-term tenants.\n\nSeparate utilities, newer boilers and a two-car garage. Two blocks from the Blue Line and the 606 trail.",
     listingType: "SALE",
     propertyType: "COMMERCIAL",
     status: "ACTIVE",
