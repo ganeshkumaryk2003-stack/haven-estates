@@ -9,12 +9,12 @@ test.describe("buyer journey", () => {
 
     // Browse with URL-based filters.
     await page.goto("/properties?listingType=SALE&propertyType=HOUSE&sort=price_desc");
-    await expect(page.getByRole("heading", { name: /homes for sale/i })).toBeVisible();
+    await expect(page.getByRole("heading", { name: /properties for sale/i })).toBeVisible();
     const results = page.getByRole("region", { name: "Search results" });
     await expect(results.getByRole("status")).toContainText(/propert(y|ies) found/);
     const chips = page.getByRole("list", { name: "Active filters" });
     await expect(chips.getByText("For sale")).toBeVisible();
-    await expect(chips.getByText("House")).toBeVisible();
+    await expect(chips.getByText("Independent house / Villa")).toBeVisible();
 
     // Open a listing that is not owned by the buyer (first result).
     const firstCard = results.getByRole("article").first();

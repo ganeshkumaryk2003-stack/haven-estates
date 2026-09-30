@@ -1,15 +1,16 @@
 import Link from "next/link";
 import { Logo } from "@/components/layout/logo";
-import { APP_DESCRIPTION, APP_NAME } from "@/lib/constants";
+import { APP_DESCRIPTION, APP_FULL_NAME } from "@/lib/constants";
 
 const columns = [
   {
     title: "Explore",
     links: [
-      { href: "/properties?listingType=SALE", label: "Homes for sale" },
-      { href: "/properties?listingType=RENT", label: "Homes for rent" },
-      { href: "/properties?propertyType=APARTMENT", label: "Apartments" },
-      { href: "/properties?propertyType=LAND", label: "Land" },
+      { href: "/properties?listingType=SALE", label: "Properties for sale" },
+      { href: "/properties?listingType=RENT", label: "Properties for rent" },
+      { href: "/properties?propertyType=APARTMENT", label: "Flats & apartments" },
+      { href: "/properties?propertyType=PLOT_RESIDENTIAL", label: "Residential plots" },
+      { href: "/properties?propertyType=PLOT_INDUSTRIAL", label: "Industrial plots & sites" },
     ],
   },
   {
@@ -40,7 +41,7 @@ export function SiteFooter() {
           <Logo />
           <p className="max-w-sm text-sm text-muted-foreground">{APP_DESCRIPTION}</p>
           <p className="text-xs text-muted-foreground">
-            Reservation deposits are processed by Stripe in test mode. Reservations are not a legal transfer of ownership; conveyancing happens offline with your legal advisers.
+            Token deposits are processed by Stripe in test mode. Reservations are not a legal transfer of ownership; the sale agreement and registration happen offline with your legal advisers.
           </p>
         </div>
         {columns.map((column) => (
@@ -61,7 +62,7 @@ export function SiteFooter() {
       <div className="border-t">
         <div className="container-page flex flex-col gap-2 py-4 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <p>
-            © {new Date().getFullYear()} {APP_NAME}. Demo marketplace application.
+            © {new Date().getFullYear()} {APP_FULL_NAME}. Demo marketplace application.
           </p>
           <p>Built with Next.js, Prisma, Auth.js and Stripe.</p>
         </div>

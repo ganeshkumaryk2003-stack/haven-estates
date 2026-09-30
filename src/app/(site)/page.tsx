@@ -1,20 +1,22 @@
 import Link from "next/link";
-import { ArrowRight, Building2, Home, Landmark, MapPinned, ShieldCheck, Store, Trees, Warehouse, Wallet } from "lucide-react";
+import { ArrowRight, Building, Building2, Factory, Home, LandPlot, Landmark, LayoutGrid, MapPinned, ShieldCheck, Store, Wallet } from "lucide-react";
 import { HeroSearch } from "@/components/home/hero-search";
 import { PropertyCard } from "@/components/properties/property-card";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getCurrentUser } from "@/lib/auth/session";
-import { APP_NAME, PROPERTY_TYPE_LABELS, type PropertyTypeValue } from "@/lib/constants";
+import { APP_NAME, PROPERTY_TYPES, PROPERTY_TYPE_LABELS, type PropertyTypeValue } from "@/lib/constants";
 import { formatNumber } from "@/lib/format";
 import { getFeaturedProperties, getMarketplaceStats, getPropertyTypeCounts, getRecentProperties } from "@/server/services/properties";
 
 const CATEGORY_ICONS: Record<PropertyTypeValue, typeof Home> = {
-  HOUSE: Home,
   APARTMENT: Building2,
-  CONDO: Landmark,
-  TOWNHOUSE: Warehouse,
-  LAND: Trees,
+  HOUSE: Home,
+  TOWNHOUSE: Building,
+  PLOT_RESIDENTIAL: LandPlot,
+  PLOT_COMMERCIAL: Landmark,
+  PLOT_SEMI_COMMERCIAL: LayoutGrid,
+  PLOT_INDUSTRIAL: Factory,
   COMMERCIAL: Store,
   OTHER: MapPinned,
 };
@@ -22,13 +24,13 @@ const CATEGORY_ICONS: Record<PropertyTypeValue, typeof Home> = {
 const STEPS = [
   { title: "Search & save", description: "Filter by location, price, size and amenities. Save favourites and share searches with a link." },
   { title: "Enquire & chat", description: "Send an enquiry or message the seller in real time. Every contact creates a connection you can manage." },
-  { title: "Offer & reserve", description: "Make an offer, negotiate counteroffers, then reserve the home with a secure Stripe deposit once accepted." },
+  { title: "Offer & reserve", description: "Make an offer, negotiate counteroffers, then reserve the property with a secure token deposit once accepted." },
 ];
 
 const TESTIMONIALS = [
-  { quote: "The offer flow was refreshingly clear. I knew exactly where things stood, and the deposit receipt arrived instantly.", name: "Priya N.", role: "First-time buyer, Austin" },
-  { quote: "Listing my townhouse took ten minutes. Enquiries and offers land in one dashboard instead of my inbox.", name: "Marcus D.", role: "Seller, Denver" },
-  { quote: "I manage a dozen rentals here. Messaging, connections and notifications keep every conversation in one place.", name: "Elena R.", role: "Letting agent, Portland" },
+  { quote: "The offer flow was refreshingly clear. I knew exactly where things stood, and the token deposit receipt arrived instantly.", name: "Priya N.", role: "First-time buyer, Bengaluru" },
+  { quote: "Listing my 3 BHK took ten minutes. Enquiries and offers land in one dashboard instead of my WhatsApp.", name: "Rohan M.", role: "Seller, Pune" },
+  { quote: "I manage a dozen rentals here. Messaging, connections and notifications keep every conversation in one place.", name: "Anita R.", role: "Rental agent, Hyderabad" },
 ];
 
 export default async function HomePage() {
@@ -42,13 +44,13 @@ export default async function HomePage() {
       <section className="relative overflow-hidden border-b bg-[radial-gradient(ellipse_at_top_left,_var(--color-accent),_transparent_55%),radial-gradient(ellipse_at_bottom_right,_color-mix(in_oklch,var(--color-primary)_18%,transparent),_transparent_50%)]">
         <div className="container-page flex flex-col gap-10 py-16 sm:py-24">
           <div className="max-w-3xl">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-primary">Real estate, end to end</p>
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-primary">Real estate across India, end to end</p>
             <h1 className="text-balance text-4xl font-bold sm:text-5xl lg:text-6xl">Find a home you love. Reserve it with confidence.</h1>
             <p className="mt-5 max-w-2xl text-balance text-lg text-muted-foreground">
-              {APP_NAME} connects buyers, renters, sellers and agents with verified profiles, real-time messaging, transparent offers and secure reservation deposits.
+              {APP_NAME} connects buyers, tenants, sellers and agents across Indian cities with verified profiles, real-time messaging, transparent offers and secure token deposits.
             </p>
           </div>
-          <HeroSearch />
+          <HeroSearch signedIn={Boolean(user)} />
           <dl className="grid grid-cols-2 gap-6 sm:grid-cols-4">
             {[
               { label: "Active listings", value: stats.activeListings },
@@ -95,8 +97,8 @@ export default async function HomePage() {
           <h2 id="categories-heading" className="text-3xl font-bold">
             Browse by property type
           </h2>
-          <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-7">
-            {(Object.keys(PROPERTY_TYPE_LABELS) as PropertyTypeValue[]).map((type) => {
+          <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+            {PROPERTY_TYPES.map((type) => {
               const Icon = CATEGORY_ICONS[type];
               return (
                 <li key={type}>
@@ -195,8 +197,8 @@ export default async function HomePage() {
       <section className="container-page pb-20">
         <div className="flex flex-col items-start gap-6 rounded-2xl bg-primary px-8 py-12 text-primary-foreground sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h2 className="text-3xl font-bold">Selling or letting a property?</h2>
-            <p className="mt-2 max-w-xl text-primary-foreground/85">Create a listing in minutes, receive enquiries and offers in one dashboard, and let buyers reserve with a deposit.</p>
+            <h2 className="text-3xl font-bold">Selling or renting out a property?</h2>
+            <p className="mt-2 max-w-xl text-primary-foreground/85">Create a listing in minutes, receive enquiries and offers in one dashboard, and let buyers reserve with a token deposit.</p>
           </div>
           <Button asChild size="lg" variant="secondary">
             <Link href="/properties/new">

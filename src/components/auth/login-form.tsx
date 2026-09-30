@@ -47,7 +47,7 @@ export function LoginForm({ callbackUrl, googleEnabled, notice }: LoginFormProps
         <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4" noValidate>
           <FormError message={error} />
           <FormField id="email" label="Email" error={form.formState.errors.email?.message} required>
-            <Input type="email" autoComplete="email" placeholder="you@example.com" {...fieldA11y("email", form.formState.errors.email?.message)} {...form.register("email")} />
+            <Input type="email" autoComplete="email" placeholder="e.g. rahul.sharma@gmail.com" {...fieldA11y("email", form.formState.errors.email?.message)} {...form.register("email")} />
           </FormField>
           <FormField id="password" label="Password" error={form.formState.errors.password?.message} required>
             <Input type="password" autoComplete="current-password" {...fieldA11y("password", form.formState.errors.password?.message)} {...form.register("password")} />

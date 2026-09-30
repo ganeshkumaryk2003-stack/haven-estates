@@ -18,7 +18,7 @@ import { FormError, FormField, fieldA11y } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { UserAvatar } from "@/components/ui/user-avatar";
-import { DEFAULT_CURRENCY, FINANCING_LABELS } from "@/lib/constants";
+import { APP_NAME, DEFAULT_CURRENCY, FINANCING_LABELS } from "@/lib/constants";
 import { formatDate, formatMoney, formatRelative } from "@/lib/format";
 import { counterOfferAction, decideOfferAction } from "@/server/actions/engagement";
 import type { OfferDTO } from "@/types/dto";
@@ -114,7 +114,7 @@ export function OfferList({ offers, role, stripeEnabled }: OfferListProps) {
                   <UserAvatar name={other.name} image={other.image} className="size-5 text-[9px]" />
                   {role === "seller" ? "From" : "To"}{" "}
                   <Link href={`/profile/${other.id}`} className="hover:underline">
-                    {other.name ?? "Haven user"}
+                    {other.name ?? `${APP_NAME} user`}
                   </Link>
                   <span aria-hidden="true">·</span>
                   <Link href={`/messages?to=${other.id}&property=${offer.property.id}`} className="hover:underline">

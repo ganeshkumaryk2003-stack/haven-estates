@@ -39,10 +39,11 @@ export const propertySchema = z
     price: z.coerce.number().positive("Enter a price").max(999_999_999_999, "Price is too large"),
     currency: z.enum(CURRENCIES).default(DEFAULT_CURRENCY),
     depositAmount: z.coerce.number().min(50, "Deposit must be at least 50").max(999_999_999),
-    address: z.string().trim().min(3, "Enter the street address").max(200),
+    address: z.string().trim().min(3, "Enter the address").max(200),
     city: z.string().trim().min(2, "Enter the city").max(100),
-    state: z.string().trim().min(2, "Enter the state or region").max(100),
-    postalCode: z.string().trim().min(2, "Enter the postal code").max(20),
+    state: z.string().trim().min(2, "Enter the state").max(100),
+    // Indian PIN codes are exactly six digits and never start with 0.
+    postalCode: z.string().trim().regex(/^[1-9]\d{5}$/, "Enter a valid 6-digit PIN code"),
     country: z.string().trim().min(2, "Enter the country").max(80),
     latitude: z.preprocess(
       (value) => (value === "" || value === null || value === undefined ? null : Number(value)),

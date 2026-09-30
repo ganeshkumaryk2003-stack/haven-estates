@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Ban } from "lucide-react";
 import { useRealtime } from "@/components/realtime-provider";
 import { UserAvatar } from "@/components/ui/user-avatar";
+import { APP_NAME } from "@/lib/constants";
 import { formatMessageTime } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import type { ConversationSummaryDTO } from "@/types/dto";
@@ -48,7 +49,7 @@ export function ConversationList({ conversations, activeId }: ConversationListPr
               </div>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center justify-between gap-2">
-                  <p className={cn("truncate text-sm", conversation.unreadCount > 0 ? "font-semibold" : "font-medium")}>{conversation.otherUser.name ?? "Haven user"}</p>
+                  <p className={cn("truncate text-sm", conversation.unreadCount > 0 ? "font-semibold" : "font-medium")}>{conversation.otherUser.name ?? `${APP_NAME} user`}</p>
                   {conversation.lastMessageAt ? <time className="shrink-0 text-xs text-muted-foreground">{formatMessageTime(conversation.lastMessageAt)}</time> : null}
                 </div>
                 {conversation.property ? <p className="truncate text-xs text-primary">{conversation.property.title}</p> : null}

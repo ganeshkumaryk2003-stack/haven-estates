@@ -2,27 +2,27 @@ import { describe, expect, it } from "vitest";
 import { propertyFiltersSchema, propertySchema } from "@/validations/property";
 
 const validProperty = {
-  title: "Sunlit 3-bed craftsman",
-  description: "A lovely home with a garden, a renovated kitchen and plenty of natural light throughout.",
+  title: "Sunlit 3 BHK independent house in JP Nagar",
+  description: "A lovely home with a garden, a modular kitchen and plenty of natural light throughout.",
   listingType: "SALE",
   propertyType: "HOUSE",
-  price: "749000",
+  price: "18500000",
   currency: "INR",
-  depositAmount: "7500",
-  address: "4112 Avenue F",
-  city: "Austin",
-  state: "TX",
-  postalCode: "78751",
-  country: "United States",
-  latitude: "30.31",
-  longitude: "-97.72",
+  depositAmount: "100000",
+  address: "No. 412, 24th Main, JP Nagar 7th Phase",
+  city: "Bengaluru",
+  state: "Karnataka",
+  postalCode: "560078",
+  country: "India",
+  latitude: "12.9063",
+  longitude: "77.5857",
   bedrooms: "3",
   bathrooms: "2.5",
   parkingSpaces: "1",
-  interiorArea: "1880",
+  interiorArea: "2100",
   lotArea: "",
   areaUnit: "SQFT",
-  yearBuilt: "1928",
+  yearBuilt: "1998",
   furnished: "UNFURNISHED",
   availableFrom: "",
   amenityIds: [],
@@ -37,18 +37,30 @@ describe("property validation", () => {
     const result = propertySchema.safeParse(validProperty);
     expect(result.success).toBe(true);
     if (result.success) {
-      expect(result.data.price).toBe(749000);
+      expect(result.data.price).toBe(18500000);
       expect(result.data.bathrooms).toBe(2.5);
       expect(result.data.lotArea).toBeNull();
-      expect(result.data.latitude).toBeCloseTo(30.31);
+      expect(result.data.latitude).toBeCloseTo(12.9063);
       expect(result.data.floorPlanUrl).toBeNull();
     }
   });
 
   it("rejects a deposit larger than the price", () => {
-    const result = propertySchema.safeParse({ ...validProperty, depositAmount: "800000" });
+    const result = propertySchema.safeParse({ ...validProperty, depositAmount: "20000000" });
     expect(result.success).toBe(false);
     if (!result.success) expect(result.error.issues.some((issue) => issue.path.includes("depositAmount"))).toBe(true);
+  });
+
+  it("requires a six-digit Indian PIN code", () => {
+    expect(propertySchema.safeParse({ ...validProperty, postalCode: "78751" }).success).toBe(false);
+    expect(propertySchema.safeParse({ ...validProperty, postalCode: "056007" }).success).toBe(false);
+    expect(propertySchema.safeParse({ ...validProperty, postalCode: "400013" }).success).toBe(true);
+  });
+
+  it("accepts the Indian plot categories and rejects the retired ones", () => {
+    expect(propertySchema.safeParse({ ...validProperty, propertyType: "PLOT_INDUSTRIAL", bedrooms: "0", bathrooms: "0" }).success).toBe(true);
+    expect(propertySchema.safeParse({ ...validProperty, propertyType: "CONDO" }).success).toBe(false);
+    expect(propertySchema.safeParse({ ...validProperty, propertyType: "LAND" }).success).toBe(false);
   });
 
   it("requires latitude and longitude together", () => {

@@ -87,7 +87,7 @@ export async function startReservationCheckout(user: { id: string; email?: strin
     offer.reservation ??
     (await prisma.reservation.create({
       data: {
-        reference: referenceCode("HVN"),
+        reference: referenceCode("DKR"),
         propertyId: offer.propertyId,
         offerId: offer.id,
         buyerId: offer.buyerId,

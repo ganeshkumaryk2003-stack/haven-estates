@@ -34,10 +34,10 @@ export function fromMinorUnits(amount: number, currency: string): number {
   return amount / minorUnitFactor(currency);
 }
 
-// Sensible default reservation deposit: 1% of the price for sales, one month for rentals,
-// clamped to a reasonable range.
+// Sensible default token deposit: 1% of the price for sales, one month's rent for rentals,
+// clamped to a rupee range that suits lakh/crore prices (₹5,000 – ₹2,00,000).
 export function suggestedDeposit(price: number, listingType: "SALE" | "RENT") {
   if (listingType === "RENT") return Math.round(price);
   const onePercent = Math.round(price * 0.01);
-  return Math.min(Math.max(onePercent, 500), 25_000);
+  return Math.min(Math.max(onePercent, 5_000), 200_000);
 }

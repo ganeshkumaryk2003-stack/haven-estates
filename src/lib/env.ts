@@ -15,7 +15,7 @@ const envSchema = z
   .object({
     NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
     NEXT_PUBLIC_APP_URL: z.url().default("http://localhost:3000"),
-    NEXT_PUBLIC_APP_NAME: z.string().default("Haven Estates"),
+    NEXT_PUBLIC_APP_NAME: z.string().default("Doorkey"),
     DATABASE_URL: z.string().min(1, "DATABASE_URL is required"),
     AUTH_SECRET: z.string().min(32, "AUTH_SECRET must be at least 32 characters"),
     AUTH_TRUST_HOST: booleanString,
@@ -23,7 +23,7 @@ const envSchema = z
     AUTH_GOOGLE_SECRET: optionalString,
 
     EMAIL_DRIVER: z.enum(["console", "resend", "mailpit"]).default("console"),
-    EMAIL_FROM: z.string().default("Haven Estates <no-reply@haven.local>"),
+    EMAIL_FROM: z.string().default("Doorkey Realty <no-reply@doorkey.local>"),
     RESEND_API_KEY: optionalString,
     MAILPIT_API_URL: z.url().default("http://localhost:8025"),
 

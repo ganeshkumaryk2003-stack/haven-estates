@@ -38,7 +38,7 @@ export function OnboardingForm({ defaults, callbackUrl }: { defaults: Partial<On
     <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5" noValidate>
       <FormError message={error} />
       <FormField id="name" label="Your name" error={errors.name?.message} required>
-        <Input autoComplete="name" {...fieldA11y("name", errors.name?.message)} {...form.register("name")} />
+        <Input autoComplete="name" placeholder="Type your full name, e.g. Ananya Iyer" {...fieldA11y("name", errors.name?.message)} {...form.register("name")} />
       </FormField>
       <fieldset className="flex flex-col gap-2">
         <legend className="mb-1 text-sm font-medium">I mostly want to…</legend>
@@ -54,7 +54,7 @@ export function OnboardingForm({ defaults, callbackUrl }: { defaults: Partial<On
                   className="flex cursor-pointer items-center gap-2 rounded-lg border p-3 font-normal has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-accent/50"
                 >
                   <RadioGroupItem value={value} id={`onboarding-role-${value}`} />
-                  {value === "BUYER" ? "Buy or rent" : value === "SELLER" ? "Sell or let" : ROLE_LABELS[value]}
+                  {value === "BUYER" ? "Buy or rent" : value === "SELLER" ? "Sell or rent out" : ROLE_LABELS[value]}
                 </Label>
               ))}
             </RadioGroup>
@@ -63,14 +63,14 @@ export function OnboardingForm({ defaults, callbackUrl }: { defaults: Partial<On
       </fieldset>
       <div className="grid gap-4 sm:grid-cols-2">
         <FormField id="phone" label="Phone (optional)" error={errors.phone?.message}>
-          <Input type="tel" autoComplete="tel" {...fieldA11y("phone", errors.phone?.message)} {...form.register("phone")} />
+          <Input type="tel" autoComplete="tel" placeholder="+91 98765 43210" {...fieldA11y("phone", errors.phone?.message)} {...form.register("phone")} />
         </FormField>
         <FormField id="location" label="Location (optional)" error={errors.location?.message}>
-          <Input placeholder="City, State" {...fieldA11y("location", errors.location?.message)} {...form.register("location")} />
+          <Input placeholder="Locality and city, e.g. Indiranagar, Bengaluru" {...fieldA11y("location", errors.location?.message)} {...form.register("location")} />
         </FormField>
         {role !== "BUYER" ? (
           <FormField id="company" label="Agency or company (optional)" error={errors.company?.message} className="sm:col-span-2">
-            <Input autoComplete="organization" {...fieldA11y("company", errors.company?.message)} {...form.register("company")} />
+            <Input autoComplete="organization" placeholder="e.g. Sharma Properties" {...fieldA11y("company", errors.company?.message)} {...form.register("company")} />
           </FormField>
         ) : null}
       </div>

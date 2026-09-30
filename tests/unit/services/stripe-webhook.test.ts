@@ -21,7 +21,7 @@ beforeAll(async () => {
     data: { propertyId, buyerId: buyer.id, sellerId: seller.id, amount: 450_000, expiresAt: new Date(Date.now() + 86_400_000), status: "ACCEPTED" },
   });
   const reservation = await prisma.reservation.create({
-    data: { reference: `HVN-${run.runId}`, propertyId, offerId: offer.id, buyerId: buyer.id, sellerId: seller.id, depositAmount: 5_000, stripeCheckoutSessionId: sessionId },
+    data: { reference: `DKR-${run.runId}`, propertyId, offerId: offer.id, buyerId: buyer.id, sellerId: seller.id, depositAmount: 5_000, stripeCheckoutSessionId: sessionId },
   });
   reservationId = reservation.id;
   await prisma.payment.create({ data: { reservationId, amount: 5_000, stripeCheckoutSessionId: sessionId } });

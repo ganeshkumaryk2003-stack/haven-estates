@@ -56,7 +56,7 @@ export function EnquiryDialog({ property, signedIn, verified, triggerProps }: Di
     defaultValues: {
       propertyId: property.id,
       subject: `Enquiry about ${property.title}`,
-      message: `Hi, I'm interested in ${property.title} in ${property.city}. Is it still available and could we arrange a viewing?`,
+      message: `Hi, I'm interested in ${property.title} in ${property.city}. Is it still available and could we arrange a site visit?`,
       phone: "",
       preferredContact: "EMAIL",
     },
@@ -97,7 +97,7 @@ export function EnquiryDialog({ property, signedIn, verified, triggerProps }: Di
           </FormField>
           <div className="grid gap-4 sm:grid-cols-2">
             <FormField id="enquiry-phone" label="Phone (optional)" error={errors.phone?.message}>
-              <Input type="tel" autoComplete="tel" {...fieldA11y("enquiry-phone", errors.phone?.message)} {...form.register("phone")} />
+              <Input type="tel" autoComplete="tel" placeholder="+91 98765 43210" {...fieldA11y("enquiry-phone", errors.phone?.message)} {...form.register("phone")} />
             </FormField>
             <FormField id="enquiry-contact" label="Preferred contact" error={errors.preferredContact?.message}>
               <Controller
@@ -232,8 +232,8 @@ export function OfferDialog({ property, signedIn, verified, triggerProps }: Dial
         <DialogHeader>
           <DialogTitle>Make an offer</DialogTitle>
           <DialogDescription>
-            Asking price {formatMoney(property.price, property.currency)}. If accepted, you can reserve the property with a {formatMoney(property.depositAmount, property.currency)} deposit.
-            The offer is not legally binding; conveyancing happens offline.
+            Asking price {formatMoney(property.price, property.currency)}. If accepted, you can reserve the property with a {formatMoney(property.depositAmount, property.currency)} token deposit.
+            The offer is not legally binding; the sale agreement and registration happen offline.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4" noValidate>
@@ -241,7 +241,7 @@ export function OfferDialog({ property, signedIn, verified, triggerProps }: Dial
           <input type="hidden" {...form.register("propertyId")} />
           <div className="grid gap-4 sm:grid-cols-2">
             <FormField id="offer-amount" label={`Offer amount (${property.currency})`} error={errors.amount?.message} required>
-              <Input type="number" min={1} step="1" inputMode="decimal" {...fieldA11y("offer-amount", errors.amount?.message)} {...form.register("amount")} />
+              <Input type="number" min={1} step="1" inputMode="decimal" placeholder="e.g. 8200000" {...fieldA11y("offer-amount", errors.amount?.message)} {...form.register("amount")} />
             </FormField>
             <FormField id="offer-expires" label="Offer valid until" error={errors.expiresAt?.message} required>
               <Input type="date" min={format(addDays(new Date(), 1), "yyyy-MM-dd")} {...fieldA11y("offer-expires", errors.expiresAt?.message)} {...form.register("expiresAt")} />
@@ -268,7 +268,7 @@ export function OfferDialog({ property, signedIn, verified, triggerProps }: Dial
               )}
             />
           </FormField>
-          <FormField id="offer-conditions" label="Conditions (optional)" error={errors.conditions?.message} description="e.g. subject to survey, mortgage approval, completion date">
+          <FormField id="offer-conditions" label="Conditions (optional)" error={errors.conditions?.message} description="e.g. subject to home loan approval, clear title and encumbrance certificate, registration within 60 days">
             <Textarea rows={3} {...fieldA11y("offer-conditions", errors.conditions?.message, true)} {...form.register("conditions")} />
           </FormField>
           <FormField id="offer-message" label="Message to the seller (optional)" error={errors.message?.message}>

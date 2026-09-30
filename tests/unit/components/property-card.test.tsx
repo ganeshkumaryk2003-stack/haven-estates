@@ -12,23 +12,24 @@ vi.mock("@/server/actions/properties", () => ({ toggleFavoriteAction: vi.fn() })
 
 const property: PropertyCardDTO = {
   id: "prop_1",
-  slug: "sunlit-craftsman-austin-abc123",
-  title: "Sunlit 3-bed craftsman with a private garden",
+  slug: "sunlit-3-bhk-jp-nagar-abc123",
+  title: "Sunlit 3 BHK independent house with a private garden in JP Nagar",
   listingType: "SALE",
   propertyType: "HOUSE",
   status: "ACTIVE",
-  price: 749000,
+  price: 18500000,
   currency: "INR",
-  address: "4112 Avenue F",
-  city: "Austin",
-  state: "TX",
-  country: "United States",
+  address: "No. 412, 24th Main, JP Nagar 7th Phase",
+  city: "Bengaluru",
+  state: "Karnataka",
+  country: "India",
   latitude: null,
   longitude: null,
   bedrooms: 3,
   bathrooms: 2.5,
   parkingSpaces: 1,
-  interiorArea: 1880,
+  interiorArea: 2100,
+  lotArea: 2400,
   areaUnit: "SQFT",
   featured: true,
   coverImage: { url: "/api/files/test.webp", alt: "Front of the house" },
@@ -44,8 +45,9 @@ describe("PropertyCard", () => {
   it("renders the key facts and links to the listing", () => {
     render(<PropertyCard property={property} signedIn={false} />);
     expect(screen.getByRole("heading", { name: property.title })).toBeInTheDocument();
-    expect(screen.getByText("₹7,49,000")).toBeInTheDocument();
-    expect(screen.getByText("Austin, TX")).toBeInTheDocument();
+    expect(screen.getByText("₹1,85,00,000")).toBeInTheDocument();
+    expect(screen.getByText("Bengaluru, Karnataka")).toBeInTheDocument();
+    expect(screen.getByText("BHK")).toBeInTheDocument();
     expect(screen.getByText("Featured")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: property.title })).toHaveAttribute("href", `/properties/${property.slug}`);
     expect(screen.getByRole("img", { name: "Front of the house" })).toBeInTheDocument();
@@ -53,8 +55,15 @@ describe("PropertyCard", () => {
   });
 
   it("shows monthly pricing for rentals and the status badge when requested", () => {
-    render(<PropertyCard property={{ ...property, listingType: "RENT", price: 3450, status: "RESERVED" }} signedIn showStatus />);
-    expect(screen.getByText("₹3,450/mo")).toBeInTheDocument();
+    render(<PropertyCard property={{ ...property, listingType: "RENT", price: 34500, status: "RESERVED" }} signedIn showStatus />);
+    expect(screen.getByText("₹34,500/month")).toBeInTheDocument();
     expect(screen.getByText("Reserved")).toBeInTheDocument();
+  });
+
+  it("shows the plot area instead of BHK for plots", () => {
+    render(<PropertyCard property={{ ...property, propertyType: "PLOT_INDUSTRIAL", bedrooms: 0, bathrooms: 0, interiorArea: null, lotArea: 130680 }} signedIn={false} />);
+    expect(screen.queryByText("BHK")).not.toBeInTheDocument();
+    expect(screen.getByText("plot")).toBeInTheDocument();
+    expect(screen.getByText(/1,30,680 sq ft/)).toBeInTheDocument();
   });
 });

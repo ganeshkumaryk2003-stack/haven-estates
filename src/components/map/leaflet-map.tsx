@@ -51,13 +51,18 @@ function FitBounds({ markers }: { markers: MapMarker[] }) {
   return null;
 }
 
+// Where the map opens when there is nothing to show yet: roughly the centre of India.
+const INDIA_CENTER: [number, number] = [22.5, 79];
+const INDIA_ZOOM = 5;
+
 export default function LeafletMap({ markers, center, zoom = 12, className, interactive = true }: LeafletMapProps) {
-  const initialCenter: [number, number] = center ?? (markers[0] ? [markers[0].latitude, markers[0].longitude] : [39.5, -98.35]);
+  const hasFocus = Boolean(center || markers[0]);
+  const initialCenter: [number, number] = center ?? (markers[0] ? [markers[0].latitude, markers[0].longitude] : INDIA_CENTER);
   return (
     <div className={className}>
       <MapContainer
         center={initialCenter}
-        zoom={zoom}
+        zoom={hasFocus ? zoom : INDIA_ZOOM}
         scrollWheelZoom={interactive}
         dragging={interactive}
         zoomControl={interactive}

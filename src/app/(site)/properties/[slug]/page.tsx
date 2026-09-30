@@ -32,7 +32,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { UserAvatar } from "@/components/ui/user-avatar";
 import { getCurrentUser } from "@/lib/auth/session";
-import { FURNISHED_LABELS, LISTING_TYPE_LABELS, PROPERTY_STATUS_LABELS, PROPERTY_TYPE_LABELS, ROLE_LABELS } from "@/lib/constants";
+import { FURNISHED_LABELS, LISTING_TYPE_LABELS, PROPERTY_STATUS_LABELS, PROPERTY_TYPE_LABELS, ROLE_LABELS, isPlotType } from "@/lib/constants";
 import { stripeConfigured } from "@/lib/env";
 import { formatArea, formatBathrooms, formatDate, formatMoney, formatPrice, formatRelative } from "@/lib/format";
 import { prisma } from "@/lib/prisma";
@@ -47,7 +47,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params;
   const property = await getPropertyBySlugOrId(slug);
   if (!property) return { title: "Property not found" };
-  const description = `${PROPERTY_TYPE_LABELS[property.propertyType]} ${LISTING_TYPE_LABELS[property.listingType].toLowerCase()} in ${property.city}, ${property.state} · ${formatPrice(property.price, property.currency, property.listingType)} · ${property.bedrooms} bed, ${formatBathrooms(property.bathrooms)} bath.`;
+  const rooms = isPlotType(property.propertyType) ? `${formatArea(property.lotArea, property.areaUnit)} plot` : `${property.bedrooms} BHK, ${formatBathrooms(property.bathrooms)} bath`;
+  const description = `${PROPERTY_TYPE_LABELS[property.propertyType]} ${LISTING_TYPE_LABELS[property.listingType].toLowerCase()} in ${property.city}, ${property.state} · ${formatPrice(property.price, property.currency, property.listingType)} · ${rooms}.`;
   return {
     title: property.title,
     description,
@@ -114,11 +115,11 @@ export default async function PropertyDetailPage({ params }: PageProps) {
   };
 
   const facts = [
-    property.propertyType !== "LAND" ? { icon: BedDouble, label: "Bedrooms", value: String(property.bedrooms) } : null,
-    property.propertyType !== "LAND" ? { icon: Bath, label: "Bathrooms", value: formatBathrooms(property.bathrooms) } : null,
-    { icon: Car, label: "Parking", value: String(property.parkingSpaces) },
-    { icon: Ruler, label: "Interior", value: formatArea(property.interiorArea, property.areaUnit) },
-    { icon: Ruler, label: "Lot", value: formatArea(property.lotArea, property.areaUnit) },
+    !isPlotType(property.propertyType) ? { icon: BedDouble, label: "Bedrooms", value: `${property.bedrooms} BHK` } : null,
+    !isPlotType(property.propertyType) ? { icon: Bath, label: "Bathrooms", value: formatBathrooms(property.bathrooms) } : null,
+    { icon: Car, label: "Car parking", value: String(property.parkingSpaces) },
+    { icon: Ruler, label: "Built-up area", value: formatArea(property.interiorArea, property.areaUnit) },
+    { icon: Ruler, label: "Plot area", value: formatArea(property.lotArea, property.areaUnit) },
     { icon: CalendarDays, label: "Year built", value: property.yearBuilt ? String(property.yearBuilt) : "—" },
     { icon: Sofa, label: "Furnished", value: FURNISHED_LABELS[property.furnished] },
     { icon: Home, label: "Type", value: PROPERTY_TYPE_LABELS[property.propertyType] },

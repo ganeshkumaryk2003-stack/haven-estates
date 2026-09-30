@@ -25,14 +25,22 @@ function buildingShape(kind: string, seed: number) {
   const x = 160 + (seed % 5) * 40;
   switch (kind) {
     case "APARTMENT":
-    case "CONDO":
     case "COMMERCIAL":
       return `<rect x="${x}" y="260" width="420" height="640" rx="14" fill="rgba(255,255,255,0.92)"/>
         ${Array.from({ length: 7 }, (_, row) =>
           Array.from({ length: 4 }, (_, col) => `<rect x="${x + 50 + col * 90}" y="${310 + row * 82}" width="52" height="48" rx="4" fill="rgba(15,23,42,0.35)"/>`).join(""),
         ).join("")}
         <rect x="${x + 700}" y="520" width="300" height="380" rx="14" fill="rgba(255,255,255,0.75)"/>`;
-    case "LAND":
+    case "PLOT_INDUSTRIAL":
+      // Low shed with a sawtooth roof, roll-up doors, a stack and a perimeter fence line.
+      return `<rect x="${x}" y="560" width="900" height="340" rx="10" fill="rgba(255,255,255,0.9)"/>
+        ${Array.from({ length: 4 }, (_, index) => `<path d="M${x + index * 225} 560 L${x + index * 225 + 150} 470 L${x + index * 225 + 225} 560 Z" fill="rgba(255,255,255,0.95)"/>`).join("")}
+        ${Array.from({ length: 3 }, (_, index) => `<rect x="${x + 80 + index * 280}" y="700" width="180" height="200" rx="6" fill="rgba(15,23,42,0.45)"/>`).join("")}
+        <rect x="${x + 960}" y="380" width="60" height="520" rx="6" fill="rgba(255,255,255,0.8)"/>
+        <rect x="120" y="880" width="1360" height="8" fill="rgba(255,255,255,0.9)"/>`;
+    case "PLOT_RESIDENTIAL":
+    case "PLOT_COMMERCIAL":
+    case "PLOT_SEMI_COMMERCIAL":
       return `<ellipse cx="800" cy="880" rx="700" ry="160" fill="rgba(255,255,255,0.55)"/>
         <path d="M300 900 Q 500 640 700 900 Z" fill="rgba(22,101,52,0.55)"/>
         <path d="M850 900 Q 1050 600 1250 900 Z" fill="rgba(22,101,52,0.45)"/>

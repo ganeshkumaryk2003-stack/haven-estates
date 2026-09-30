@@ -18,7 +18,7 @@ export function formatMoney(
 
 export function formatPrice(amount: number | string, currency: string, listingType: "SALE" | "RENT") {
   const base = formatMoney(amount, currency);
-  return listingType === "RENT" ? `${base}/mo` : base;
+  return listingType === "RENT" ? `${base}/month` : base;
 }
 
 export function formatNumber(value: number) {
@@ -30,12 +30,13 @@ export function formatArea(value: number | null | undefined, unit: "SQFT" | "SQM
   return `${formatNumber(value)} ${unit === "SQFT" ? "sq ft" : "m²"}`;
 }
 
-export function formatDate(date: Date | string, pattern = "MMM d, yyyy") {
+// Day-first patterns, as written in India (e.g. 5 Oct 2026).
+export function formatDate(date: Date | string, pattern = "d MMM yyyy") {
   return format(typeof date === "string" ? new Date(date) : date, pattern);
 }
 
 export function formatDateTime(date: Date | string) {
-  return format(typeof date === "string" ? new Date(date) : date, "MMM d, yyyy 'at' h:mm a");
+  return format(typeof date === "string" ? new Date(date) : date, "d MMM yyyy 'at' h:mm a");
 }
 
 export function formatRelative(date: Date | string) {
@@ -47,7 +48,7 @@ export function formatMessageTime(date: Date | string) {
   const value = typeof date === "string" ? new Date(date) : date;
   if (isToday(value)) return format(value, "h:mm a");
   if (isYesterday(value)) return `Yesterday ${format(value, "h:mm a")}`;
-  return format(value, "MMM d, h:mm a");
+  return format(value, "d MMM, h:mm a");
 }
 
 export function formatBathrooms(value: number) {

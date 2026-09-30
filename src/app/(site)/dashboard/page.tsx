@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { getCurrentUser } from "@/lib/auth/session";
+import { APP_NAME } from "@/lib/constants";
 import { formatRelative } from "@/lib/format";
 import { prisma } from "@/lib/prisma";
 import { getUnreadMessageCount } from "@/server/services/messaging";
@@ -124,7 +125,7 @@ export default async function DashboardPage() {
           <Card>
             <CardHeader>
               <CardTitle>Recent activity</CardTitle>
-              <CardDescription>Your latest actions on Haven.</CardDescription>
+              <CardDescription>Your latest actions on {APP_NAME}.</CardDescription>
             </CardHeader>
             <CardContent>
               {recentActivity.length === 0 ? (

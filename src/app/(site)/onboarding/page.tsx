@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { OnboardingForm } from "@/components/settings/onboarding-form";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { getCurrentUser } from "@/lib/auth/session";
+import { APP_NAME } from "@/lib/constants";
 import { getUserWithProfile } from "@/server/services/users";
 
 export const metadata: Metadata = { title: "Welcome" };
@@ -20,7 +21,9 @@ export default async function OnboardingPage({ searchParams }: { searchParams: P
     <div className="container-page flex justify-center py-12">
       <Card className="w-full max-w-2xl">
         <CardHeader>
-          <CardTitle className="text-2xl">Welcome to Haven, {user.name?.split(" ")[0] ?? "there"}</CardTitle>
+          <CardTitle className="text-2xl">
+            Welcome to {APP_NAME}, {user.name?.split(" ")[0] ?? "there"}
+          </CardTitle>
           <CardDescription>
             A few details help sellers and buyers trust you. {!user.emailVerified ? "We also sent a verification link to your inbox - verify your email to unlock enquiries, messages and offers." : ""}
           </CardDescription>

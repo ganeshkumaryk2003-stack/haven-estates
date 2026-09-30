@@ -23,6 +23,7 @@ import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Textarea } from "@/components/ui/textarea";
 import { UserAvatar } from "@/components/ui/user-avatar";
+import { APP_NAME } from "@/lib/constants";
 import { formatDateTime, formatMoney, formatRelative } from "@/lib/format";
 import { cancelReservationAction } from "@/server/actions/engagement";
 import type { ReservationDTO } from "@/types/dto";
@@ -127,7 +128,7 @@ export function ReservationList({ reservations, currentUserId, stripeEnabled }: 
                 <UserAvatar name={other.name} image={other.image} className="size-5 text-[9px]" />
                 {isBuyer ? "Seller" : "Buyer"}:{" "}
                 <Link href={`/profile/${other.id}`} className="hover:underline">
-                  {other.name ?? "Haven user"}
+                  {other.name ?? `${APP_NAME} user`}
                 </Link>
               </p>
             </div>
@@ -164,7 +165,7 @@ export function ReservationList({ reservations, currentUserId, stripeEnabled }: 
                 </AlertDialog>
               ) : null}
               {reservation.status === "DEPOSIT_PAID" ? (
-                <p className="text-xs text-muted-foreground">Deposit held. An administrator marks the transaction complete after conveyancing, or cancels it with a refund.</p>
+                <p className="text-xs text-muted-foreground">Token deposit held. An administrator marks the transaction complete after the sale agreement and registration, or cancels it with a refund.</p>
               ) : null}
             </div>
           </li>

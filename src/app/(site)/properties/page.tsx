@@ -21,7 +21,7 @@ interface PageProps {
 
 export async function generateMetadata({ searchParams }: PageProps): Promise<Metadata> {
   const filters = parsePropertyFilters(await searchParams);
-  const parts = [filters.listingType ? `Homes ${LISTING_TYPE_LABELS[filters.listingType].toLowerCase()}` : "Properties", filters.location ? `in ${filters.location}` : null].filter(Boolean);
+  const parts = [filters.listingType ? `Properties ${LISTING_TYPE_LABELS[filters.listingType].toLowerCase()}` : "Properties", filters.location ? `in ${filters.location}` : null].filter(Boolean);
   const title = parts.join(" ");
   return {
     title,
@@ -53,8 +53,8 @@ export default async function PropertiesPage({ searchParams }: PageProps) {
   return (
     <div className="container-page flex flex-col gap-6 py-8">
       <PageHeader
-        title={filters.listingType ? `Homes ${LISTING_TYPE_LABELS[filters.listingType].toLowerCase()}` : "Browse properties"}
-        description="Search by keyword or location, filter by type, price and amenities, then share the link - every filter lives in the URL."
+        title={filters.listingType ? `Properties ${LISTING_TYPE_LABELS[filters.listingType].toLowerCase()}` : "Browse properties"}
+        description="Search by keyword, city or locality, filter by type, budget, BHK and amenities, then share the link - every filter lives in the URL."
       />
       <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
         <PropertyFiltersPanel filters={filters} amenities={amenityDTOs} />

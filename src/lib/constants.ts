@@ -1,12 +1,26 @@
 // Shared, client-safe constants and labels. Enum string values mirror prisma/schema.prisma
 // so this file can be imported by client components without pulling in Prisma.
 
-export const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? "Haven Estates";
+export const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? "Doorkey";
+// Caption shown under the wordmark and appended to the full brand name ("Doorkey Realty").
+export const APP_TAGLINE = "Realty";
+export const APP_FULL_NAME = `${APP_NAME} ${APP_TAGLINE}`;
 export const APP_DESCRIPTION =
-  "Buy, rent, sell and list homes with verified sellers, secure enquiries, offers and reservation deposits.";
+  "Buy, rent, sell and list flats, houses and plots across India with verified sellers, secure enquiries, offers and reservation deposits.";
 
 export const LISTING_TYPES = ["SALE", "RENT"] as const;
-export const PROPERTY_TYPES = ["HOUSE", "APARTMENT", "CONDO", "TOWNHOUSE", "LAND", "COMMERCIAL", "OTHER"] as const;
+// UI order (flats first - the most common Indian listing). Values mirror the Prisma enum.
+export const PROPERTY_TYPES = [
+  "APARTMENT",
+  "HOUSE",
+  "TOWNHOUSE",
+  "PLOT_RESIDENTIAL",
+  "PLOT_COMMERCIAL",
+  "PLOT_SEMI_COMMERCIAL",
+  "PLOT_INDUSTRIAL",
+  "COMMERCIAL",
+  "OTHER",
+] as const;
 export const PROPERTY_STATUSES = [
   "DRAFT",
   "PENDING_REVIEW",
@@ -43,14 +57,20 @@ export const LISTING_TYPE_LABELS: Record<ListingTypeValue, string> = {
 };
 
 export const PROPERTY_TYPE_LABELS: Record<PropertyTypeValue, string> = {
-  HOUSE: "House",
-  APARTMENT: "Apartment",
-  CONDO: "Condo",
-  TOWNHOUSE: "Townhouse",
-  LAND: "Land",
-  COMMERCIAL: "Commercial",
+  APARTMENT: "Flat / Apartment",
+  HOUSE: "Independent house / Villa",
+  TOWNHOUSE: "Row house",
+  PLOT_RESIDENTIAL: "Residential plot",
+  PLOT_COMMERCIAL: "Commercial plot",
+  PLOT_SEMI_COMMERCIAL: "Semi-commercial plot",
+  PLOT_INDUSTRIAL: "Industrial plot / site",
+  COMMERCIAL: "Commercial space (office / shop)",
   OTHER: "Other",
 };
+
+// Plots have no rooms, so BHK / bathroom fields are hidden or disabled for these types.
+export const PLOT_PROPERTY_TYPES: readonly PropertyTypeValue[] = ["PLOT_RESIDENTIAL", "PLOT_COMMERCIAL", "PLOT_SEMI_COMMERCIAL", "PLOT_INDUSTRIAL"];
+export const isPlotType = (type: PropertyTypeValue) => PLOT_PROPERTY_TYPES.includes(type);
 
 export const PROPERTY_STATUS_LABELS: Record<PropertyStatusValue, string> = {
   DRAFT: "Draft",
@@ -77,9 +97,9 @@ export const CONTACT_METHOD_LABELS: Record<(typeof CONTACT_METHODS)[number], str
 };
 
 export const FINANCING_LABELS: Record<(typeof FINANCING_METHODS)[number], string> = {
-  CASH: "Cash",
-  MORTGAGE: "Mortgage",
-  MIXED: "Cash + mortgage",
+  CASH: "Own funds",
+  MORTGAGE: "Home loan",
+  MIXED: "Own funds + home loan",
   OTHER: "Other",
 };
 

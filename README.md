@@ -1,6 +1,6 @@
-# Haven Estates
+# Doorkey Realty
 
-An end-to-end real estate marketplace: browse and search listings, save favorites, enquire, message sellers in real time, make and negotiate offers, and reserve a property with a Stripe deposit. Sellers and agents manage listings from a dashboard; administrators moderate listings, users, reports and transactions.
+An end-to-end real estate marketplace for the Indian market: browse and search flats, houses and plots (residential, commercial, semi-commercial and industrial), save favorites, enquire, message sellers in real time, make and negotiate offers, and reserve a property with a Stripe token deposit. Sellers and agents manage listings from a dashboard; administrators moderate listings, users, reports and transactions. Prices are in INR (lakh/crore grouping), addresses use PIN codes and the demo data covers Bengaluru, Pune, Hyderabad, Chennai, Kochi and Mumbai.
 
 Built with Next.js 16 (App Router, Turbopack), React 19, TypeScript (strict), Tailwind CSS 4, Prisma 7 + PostgreSQL, Auth.js v5, Zod 4, React Hook Form, Stripe Checkout, Vitest and Playwright.
 
@@ -45,7 +45,7 @@ docker compose up -d
 #    psql -d postgres -c "CREATE ROLE postgres LOGIN SUPERUSER PASSWORD 'postgres'" ; createdb -O postgres haven ; createdb -O postgres haven_test
 #    and set EMAIL_DRIVER="console" in .env (verification links are printed to the terminal)
 
-# 4. Create the schema and seed demo data (25 listings with generated photos, users, offers, messages…)
+# 4. Create the schema and seed demo data (30 listings with generated photos, users, offers, messages…)
 npx prisma migrate dev
 npm run db:seed
 
@@ -61,21 +61,21 @@ Password for every seeded account: **`Password123!`** (configurable via `SEED_PA
 
 | Role | Email | Notes |
 | --- | --- | --- |
-| Administrator | `admin@haven.local` | Admin area at `/admin` |
-| Seller | `maria.santos@haven.local` | Austin listings, has a pending offer and a rejected listing |
-| Agent | `james.okafor@haven.local` | Denver listings, one under offer, one sold, one draft |
-| Seller | `lena.fischer@haven.local` | Portland rentals |
-| Agent | `daniel.kim@haven.local` | Seattle / San Diego / Miami, one reserved (deposit paid) |
-| Buyer | `priya.nair@haven.local` | Pending offer, active conversation with Maria |
-| Buyer | `marcus.dean@haven.local` | Countered offer, completed purchase |
-| Buyer | `sofia.rossi@haven.local` | Paid reservation deposit |
-| Buyer | `tom.nguyen@haven.local` | Accepted offer waiting for deposit |
-| Buyer | `new.user@haven.local` | Email **not** verified (see the verification gate) |
-| Seller | `suspended@haven.local` | Suspended account (cannot sign in) |
+| Administrator | `admin@doorkey.local` | Admin area at `/admin` |
+| Seller | `meera.iyer@doorkey.local` | Bengaluru listings incl. an industrial plot, has a pending offer and a rejected plot listing |
+| Agent | `rohan.mehta@doorkey.local` | Pune listings, one under offer, one sold, one draft, one industrial site for rent |
+| Seller | `kavya.reddy@doorkey.local` | Hyderabad rentals and a semi-commercial plot |
+| Agent | `arjun.nair@doorkey.local` | Chennai / Kochi / Mumbai, one reserved (deposit paid), a commercial plot |
+| Buyer | `priya.menon@doorkey.local` | Pending offer, active conversation with Meera |
+| Buyer | `vikram.singh@doorkey.local` | Countered offer, completed purchase |
+| Buyer | `sneha.kulkarni@doorkey.local` | Paid reservation deposit |
+| Buyer | `karthik.raman@doorkey.local` | Accepted offer waiting for deposit |
+| Buyer | `new.user@doorkey.local` | Email **not** verified (see the verification gate) |
+| Seller | `suspended@doorkey.local` | Suspended account (cannot sign in) |
 
 ## Feature tour
 
-- **Guests** browse `/properties` (keyword, location, sale/rent, type, price, beds/baths, area, amenities, furnished, listed-within, sort, pagination, grid/list/map views, shareable URL filters) and view details with a gallery/lightbox, key facts, amenities, map, structured data and similar properties.
+- **Guests** browse `/properties` (keyword, location, sale/rent, type, budget, BHK/baths, built-up area, amenities, furnished, listed-within, sort, pagination, grid/list/map views, shareable URL filters) and view details with a gallery/lightbox, key facts, amenities, map, structured data and similar properties. Property types: flat/apartment, independent house/villa, row house, residential / commercial / semi-commercial / industrial plot, commercial space, other. The home page hero offers Buy / Rent (search) and Sell (jump straight into listing a property).
 - **Sign up / log in / sign out**, email verification, forgot/reset password, optional Google OAuth, onboarding, profile editing with avatar upload, notification preferences, password change, account deletion (blocked while a paid deposit is outstanding).
 - **Buyers** save favorites, enquire, message sellers (real-time via SSE with attachments, read receipts and typing indicators), make offers, accept/decline counteroffers, withdraw, pay reservation deposits through Stripe Checkout and track everything in the dashboard.
 - **Sellers/agents** create listings with a six-step form (drafts, image upload with drag-to-reorder and alt text, floor plan/video/tour links), publish for review, unpublish, archive, restore, mark sold/rented, delete (business rules enforced), see views/saves/enquiries/offers, accept/counter/decline offers.
@@ -160,7 +160,7 @@ Environment variables are validated at startup by `src/lib/env.ts`; a misconfigu
    stripe listen --forward-to localhost:3000/api/webhooks/stripe
    ```
    Copy the printed `whsec_…` into `STRIPE_WEBHOOK_SECRET` and restart `npm run dev`.
-3. Flow to try: sign in as `tom.nguyen@haven.local` → Dashboard → Offers → "Made" tab → **Reserve & pay deposit** on the accepted LoDo loft offer → pay with card `4242 4242 4242 4242`, any future date, any CVC.
+3. Flow to try: sign in as `karthik.raman@doorkey.local` → Dashboard → Offers → "Made" tab → **Reserve & pay deposit** on the accepted Kalyani Nagar loft offer → pay with card `4242 4242 4242 4242`, any future date, any CVC.
 4. Stripe calls the webhook; the app verifies the signature, records the event id (`StripeEvent` table) so retries are idempotent, marks the reservation `DEPOSIT_PAID`, sets the property to `RESERVED` and notifies both parties. The success redirect page never trusts the redirect itself – it simply shows the current database state.
 
 Handled events: `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed`, `checkout.session.expired`.
@@ -254,7 +254,7 @@ A minimal Dockerfile would be: `node:24-alpine`, `npm ci`, `npm run build`, `CMD
 
 # App
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
-NEXT_PUBLIC_APP_NAME="Haven Estates"
+NEXT_PUBLIC_APP_NAME="Doorkey"
 
 # Database (matches docker-compose.yml)
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/haven?schema=public"
@@ -272,7 +272,7 @@ AUTH_GOOGLE_SECRET=""
 #   mailpit - deliver to the docker-compose Mailpit inbox at http://localhost:8025
 #   resend  - deliver through https://resend.com (requires RESEND_API_KEY)
 EMAIL_DRIVER="console"
-EMAIL_FROM="Haven Estates <no-reply@haven.local>"
+EMAIL_FROM="Doorkey Realty <no-reply@doorkey.local>"
 MAILPIT_API_URL="http://localhost:8025"
 RESEND_API_KEY=""
 

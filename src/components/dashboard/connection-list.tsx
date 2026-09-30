@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { UserAvatar } from "@/components/ui/user-avatar";
-import { ROLE_LABELS } from "@/lib/constants";
+import { APP_NAME, ROLE_LABELS } from "@/lib/constants";
 import { formatRelative } from "@/lib/format";
 import { updateConnectionAction } from "@/server/actions/engagement";
 import type { ConnectionAction } from "@/server/services/connections";
@@ -45,7 +45,7 @@ export function ConnectionList({ connections }: { connections: ConnectionDTO[] }
               <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-center gap-2">
                   <Link href={`/profile/${connection.otherUser.id}`} className="font-semibold hover:underline">
-                    {connection.otherUser.name ?? "Haven user"}
+                    {connection.otherUser.name ?? `${APP_NAME} user`}
                   </Link>
                   <Badge variant="outline">{ROLE_LABELS[connection.otherUser.role]}</Badge>
                   {connection.status === "ARCHIVED" ? <Badge variant="muted">Archived</Badge> : null}

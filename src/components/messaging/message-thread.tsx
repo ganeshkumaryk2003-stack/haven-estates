@@ -9,7 +9,7 @@ import { useRealtime } from "@/components/realtime-provider";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { UserAvatar } from "@/components/ui/user-avatar";
-import { ALLOWED_DOCUMENT_TYPES, ALLOWED_IMAGE_TYPES, MAX_ATTACHMENT_SIZE_BYTES } from "@/lib/constants";
+import { ALLOWED_DOCUMENT_TYPES, ALLOWED_IMAGE_TYPES, APP_NAME, MAX_ATTACHMENT_SIZE_BYTES } from "@/lib/constants";
 import { formatDate, formatMessageTime } from "@/lib/format";
 import { formatBytes, uploadFile, type UploadResponse } from "@/lib/upload-client";
 import { cn } from "@/lib/utils";
@@ -25,7 +25,7 @@ interface MessageThreadProps {
 function groupByDay(messages: MessageDTO[]) {
   const groups: { day: string; messages: MessageDTO[] }[] = [];
   for (const message of messages) {
-    const day = formatDate(message.createdAt, "EEEE, MMM d");
+    const day = formatDate(message.createdAt, "EEEE, d MMM");
     const last = groups[groups.length - 1];
     if (last && last.day === day) last.messages.push(message);
     else groups.push({ day, messages: [message] });
@@ -174,7 +174,7 @@ export function MessageThread({ conversation: initial, currentUserId, connection
         <UserAvatar name={initial.otherUser.name} image={initial.otherUser.image} />
         <div className="min-w-0 flex-1">
           <Link href={`/profile/${initial.otherUser.id}`} className="block truncate text-sm font-semibold hover:underline">
-            {initial.otherUser.name ?? "Haven user"}
+            {initial.otherUser.name ?? `${APP_NAME} user`}
           </Link>
           {initial.property ? (
             <Link href={`/properties/${initial.property.slug}`} className="block truncate text-xs text-primary hover:underline">

@@ -1,9 +1,9 @@
 {
-  "name": "haven-estates",
+  "name": "doorkey-realty",
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Haven Estates - end-to-end real estate marketplace built with Next.js, Prisma, Auth.js and Stripe",
+  "description": "Doorkey Realty - end-to-end Indian real estate marketplace built with Next.js, Prisma, Auth.js and Stripe",
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",

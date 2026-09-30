@@ -5,11 +5,16 @@ import { slugify } from "@/lib/slug";
 
 describe("search params", () => {
   it("parses comma separated arrays and numeric strings", () => {
-    const filters = parsePropertyFilters({ propertyType: "HOUSE,CONDO", minPrice: "100000", bedrooms: "3", amenities: ["garden", "garage"] });
-    expect(filters.propertyType).toEqual(["HOUSE", "CONDO"]);
+    const filters = parsePropertyFilters({ propertyType: "HOUSE,PLOT_RESIDENTIAL", minPrice: "100000", bedrooms: "3", amenities: ["garden", "car-parking"] });
+    expect(filters.propertyType).toEqual(["HOUSE", "PLOT_RESIDENTIAL"]);
     expect(filters.minPrice).toBe(100000);
     expect(filters.bedrooms).toBe(3);
-    expect(filters.amenities).toEqual(["garden", "garage"]);
+    expect(filters.amenities).toEqual(["garden", "car-parking"]);
+  });
+
+  it("ignores retired property types in shared links", () => {
+    expect(parsePropertyFilters({ propertyType: "CONDO" }).propertyType).toBeUndefined();
+    expect(parsePropertyFilters({ propertyType: "LAND" }).propertyType).toBeUndefined();
   });
 
   it("drops invalid values instead of failing", () => {
@@ -40,17 +45,17 @@ describe("money helpers", () => {
     expect(toMinorUnits("0.1", "INR")).toBe(10);
   });
 
-  it("suggests a clamped 1% deposit for sales and one month for rentals", () => {
-    expect(suggestedDeposit(750_000, "SALE")).toBe(7_500);
-    expect(suggestedDeposit(20_000, "SALE")).toBe(500);
-    expect(suggestedDeposit(9_000_000, "SALE")).toBe(25_000);
-    expect(suggestedDeposit(2_450, "RENT")).toBe(2_450);
+  it("suggests a clamped 1% token deposit for sales and one month's rent for rentals", () => {
+    expect(suggestedDeposit(7_500_000, "SALE")).toBe(75_000);
+    expect(suggestedDeposit(200_000, "SALE")).toBe(5_000);
+    expect(suggestedDeposit(90_000_000, "SALE")).toBe(200_000);
+    expect(suggestedDeposit(24_500, "RENT")).toBe(24_500);
   });
 });
 
 describe("slugify", () => {
   it("produces URL safe slugs", () => {
-    expect(slugify("Sunlit 3-bed Craftsman  (Austin!)")).toBe("sunlit-3-bed-craftsman-austin");
+    expect(slugify("Sunlit 3 BHK Villa  (Bengaluru!)")).toBe("sunlit-3-bhk-villa-bengaluru");
     expect(slugify("Café Élan")).toBe("cafe-elan");
   });
 });

@@ -20,17 +20,17 @@ test.describe("seller journey", () => {
 
     // Step 1 - basics
     await page.getByLabel("Listing title").fill(title);
-    await page.getByLabel(/Asking price/).fill("525000");
-    await page.getByLabel("Reservation deposit").fill("5000");
-    await page.getByLabel("Description").fill("A bright three bedroom home created by the automated end-to-end test suite, with a garden and off-street parking.");
+    await page.getByLabel(/Asking price/).fill("12500000");
+    await page.getByLabel("Reservation deposit").fill("50000");
+    await page.getByLabel("Description").fill("A bright 3 BHK independent house created by the automated end-to-end test suite, with a garden and covered car parking.");
     await page.getByRole("button", { name: "Next", exact: true }).click();
 
     // Step 2 - location
-    await page.getByLabel("Street address").fill("42 Automation Way");
-    await page.getByLabel("City").fill("Austin");
-    await page.getByLabel("State / region").fill("TX");
-    await page.getByLabel("Postal code").fill("78701");
-    await page.getByLabel("Country").fill("United States");
+    await page.getByLabel("Address").fill("No. 42, Automation Layout, Whitefield");
+    await page.getByLabel("City").fill("Bengaluru");
+    await page.getByLabel("State").fill("Karnataka");
+    await page.getByLabel("PIN code").fill("560066");
+    await page.getByLabel("Country").fill("India");
     await page.getByRole("button", { name: "Next", exact: true }).click();
 
     // Step 3 - details (defaults are fine)

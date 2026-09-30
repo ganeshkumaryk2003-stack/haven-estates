@@ -17,7 +17,7 @@ import {
   PROPERTY_TYPES,
   PROPERTY_TYPE_LABELS,
 } from "@/lib/constants";
-import { formatMoney } from "@/lib/format";
+import { formatMoney, formatNumber } from "@/lib/format";
 import { countActiveFilters, propertiesHref } from "@/lib/search-params";
 import type { AmenityDTO } from "@/types/dto";
 import type { PropertyFilters } from "@/validations/property";
@@ -68,11 +68,11 @@ function FiltersForm({ filters, amenities, onApplied }: PropertyFiltersPanelProp
     <form onSubmit={apply} className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
         <Label htmlFor="filter-q">Keywords</Label>
-        <Input id="filter-q" placeholder="Garden, renovated, view…" value={draft.q ?? ""} onChange={(event) => update("q", event.target.value || undefined)} />
+        <Input id="filter-q" placeholder="Gated community, east facing, corner plot…" value={draft.q ?? ""} onChange={(event) => update("q", event.target.value || undefined)} />
       </div>
       <div className="flex flex-col gap-2">
         <Label htmlFor="filter-location">Location</Label>
-        <Input id="filter-location" placeholder="City, state or postal code" value={draft.location ?? ""} onChange={(event) => update("location", event.target.value || undefined)} />
+        <Input id="filter-location" placeholder="City, locality or PIN code" value={draft.location ?? ""} onChange={(event) => update("location", event.target.value || undefined)} />
       </div>
 
       <fieldset className="flex flex-col gap-2">
@@ -111,7 +111,7 @@ function FiltersForm({ filters, amenities, onApplied }: PropertyFiltersPanelProp
 
       <div className="grid grid-cols-2 gap-2">
         <div className="flex flex-col gap-2">
-          <Label htmlFor="filter-bedrooms">Bedrooms</Label>
+          <Label htmlFor="filter-bedrooms">BHK</Label>
           <Select value={draft.bedrooms ? String(draft.bedrooms) : "any"} onValueChange={(value) => update("bedrooms", value === "any" ? undefined : Number(value))}>
             <SelectTrigger id="filter-bedrooms">
               <SelectValue />
@@ -145,7 +145,7 @@ function FiltersForm({ filters, amenities, onApplied }: PropertyFiltersPanelProp
       </div>
 
       <fieldset className="flex flex-col gap-2">
-        <legend className="text-sm font-medium">Interior area (sq ft / m²)</legend>
+        <legend className="text-sm font-medium">Built-up area (sq ft / m²)</legend>
         <div className="grid grid-cols-2 gap-2">
           <Input type="number" inputMode="numeric" min={0} placeholder="Min" aria-label="Minimum area" value={numberValue(draft.minArea)} onChange={(event) => update("minArea", parseNumber(event.target.value))} />
           <Input type="number" inputMode="numeric" min={0} placeholder="Max" aria-label="Maximum area" value={numberValue(draft.maxArea)} onChange={(event) => update("maxArea", parseNumber(event.target.value))} />
@@ -257,10 +257,10 @@ export function ActiveFilterChips({ filters, amenities }: PropertyFiltersPanelPr
   }
   if (filters.minPrice !== undefined) chips.push({ key: "minPrice", label: `Min ${formatMoney(filters.minPrice)}`, remove: { minPrice: undefined } });
   if (filters.maxPrice !== undefined) chips.push({ key: "maxPrice", label: `Max ${formatMoney(filters.maxPrice)}`, remove: { maxPrice: undefined } });
-  if (filters.bedrooms) chips.push({ key: "bedrooms", label: `${filters.bedrooms}+ beds`, remove: { bedrooms: undefined } });
+  if (filters.bedrooms) chips.push({ key: "bedrooms", label: `${filters.bedrooms}+ BHK`, remove: { bedrooms: undefined } });
   if (filters.bathrooms) chips.push({ key: "bathrooms", label: `${filters.bathrooms}+ baths`, remove: { bathrooms: undefined } });
-  if (filters.minArea) chips.push({ key: "minArea", label: `Min ${filters.minArea.toLocaleString()} area`, remove: { minArea: undefined } });
-  if (filters.maxArea) chips.push({ key: "maxArea", label: `Max ${filters.maxArea.toLocaleString()} area`, remove: { maxArea: undefined } });
+  if (filters.minArea) chips.push({ key: "minArea", label: `Min ${formatNumber(filters.minArea)} area`, remove: { minArea: undefined } });
+  if (filters.maxArea) chips.push({ key: "maxArea", label: `Max ${formatNumber(filters.maxArea)} area`, remove: { maxArea: undefined } });
   if (filters.furnished) chips.push({ key: "furnished", label: FURNISHED_LABELS[filters.furnished], remove: { furnished: undefined } });
   if (filters.listedWithin) chips.push({ key: "listedWithin", label: LISTED_WITHIN_OPTIONS.find((option) => option.value === filters.listedWithin)?.label ?? "", remove: { listedWithin: undefined } });
   for (const slug of filters.amenities ?? []) {

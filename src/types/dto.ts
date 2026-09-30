@@ -63,6 +63,7 @@ export interface PropertyCardDTO {
   bathrooms: number;
   parkingSpaces: number;
   interiorArea: number | null;
+  lotArea: number | null;
   areaUnit: AreaUnit;
   featured: boolean;
   coverImage: { url: string; alt: string | null } | null;
@@ -78,7 +79,6 @@ export interface PropertyDetailDTO extends PropertyCardDTO {
   description: string;
   depositAmount: number;
   postalCode: string;
-  lotArea: number | null;
   yearBuilt: number | null;
   furnished: FurnishedStatus;
   availableFrom: string | null;

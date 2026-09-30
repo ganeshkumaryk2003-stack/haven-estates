@@ -27,6 +27,7 @@ import {
   PROPERTY_STATUS_LABELS,
   PROPERTY_TYPES,
   PROPERTY_TYPE_LABELS,
+  isPlotType,
 } from "@/lib/constants";
 import { formatMoney } from "@/lib/format";
 import { suggestedDeposit } from "@/lib/money";
@@ -73,7 +74,7 @@ function toFormValues(property?: PropertyDetailDTO): PropertyFormValues {
       city: "",
       state: "",
       postalCode: "",
-      country: "United States",
+      country: "India",
       latitude: "",
       longitude: "",
       bedrooms: 3,
@@ -139,6 +140,7 @@ export function PropertyForm({ amenities, property, emailVerified }: PropertyFor
   const { errors, isDirty } = form.formState;
   const listingType = useWatch({ control: form.control, name: "listingType" });
   const propertyType = useWatch({ control: form.control, name: "propertyType" });
+  const isPlot = propertyType ? isPlotType(propertyType) : false;
   const price = useWatch({ control: form.control, name: "price" });
   const currency = useWatch({ control: form.control, name: "currency" }) ?? DEFAULT_CURRENCY;
   const images = useWatch({ control: form.control, name: "images" }) ?? [];
@@ -272,8 +274,8 @@ export function PropertyForm({ amenities, property, emailVerified }: PropertyFor
 
           {/* ---------------------------------------------------------------- Basics */}
           <div className={cn("flex flex-col gap-5", step !== 0 && "hidden")}>
-            <FormField id="title" label="Listing title" error={errors.title?.message} required description="e.g. Sunlit 3-bed craftsman with a private garden">
-              <Input maxLength={120} {...fieldA11y("title", errors.title?.message, true)} {...form.register("title")} />
+            <FormField id="title" label="Listing title" error={errors.title?.message} required description="Mention the configuration and locality, e.g. East-facing 3 BHK flat in Whitefield with clubhouse access">
+              <Input maxLength={120} placeholder="e.g. Spacious 2 BHK flat near Whitefield metro" {...fieldA11y("title", errors.title?.message, true)} {...form.register("title")} />
             </FormField>
             <div className="grid gap-5 sm:grid-cols-2">
               <fieldset className="flex flex-col gap-2">
@@ -315,8 +317,15 @@ export function PropertyForm({ amenities, property, emailVerified }: PropertyFor
               </FormField>
             </div>
             <div className="grid gap-5 sm:grid-cols-3">
-              <FormField id="price" label={listingType === "RENT" ? "Monthly rent" : "Asking price"} error={errors.price?.message} required className="sm:col-span-2">
-                <Input type="number" inputMode="decimal" min={0} step="1" {...fieldA11y("price", errors.price?.message)} {...form.register("price")} />
+              <FormField
+                id="price"
+                label={listingType === "RENT" ? "Monthly rent" : "Asking price"}
+                error={errors.price?.message}
+                required
+                className="sm:col-span-2"
+                description={listingType === "RENT" ? "Rent per month in rupees, e.g. 25000 for ₹25,000." : "Full amount in rupees, e.g. 8500000 for ₹85 lakh."}
+              >
+                <Input type="number" inputMode="decimal" min={0} step="1" placeholder={listingType === "RENT" ? "e.g. 25000" : "e.g. 8500000"} {...fieldA11y("price", errors.price?.message, true)} {...form.register("price")} />
               </FormField>
               <FormField id="currency" label="Currency" error={errors.currency?.message}>
                 <Controller
@@ -346,7 +355,7 @@ export function PropertyForm({ amenities, property, emailVerified }: PropertyFor
               required
               description={
                 <>
-                  Paid by the buyer through Stripe after you accept an offer. It reserves the property; it is not the legal purchase.
+                  Token amount paid by the buyer through Stripe after you accept an offer. It reserves the property; it is not the sale agreement or registration.
                   {suggested ? (
                     <>
                       {" "}
@@ -359,36 +368,42 @@ export function PropertyForm({ amenities, property, emailVerified }: PropertyFor
                 </>
               }
             >
-              <Input type="number" inputMode="decimal" min={50} step="1" {...fieldA11y("depositAmount", errors.depositAmount?.message, true)} {...form.register("depositAmount")} />
+              <Input type="number" inputMode="decimal" min={50} step="1" placeholder="e.g. 50000" {...fieldA11y("depositAmount", errors.depositAmount?.message, true)} {...form.register("depositAmount")} />
             </FormField>
-            <FormField id="description" label="Description" error={errors.description?.message} required description="Highlight the layout, light, neighbourhood and anything recently renovated. Minimum 40 characters.">
-              <Textarea rows={8} maxLength={6000} {...fieldA11y("description", errors.description?.message, true)} {...form.register("description")} />
+            <FormField id="description" label="Description" error={errors.description?.message} required description="Highlight the layout, floor, facing (east-facing, Vastu compliant), locality, connectivity and anything recently renovated. Minimum 40 characters.">
+              <Textarea
+                rows={8}
+                maxLength={6000}
+                placeholder="e.g. East-facing 3 BHK on the 7th floor of a gated community in Whitefield, 5 minutes from the metro. Modular kitchen, 2 covered car parks, clubhouse and 24x7 power backup…"
+                {...fieldA11y("description", errors.description?.message, true)}
+                {...form.register("description")}
+              />
             </FormField>
           </div>
 
           {/* -------------------------------------------------------------- Location */}
           <div className={cn("flex flex-col gap-5", step !== 1 && "hidden")}>
-            <FormField id="address" label="Street address" error={errors.address?.message} required>
-              <Input autoComplete="street-address" {...fieldA11y("address", errors.address?.message)} {...form.register("address")} />
+            <FormField id="address" label="Address" error={errors.address?.message} required description="Flat or house number, building or layout name, road and locality.">
+              <Input autoComplete="street-address" placeholder="e.g. Flat 402, Prestige Lakeside Habitat, Varthur Main Road, Whitefield" {...fieldA11y("address", errors.address?.message, true)} {...form.register("address")} />
             </FormField>
             <div className="grid gap-5 sm:grid-cols-2">
               <FormField id="city" label="City" error={errors.city?.message} required>
-                <Input autoComplete="address-level2" {...fieldA11y("city", errors.city?.message)} {...form.register("city")} />
+                <Input autoComplete="address-level2" placeholder="e.g. Bengaluru" {...fieldA11y("city", errors.city?.message)} {...form.register("city")} />
               </FormField>
-              <FormField id="state" label="State / region" error={errors.state?.message} required>
-                <Input autoComplete="address-level1" {...fieldA11y("state", errors.state?.message)} {...form.register("state")} />
+              <FormField id="state" label="State" error={errors.state?.message} required>
+                <Input autoComplete="address-level1" placeholder="e.g. Karnataka" {...fieldA11y("state", errors.state?.message)} {...form.register("state")} />
               </FormField>
-              <FormField id="postalCode" label="Postal code" error={errors.postalCode?.message} required>
-                <Input autoComplete="postal-code" {...fieldA11y("postalCode", errors.postalCode?.message)} {...form.register("postalCode")} />
+              <FormField id="postalCode" label="PIN code" error={errors.postalCode?.message} required>
+                <Input autoComplete="postal-code" inputMode="numeric" maxLength={6} placeholder="e.g. 560066" {...fieldA11y("postalCode", errors.postalCode?.message)} {...form.register("postalCode")} />
               </FormField>
               <FormField id="country" label="Country" error={errors.country?.message} required>
-                <Input autoComplete="country-name" {...fieldA11y("country", errors.country?.message)} {...form.register("country")} />
+                <Input autoComplete="country-name" placeholder="India" {...fieldA11y("country", errors.country?.message)} {...form.register("country")} />
               </FormField>
               <FormField id="latitude" label="Latitude (optional)" error={errors.latitude?.message} description="Shown as a map pin. Find coordinates on openstreetmap.org.">
-                <Input type="number" step="any" min={-90} max={90} {...fieldA11y("latitude", errors.latitude?.message, true)} {...form.register("latitude")} />
+                <Input type="number" step="any" min={-90} max={90} placeholder="e.g. 12.9698" {...fieldA11y("latitude", errors.latitude?.message, true)} {...form.register("latitude")} />
               </FormField>
               <FormField id="longitude" label="Longitude (optional)" error={errors.longitude?.message}>
-                <Input type="number" step="any" min={-180} max={180} {...fieldA11y("longitude", errors.longitude?.message)} {...form.register("longitude")} />
+                <Input type="number" step="any" min={-180} max={180} placeholder="e.g. 77.7500" {...fieldA11y("longitude", errors.longitude?.message)} {...form.register("longitude")} />
               </FormField>
             </div>
           </div>
@@ -396,20 +411,20 @@ export function PropertyForm({ amenities, property, emailVerified }: PropertyFor
           {/* --------------------------------------------------------------- Details */}
           <div className={cn("flex flex-col gap-5", step !== 2 && "hidden")}>
             <div className="grid gap-5 sm:grid-cols-3">
-              <FormField id="bedrooms" label="Bedrooms" error={errors.bedrooms?.message}>
-                <Input type="number" min={0} max={50} {...fieldA11y("bedrooms", errors.bedrooms?.message)} {...form.register("bedrooms")} disabled={propertyType === "LAND"} />
+              <FormField id="bedrooms" label="Bedrooms (BHK)" error={errors.bedrooms?.message} description={isPlot ? "Not applicable to plots." : "e.g. 2 for a 2 BHK"}>
+                <Input type="number" min={0} max={50} placeholder="e.g. 2" {...fieldA11y("bedrooms", errors.bedrooms?.message, true)} {...form.register("bedrooms")} disabled={isPlot} />
               </FormField>
               <FormField id="bathrooms" label="Bathrooms" error={errors.bathrooms?.message}>
-                <Input type="number" min={0} max={50} step={0.5} {...fieldA11y("bathrooms", errors.bathrooms?.message)} {...form.register("bathrooms")} disabled={propertyType === "LAND"} />
+                <Input type="number" min={0} max={50} step={0.5} placeholder="e.g. 2" {...fieldA11y("bathrooms", errors.bathrooms?.message)} {...form.register("bathrooms")} disabled={isPlot} />
               </FormField>
-              <FormField id="parkingSpaces" label="Parking spaces" error={errors.parkingSpaces?.message}>
-                <Input type="number" min={0} max={50} {...fieldA11y("parkingSpaces", errors.parkingSpaces?.message)} {...form.register("parkingSpaces")} />
+              <FormField id="parkingSpaces" label="Car parking spaces" error={errors.parkingSpaces?.message}>
+                <Input type="number" min={0} max={50} placeholder="e.g. 1" {...fieldA11y("parkingSpaces", errors.parkingSpaces?.message)} {...form.register("parkingSpaces")} />
               </FormField>
-              <FormField id="interiorArea" label="Interior area" error={errors.interiorArea?.message}>
-                <Input type="number" min={0} {...fieldA11y("interiorArea", errors.interiorArea?.message)} {...form.register("interiorArea")} />
+              <FormField id="interiorArea" label="Built-up area" error={errors.interiorArea?.message} description={isPlot ? "Leave empty for a vacant plot." : "Super built-up or carpet area, in the unit chosen below."}>
+                <Input type="number" min={0} placeholder="e.g. 1250" {...fieldA11y("interiorArea", errors.interiorArea?.message, true)} {...form.register("interiorArea")} />
               </FormField>
-              <FormField id="lotArea" label="Lot area" error={errors.lotArea?.message}>
-                <Input type="number" min={0} {...fieldA11y("lotArea", errors.lotArea?.message)} {...form.register("lotArea")} />
+              <FormField id="lotArea" label="Plot area" error={errors.lotArea?.message} description="Total land area, e.g. 1200 for a 30x40 site.">
+                <Input type="number" min={0} placeholder="e.g. 1200" {...fieldA11y("lotArea", errors.lotArea?.message, true)} {...form.register("lotArea")} />
               </FormField>
               <FormField id="areaUnit" label="Area unit" error={errors.areaUnit?.message}>
                 <Controller
@@ -432,7 +447,7 @@ export function PropertyForm({ amenities, property, emailVerified }: PropertyFor
                 />
               </FormField>
               <FormField id="yearBuilt" label="Year built" error={errors.yearBuilt?.message}>
-                <Input type="number" min={1600} max={new Date().getFullYear() + 3} {...fieldA11y("yearBuilt", errors.yearBuilt?.message)} {...form.register("yearBuilt")} />
+                <Input type="number" min={1600} max={new Date().getFullYear() + 3} placeholder="e.g. 2018" {...fieldA11y("yearBuilt", errors.yearBuilt?.message)} {...form.register("yearBuilt")} />
               </FormField>
               <FormField id="furnished" label="Furnished" error={errors.furnished?.message}>
                 <Controller
@@ -588,7 +603,7 @@ function ReviewSummary({ form, amenities }: { form: ReturnType<typeof useForm<Pr
     ["Price", values.price ? formatMoney(Number(values.price), values.currency ?? DEFAULT_CURRENCY) : "—"],
     ["Deposit", values.depositAmount ? formatMoney(Number(values.depositAmount), values.currency ?? DEFAULT_CURRENCY) : "—"],
     ["Address", [values.address, values.city, values.state, values.postalCode, values.country].filter(Boolean).join(", ") || "—"],
-    ["Rooms", `${values.bedrooms ?? 0} bed · ${values.bathrooms ?? 0} bath · ${values.parkingSpaces ?? 0} parking`],
+    ["Rooms", `${values.bedrooms ?? 0} BHK · ${values.bathrooms ?? 0} bath · ${values.parkingSpaces ?? 0} car parking`],
     ["Area", values.interiorArea ? `${values.interiorArea} ${values.areaUnit === "SQM" ? "m²" : "sq ft"}` : "—"],
     ["Amenities", selected.length ? selected.map((amenity) => amenity.name).join(", ") : "None selected"],
     ["Photos", `${values.images?.length ?? 0} uploaded`],

@@ -3,9 +3,9 @@ import { expect, type Page } from "@playwright/test";
 export const SEED_PASSWORD = process.env.SEED_PASSWORD ?? "Password123!";
 
 export const DEMO = {
-  buyer: { email: "priya.nair@haven.local", name: "Priya Nair" },
-  seller: { email: "maria.santos@haven.local", name: "Maria Santos" },
-  admin: { email: "admin@haven.local", name: "Avery Admin" },
+  buyer: { email: "priya.menon@doorkey.local", name: "Priya Menon" },
+  seller: { email: "meera.iyer@doorkey.local", name: "Meera Iyer" },
+  admin: { email: "admin@doorkey.local", name: "Aarav Admin" },
 };
 
 export async function login(page: Page, email: string) {

@@ -1,4 +1,4 @@
-import { APP_NAME } from "@/lib/constants";
+import { APP_FULL_NAME, APP_NAME } from "@/lib/constants";
 
 function escapeHtml(value: string) {
   return value
@@ -17,7 +17,7 @@ function layout(title: string, bodyHtml: string, ctaLabel?: string, ctaUrl?: str
       : "";
   return `<!doctype html><html><body style="margin:0;background:#f4f6f8;font-family:Inter,Segoe UI,Arial,sans-serif;color:#111827">
   <div style="max-width:560px;margin:32px auto;background:#fff;border-radius:12px;padding:32px;border:1px solid #e5e7eb">
-    <p style="font-weight:700;color:#0f766e;letter-spacing:.02em;margin:0 0 20px">${escapeHtml(APP_NAME)}</p>
+    <p style="font-weight:700;color:#0f766e;letter-spacing:.02em;margin:0 0 20px">${escapeHtml(APP_FULL_NAME)}</p>
     <h1 style="font-size:20px;margin:0 0 16px">${escapeHtml(title)}</h1>
     ${bodyHtml}
     ${cta}
@@ -47,7 +47,7 @@ export function notificationEmail(name: string | null, title: string, body: stri
   const greeting = name ? `Hi ${escapeHtml(name)},` : "Hi,";
   return {
     subject: `${title} · ${APP_NAME}`,
-    html: layout(title, `<p>${greeting}</p><p>${escapeHtml(body)}</p>`, "Open in Haven", url),
+    html: layout(title, `<p>${greeting}</p><p>${escapeHtml(body)}</p>`, `Open in ${APP_NAME}`, url),
     text: `${greeting}\n\n${title}\n${body}\n\n${url}`,
   };
 }

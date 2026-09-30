@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Bath, BedDouble, Car, ImageOff, MapPin, Ruler } from "lucide-react";
 import { FavoriteButton } from "@/components/properties/favorite-button";
 import { Badge } from "@/components/ui/badge";
-import { LISTING_TYPE_LABELS, PROPERTY_STATUS_LABELS, PROPERTY_TYPE_LABELS } from "@/lib/constants";
+import { LISTING_TYPE_LABELS, PROPERTY_STATUS_LABELS, PROPERTY_TYPE_LABELS, isPlotType } from "@/lib/constants";
 import { formatArea, formatBathrooms, formatPrice, formatRelative } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import type { PropertyCardDTO } from "@/types/dto";
@@ -77,16 +77,16 @@ export function PropertyCard({ property, signedIn, layout = "grid", priority = f
       </div>
 
       <div className="flex flex-1 flex-col gap-3 p-4">
-        <div className="flex items-start justify-between gap-3">
-          <div className="min-w-0">
-            <p className="text-lg font-bold text-primary">{formatPrice(property.price, property.currency, property.listingType)}</p>
-            <h3 className="mt-0.5 line-clamp-1 font-semibold">
-              <Link href={href} className="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none">
-                {property.title}
-              </Link>
-            </h3>
-          </div>
-          <Badge variant="outline" className="shrink-0">
+        <div className="flex flex-col gap-1.5">
+          <p className="text-lg font-bold text-primary">{formatPrice(property.price, property.currency, property.listingType)}</p>
+          <h3 className="line-clamp-2 font-semibold leading-snug">
+            <Link href={href} className="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none">
+              {property.title}
+            </Link>
+          </h3>
+          {/* Indian type labels are long ("Semi-commercial plot"), so the badge gets its own line
+              instead of competing with the price for horizontal space. */}
+          <Badge variant="outline" className="w-fit">
             {PROPERTY_TYPE_LABELS[property.propertyType]}
           </Badge>
         </div>
@@ -95,19 +95,26 @@ export function PropertyCard({ property, signedIn, layout = "grid", priority = f
           <span className="truncate">{location}</span>
         </p>
         <ul className="mt-auto flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground" aria-label="Key facts">
-          {property.propertyType !== "LAND" ? (
+          {!isPlotType(property.propertyType) ? (
             <>
               <li className="flex items-center gap-1.5">
                 <BedDouble className="size-4" aria-hidden="true" />
                 {property.bedrooms} <span className="sr-only">bedrooms</span>
-                <span aria-hidden="true">bd</span>
+                <span aria-hidden="true">BHK</span>
               </li>
               <li className="flex items-center gap-1.5">
                 <Bath className="size-4" aria-hidden="true" />
                 {formatBathrooms(property.bathrooms)} <span className="sr-only">bathrooms</span>
-                <span aria-hidden="true">ba</span>
+                <span aria-hidden="true">Bath</span>
               </li>
             </>
+          ) : null}
+          {isPlotType(property.propertyType) && property.lotArea ? (
+            <li className="flex items-center gap-1.5">
+              <Ruler className="size-4" aria-hidden="true" />
+              {formatArea(property.lotArea, property.areaUnit)} <span className="sr-only">plot area</span>
+              <span aria-hidden="true">plot</span>
+            </li>
           ) : null}
           {property.interiorArea ? (
             <li className="flex items-center gap-1.5">

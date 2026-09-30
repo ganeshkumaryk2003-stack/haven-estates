@@ -92,7 +92,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
 
       <div className="grid gap-4 sm:grid-cols-2">
         <FormField id="name" label="Full name" error={errors.name?.message} required>
-          <Input {...fieldA11y("name", errors.name?.message)} {...form.register("name")} />
+          <Input placeholder="Type your full name, e.g. Rahul Sharma" {...fieldA11y("name", errors.name?.message)} {...form.register("name")} />
         </FormField>
         <FormField id="email" label="Email">
           <Input id="email" value={user.email} disabled readOnly />
@@ -118,19 +118,19 @@ export function ProfileForm({ user }: ProfileFormProps) {
           />
         </FormField>
         <FormField id="phone" label="Phone number" error={errors.phone?.message}>
-          <Input type="tel" autoComplete="tel" placeholder="+1 555 0100" {...fieldA11y("phone", errors.phone?.message)} {...form.register("phone")} />
+          <Input type="tel" autoComplete="tel" placeholder="+91 98765 43210" {...fieldA11y("phone", errors.phone?.message)} {...form.register("phone")} />
         </FormField>
         <FormField id="company" label="Agency or company" error={errors.company?.message}>
-          <Input autoComplete="organization" {...fieldA11y("company", errors.company?.message)} {...form.register("company")} />
+          <Input autoComplete="organization" placeholder="e.g. Sharma Properties" {...fieldA11y("company", errors.company?.message)} {...form.register("company")} />
         </FormField>
         <FormField id="location" label="Location" error={errors.location?.message}>
-          <Input placeholder="Austin, TX" {...fieldA11y("location", errors.location?.message)} {...form.register("location")} />
+          <Input placeholder="Locality and city, e.g. Koramangala, Bengaluru" {...fieldA11y("location", errors.location?.message)} {...form.register("location")} />
         </FormField>
         <FormField id="website" label="Website" error={errors.website?.message} className="sm:col-span-2">
-          <Input type="url" placeholder="https://" {...fieldA11y("website", errors.website?.message)} {...form.register("website")} />
+          <Input type="url" placeholder="https://www.sharmaproperties.in" {...fieldA11y("website", errors.website?.message)} {...form.register("website")} />
         </FormField>
         <FormField id="bio" label="About you" error={errors.bio?.message} className="sm:col-span-2" description="Shown on your public profile and listings.">
-          <Textarea rows={4} {...fieldA11y("bio", errors.bio?.message, true)} {...form.register("bio")} />
+          <Textarea rows={4} placeholder="e.g. RERA-registered agent covering East Bengaluru for 8 years. Quick to respond on calls and WhatsApp." {...fieldA11y("bio", errors.bio?.message, true)} {...form.register("bio")} />
         </FormField>
       </div>
       <div className="flex justify-end">

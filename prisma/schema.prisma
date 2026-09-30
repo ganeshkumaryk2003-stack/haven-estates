@@ -1,4 +1,4 @@
-// Haven Estates - Prisma schema
+// Doorkey Realty - Prisma schema
 // Money is stored as Decimal(14, 2); timestamps are timestamptz (UTC).
 
 generator client {
@@ -36,12 +36,16 @@ enum ListingType {
   RENT
 }
 
+// Indian market categories. Plots are split the way Indian portals do it (residential,
+// commercial, semi-commercial, industrial); "Condo" and the generic "Land" were retired.
 enum PropertyType {
   HOUSE
   APARTMENT
-  CONDO
   TOWNHOUSE
-  LAND
+  PLOT_RESIDENTIAL
+  PLOT_COMMERCIAL
+  PLOT_SEMI_COMMERCIAL
+  PLOT_INDUSTRIAL
   COMMERCIAL
   OTHER
 }
