@@ -45,7 +45,7 @@ export function HeroSearch({ signedIn = false }: { signedIn?: boolean }) {
   return (
     <form
       onSubmit={submit}
-      className="flex w-full max-w-[960px] flex-col gap-3 rounded-[20px] bg-card p-3 text-card-foreground shadow-[0_28px_60px_-24px_rgba(10,19,48,0.6)] sm:p-4"
+      className="scheme-light flex w-full max-w-[960px] flex-col gap-3 rounded-[20px] bg-card p-3 text-card-foreground shadow-[0_28px_60px_-24px_rgba(10,19,48,0.6)] sm:p-4"
       aria-label={mode === "SELL" ? "List a property" : "Search properties"}
     >
       <div className="flex gap-1 rounded-lg bg-muted p-1 sm:w-fit" role="group" aria-label="I want to">
@@ -94,7 +94,7 @@ export function HeroSearch({ signedIn = false }: { signedIn?: boolean }) {
               <SelectTrigger id="hero-type" className="h-11 md:border-0 md:shadow-none">
                 <SelectValue placeholder="Any type" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="scheme-light">
                 <SelectItem value="any">Any type</SelectItem>
                 {PROPERTY_TYPES.map((type) => (
                   <SelectItem key={type} value={type}>

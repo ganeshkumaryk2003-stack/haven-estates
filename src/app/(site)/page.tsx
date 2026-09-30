@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { HeroDoorway } from "@/components/home/hero-doorway";
 import { HeroSearch } from "@/components/home/hero-search";
+import { HeroSky } from "@/components/home/hero-sky";
 import { HeroSkyline } from "@/components/home/hero-skyline";
 import { JourneyRail } from "@/components/offers/journey-rail";
 import { PropertyCard } from "@/components/properties/property-card";
@@ -31,12 +32,7 @@ export default async function HomePage() {
     <div className="flex flex-col">
       {/* Hero: dawn in light mode, dusk in dark mode (see --hero-* tokens). */}
       <section className="relative overflow-hidden text-white" style={{ background: "linear-gradient(180deg, var(--hero-top) 0%, var(--hero-upper) 45%, var(--hero-mid) 100%)" }}>
-        {/* Dusk only: a pale moon with two faint halo rings in the top-right corner. */}
-        <svg aria-hidden="true" focusable="false" viewBox="0 0 200 200" className="pointer-events-none absolute top-6 right-6 hidden size-40 sm:top-10 sm:right-12 sm:size-52 dark:block">
-          <circle cx="100" cy="100" r="96" fill="none" stroke="#FCE7B8" strokeOpacity="0.08" strokeWidth="2" />
-          <circle cx="100" cy="100" r="70" fill="none" stroke="#FCE7B8" strokeOpacity="0.14" strokeWidth="2" />
-          <circle cx="100" cy="100" r="44" fill="#FCE7B8" />
-        </svg>
+        <HeroSky />
 
         <div className="container-page relative z-10 flex flex-col gap-10 pt-16 pb-12 sm:pt-24 sm:pb-16">
           <div className="max-w-3xl">

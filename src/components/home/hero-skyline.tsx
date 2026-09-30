@@ -1,9 +1,9 @@
 import { cn } from "@/lib/utils";
 
 // Street frieze along the bottom of the hero: the brand idea (doors opening onto homes) carried
-// into a skyline. Building colours come from --sky-* tokens, so light mode reads as dawn and dark
-// mode as dusk; every front door is lit in both, with porch light spilling onto the pavement.
-// Decorative only, hence aria-hidden.
+// into a skyline. Building and planting colours come from --sky-* tokens, so light mode reads as
+// dawn (sun cresting the rooftops, peach horizon) and dark mode as dusk (amber afterglow). Every
+// front door is lit in both, with porch light spilling onto the pavement. Decorative, so aria-hidden.
 
 const GROUND = 268;
 
@@ -27,7 +27,62 @@ function PorchLight({ cx }: { cx: number }) {
   return <polygon points={`${cx - 16},${GROUND} ${cx + 16},${GROUND} ${cx + 46},300 ${cx - 46},300`} fill="url(#dk-porch)" />;
 }
 
+// Round-canopy tree: trunk plus three overlapping crowns in two greens.
+function Tree({ x, s = 1 }: { x: number; s?: number }) {
+  return (
+    <g>
+      <rect x={x - 3 * s} y={GROUND - 44 * s} width={6 * s} height={44 * s} rx="2" fill="var(--sky-trunk)" />
+      <circle cx={x - 15 * s} cy={GROUND - 46 * s} r={16 * s} fill="var(--sky-tree-2)" />
+      <circle cx={x + 15 * s} cy={GROUND - 48 * s} r={17 * s} fill="var(--sky-tree-2)" />
+      <circle cx={x} cy={GROUND - 62 * s} r={22 * s} fill="var(--sky-tree)" />
+    </g>
+  );
+}
+
+// Palm: a leaning trunk with seven fronds fanning out from the crown.
+function Palm({ x, h = 100, lean = 10 }: { x: number; h?: number; lean?: number }) {
+  const tx = x + lean;
+  const ty = GROUND - h;
+  return (
+    <g fill="none" strokeLinecap="round">
+      <path d={`M${x} ${GROUND} Q${x + lean / 2} ${GROUND - h / 2} ${tx} ${ty}`} stroke="var(--sky-trunk)" strokeWidth="6" />
+      <path d={`M${tx} ${ty} q-40 -6 -58 22`} stroke="var(--sky-tree)" strokeWidth="5" />
+      <path d={`M${tx} ${ty} q40 -6 58 22`} stroke="var(--sky-tree)" strokeWidth="5" />
+      <path d={`M${tx} ${ty} q-26 -26 -46 -14`} stroke="var(--sky-tree-2)" strokeWidth="5" />
+      <path d={`M${tx} ${ty} q26 -26 46 -14`} stroke="var(--sky-tree-2)" strokeWidth="5" />
+      <path d={`M${tx} ${ty} q-6 -30 8 -44`} stroke="var(--sky-tree)" strokeWidth="5" />
+      <path d={`M${tx} ${ty} q-38 12 -50 40`} stroke="var(--sky-tree-2)" strokeWidth="4" />
+      <path d={`M${tx} ${ty} q38 12 50 40`} stroke="var(--sky-tree-2)" strokeWidth="4" />
+      <circle cx={tx} cy={ty} r="5" fill="var(--sky-tree)" />
+    </g>
+  );
+}
+
+// Low hedge or shrub beside a front door.
+function Bush({ x, w = 28 }: { x: number; w?: number }) {
+  return (
+    <g>
+      <ellipse cx={x - w * 0.28} cy={GROUND - 8} rx={w * 0.34} ry="10" fill="var(--sky-tree-2)" />
+      <ellipse cx={x + w * 0.28} cy={GROUND - 8} rx={w * 0.34} ry="10" fill="var(--sky-tree-2)" />
+      <ellipse cx={x} cy={GROUND - 13} rx={w * 0.4} ry="13" fill="var(--sky-tree)" />
+    </g>
+  );
+}
+
+// Soft cloud lit from below by the sunrise (dawn only).
+function Cloud({ x, y, s = 1 }: { x: number; y: number; s?: number }) {
+  return (
+    <g opacity="0.55">
+      <ellipse cx={x} cy={y} rx={46 * s} ry={12 * s} fill="#FFFFFF" />
+      <ellipse cx={x - 18 * s} cy={y - 6 * s} rx={22 * s} ry={13 * s} fill="#FFFFFF" />
+      <ellipse cx={x + 14 * s} cy={y - 8 * s} rx={26 * s} ry={15 * s} fill="#FFFFFF" />
+      <ellipse cx={x} cy={y + 5 * s} rx={44 * s} ry={7 * s} fill="#F7C9D2" />
+    </g>
+  );
+}
+
 const DOORS = [135, 335, 525, 635, 745, 985, 1205, 1425];
+const SUN = { cx: 635, cy: 262, r: 176 };
 
 export function HeroSkyline({ className }: { className?: string }) {
   return (
@@ -36,7 +91,7 @@ export function HeroSkyline({ className }: { className?: string }) {
       className={cn("relative w-full", className)}
       style={{
         height: "clamp(150px, 20vw, 290px)",
-        background: "linear-gradient(180deg, var(--hero-mid) 0%, var(--hero-glow) 42%, var(--hero-horizon) 80%, var(--hero-ground) 100%)",
+        background: "linear-gradient(180deg, var(--hero-mid) 0%, var(--hero-glow) 36%, var(--hero-blush) 60%, var(--hero-horizon) 82%, var(--hero-ground) 100%)",
       }}
     >
       <svg viewBox="0 0 1600 300" preserveAspectRatio="xMidYMax slice" className="absolute inset-0 h-full w-full" focusable="false">
@@ -45,12 +100,37 @@ export function HeroSkyline({ className }: { className?: string }) {
             <stop offset="0" stopColor="#F5B840" stopOpacity="0.6" />
             <stop offset="1" stopColor="#F5B840" stopOpacity="0" />
           </linearGradient>
+          <radialGradient id="dk-sunglow" cx="0.5" cy="0.5" r="0.5">
+            <stop offset="0" stopColor="#FFD27A" stopOpacity="0.6" />
+            <stop offset="0.55" stopColor="#FFC98A" stopOpacity="0.22" />
+            <stop offset="1" stopColor="#FFC98A" stopOpacity="0" />
+          </radialGradient>
         </defs>
 
-        {/* Dawn only: the sun coming up behind the rooftops. */}
+        {/* Dawn only: the sun cresting the terraced rooftops, with a wide glow and soft rays. */}
         <g className="dark:hidden">
-          <circle cx="1230" cy={GROUND} r="130" fill="#FFE3A6" opacity="0.35" />
-          <circle cx="1230" cy={GROUND} r="74" fill="#FFD27A" />
+          <circle cx={SUN.cx} cy={SUN.cy} r="330" fill="url(#dk-sunglow)" />
+          <g stroke="#FFE3A6" strokeOpacity="0.28" strokeWidth="3" strokeLinecap="round">
+            {[-72, -54, -36, -18, 0, 18, 36, 54, 72].map((deg) => {
+              const rad = ((deg - 90) * Math.PI) / 180;
+              return <line key={deg} x1={SUN.cx + Math.cos(rad) * 190} y1={SUN.cy + Math.sin(rad) * 190} x2={SUN.cx + Math.cos(rad) * 252} y2={SUN.cy + Math.sin(rad) * 252} />;
+            })}
+          </g>
+          <circle cx={SUN.cx} cy={SUN.cy} r={SUN.r} fill="#FFD98A" />
+          <Cloud x={230} y={70} />
+          <Cloud x={1000} y={40} s={0.8} />
+          <Cloud x={1380} y={90} s={1.1} />
+        </g>
+
+        {/* Dusk only: the last stars low over the rooftops. */}
+        <g className="hidden dark:block" fill="#FFFFFF" opacity="0.7">
+          <circle cx="120" cy="22" r="1.2" />
+          <circle cx="300" cy="48" r="1" />
+          <circle cx="560" cy="16" r="1.4" />
+          <circle cx="720" cy="52" r="1" />
+          <circle cx="980" cy="12" r="1.2" />
+          <circle cx="1180" cy="40" r="1" />
+          <circle cx="1460" cy="18" r="1.3" />
         </g>
 
         {/* Distant towers, barely there. */}
@@ -74,6 +154,7 @@ export function HeroSkyline({ className }: { className?: string }) {
 
         {/* Pavement */}
         <rect x="0" y={GROUND} width="1600" height="32" fill="var(--sky-pavement)" />
+        <rect x="0" y={GROUND} width="1600" height="2" fill="var(--sky-trim)" opacity="0.5" />
 
         {/* Apartment tower A */}
         <rect x="60" y="70" width="150" height={GROUND - 70} fill="var(--sky-face)" />
@@ -130,6 +211,22 @@ export function HeroSkyline({ className }: { className?: string }) {
         {DOORS.map((cx) => (
           <PorchLight key={cx} cx={cx} />
         ))}
+
+        {/* Planting in front of the homes: palms at the edges, round trees between buildings,
+            hedges either side of the bungalow and villa doors. */}
+        <Palm x={30} h={110} />
+        <Tree x={228} />
+        <Bush x={288} />
+        <Bush x={382} />
+        <Tree x={445} s={0.9} />
+        <Palm x={822} h={100} lean={-10} />
+        <Bush x={905} w={32} />
+        <Bush x={1062} w={32} />
+        <Tree x={1102} s={0.85} />
+        <Bush x={1158} />
+        <Bush x={1252} />
+        <Tree x={1318} />
+        <Palm x={1562} h={105} lean={8} />
       </svg>
     </div>
   );

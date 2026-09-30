@@ -40,25 +40,30 @@
   --chart-3: #B42318;
   --chart-4: #23804F;
 
-  /* Hero scene. Light mode is dawn: a deep pre-sunrise sky over the text, brightening to a
-     peach horizon behind the skyline. --hero-mid is the lightest colour any hero text overlaps
-     (white on #4A6BC0 = 5.0:1). */
-  --hero-top: #1C2E66;
-  --hero-upper: #2F4C9C;
-  --hero-mid: #4A6BC0;
-  --hero-glow: #A9B8E8;
-  --hero-horizon: #F1BE84;
-  --hero-ground: #FFE0B0;
+  /* Hero scene. Light mode is dawn: an indigo pre-sunrise sky over the text, then the skyline
+     band brightens through periwinkle and pink to a peach horizon with the sun cresting the
+     rooftops. --hero-mid is the lightest colour any hero text overlaps: white 7.5:1, the subline
+     (#DCE3F5) 5.9:1 and the stat labels (#C9D3EE) 5.0:1 against #34509E. */
+  --hero-top: #17275C;
+  --hero-upper: #25408A;
+  --hero-mid: #34509E;
+  --hero-glow: #8AA0DC;
+  --hero-blush: #ECB4C2;
+  --hero-horizon: #F3B58E;
+  --hero-ground: #FFE0B8;
   --hero-text-soft: #DCE3F5;
   --hero-text-muted: #C9D3EE;
-  --sky-distant: rgba(255, 255, 255, 0.1);
-  --sky-face: #7C8FC9;
-  --sky-face-2: #6779B4;
-  --sky-trim: #A9B8E8;
-  --sky-roof: #3E4F8C;
-  --sky-glass: #C7D6F5;
-  --sky-pavement: #2A3A6E;
+  --sky-distant: rgba(255, 255, 255, 0.12);
+  --sky-face: #5B6FAF;
+  --sky-face-2: #4A5D9D;
+  --sky-trim: #8C9DD2;
+  --sky-roof: #33427A;
+  --sky-glass: #CBD5F2;
+  --sky-pavement: #26345F;
   --sky-lit-window: #F5B840;
+  --sky-tree: #4F8F60;
+  --sky-tree-2: #3C7449;
+  --sky-trunk: #6A4A33;
   --cta-panel: #2F54C4;
 }
 
@@ -91,11 +96,12 @@
   --door: #93AEF7;
   --door-shadow: #2B3D6E;
 
-  /* Dark mode is dusk: the prompt's evening gradient, amber horizon, porch lights on. */
+  /* Dark mode is dusk: the evening gradient, a violet afterglow, amber horizon, porch lights on. */
   --hero-top: #0A1330;
   --hero-upper: #15275A;
   --hero-mid: #34509E;
   --hero-glow: #5A5F9A;
+  --hero-blush: #7A6B98;
   --hero-horizon: #D9A15A;
   --hero-ground: #B0733A;
   --hero-text-soft: #DCE3F5;
@@ -108,6 +114,9 @@
   --sky-glass: #172247;
   --sky-pavement: #101A36;
   --sky-lit-window: #F5B840;
+  --sky-tree: #2F5A45;
+  --sky-tree-2: #244A37;
+  --sky-trunk: #33271E;
   --cta-panel: #233F94;
 }
 
@@ -148,6 +157,20 @@
   --font-display: var(--font-serif), Georgia, serif;
 }
 
+/* Stars in the hero sky. Only applied through motion-safe:, so reduced-motion users get a still sky. */
+@theme {
+  --animate-twinkle: dk-twinkle 3.4s ease-in-out infinite;
+  @keyframes dk-twinkle {
+    0%,
+    100% {
+      opacity: 0.3;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -182,6 +205,30 @@
   /* Prices: serif, semibold, lining tabular figures so columns of amounts line up. */
   .text-price {
     @apply font-display font-semibold tabular-nums;
+  }
+  /* Pins the light palette on a subtree. Used for the white search card, which sits on the
+     evening hero in both themes. */
+  .scheme-light {
+    color-scheme: light;
+    --background: #FFFFFF;
+    --foreground: #16233B;
+    --card: #FFFFFF;
+    --card-foreground: #16233B;
+    --popover: #FFFFFF;
+    --popover-foreground: #16233B;
+    --primary: #2F54C4;
+    --primary-foreground: #FFFFFF;
+    --secondary: #F1F2F5;
+    --secondary-foreground: #16233B;
+    --muted: #F1F2F5;
+    --muted-foreground: #566479;
+    --accent: #EEF3FC;
+    --accent-foreground: #16233B;
+    --border: #E4E7EE;
+    --input: #7D879B;
+    --ring: #2F54C4;
+    --gold: #F5B840;
+    --gold-foreground: #16233B;
   }
 }
 
