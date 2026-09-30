@@ -1,26 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import {
-  Bath,
-  BedDouble,
-  CalendarDays,
-  Car,
-  CheckCircle2,
-  ChevronRight,
-  ExternalLink,
-  Eye,
-  FileText,
-  Hash,
-  Home,
-  MapPin,
-  Pencil,
-  Ruler,
-  ShieldCheck,
-  Sofa,
-  Video,
-} from "lucide-react";
+import { ChevronRight, ExternalLink, FileText, Home, Pencil, Video } from "lucide-react";
 import { PropertyMap } from "@/components/map/property-map";
+import { JourneyRail, stepFromStatus } from "@/components/offers/journey-rail";
 import { EnquiryDialog, MessageSellerDialog, OfferDialog, ReportDialog } from "@/components/properties/engagement-dialogs";
 import { FavoriteButton } from "@/components/properties/favorite-button";
 import { PropertyCard, statusBadgeVariant } from "@/components/properties/property-card";
@@ -36,7 +19,7 @@ import { FURNISHED_LABELS, LISTING_TYPE_LABELS, PROPERTY_STATUS_LABELS, PROPERTY
 import { stripeConfigured } from "@/lib/env";
 import { formatArea, formatBathrooms, formatDate, formatMoney, formatPrice, formatRelative } from "@/lib/format";
 import { prisma } from "@/lib/prisma";
-import { absoluteUrl, safeJsonLd } from "@/lib/utils";
+import { absoluteUrl, cn, safeJsonLd } from "@/lib/utils";
 import { getPropertyBySlugOrId, getSimilarProperties, isOpenForEngagement, recordPropertyView } from "@/server/services/properties";
 
 interface PageProps {
@@ -115,19 +98,29 @@ export default async function PropertyDetailPage({ params }: PageProps) {
   };
 
   const facts = [
-    !isPlotType(property.propertyType) ? { icon: BedDouble, label: "Bedrooms", value: `${property.bedrooms} BHK` } : null,
-    !isPlotType(property.propertyType) ? { icon: Bath, label: "Bathrooms", value: formatBathrooms(property.bathrooms) } : null,
-    { icon: Car, label: "Car parking", value: String(property.parkingSpaces) },
-    { icon: Ruler, label: "Built-up area", value: formatArea(property.interiorArea, property.areaUnit) },
-    { icon: Ruler, label: "Plot area", value: formatArea(property.lotArea, property.areaUnit) },
-    { icon: CalendarDays, label: "Year built", value: property.yearBuilt ? String(property.yearBuilt) : "—" },
-    { icon: Sofa, label: "Furnished", value: FURNISHED_LABELS[property.furnished] },
-    { icon: Home, label: "Type", value: PROPERTY_TYPE_LABELS[property.propertyType] },
-    { icon: CalendarDays, label: "Available", value: property.availableFrom ? formatDate(property.availableFrom) : "Now" },
-  ].filter(Boolean) as { icon: typeof Home; label: string; value: string }[];
+    !isPlotType(property.propertyType) ? { label: "Bedrooms", value: `${property.bedrooms} BHK` } : null,
+    !isPlotType(property.propertyType) ? { label: "Bathrooms", value: formatBathrooms(property.bathrooms) } : null,
+    { label: "Car parking", value: String(property.parkingSpaces) },
+    { label: "Built-up area", value: formatArea(property.interiorArea, property.areaUnit) },
+    { label: "Plot area", value: formatArea(property.lotArea, property.areaUnit) },
+    { label: "Year built", value: property.yearBuilt ? String(property.yearBuilt) : "—" },
+    { label: "Furnished", value: FURNISHED_LABELS[property.furnished] },
+    { label: "Type", value: PROPERTY_TYPE_LABELS[property.propertyType] },
+    { label: "Available", value: property.availableFrom ? formatDate(property.availableFrom) : "Now" },
+  ].filter(Boolean) as { label: string; value: string }[];
+
+  // Amenities grouped by the category already on each AmenityDTO.
+  const amenityGroups = property.amenities.reduce<Record<string, typeof property.amenities>>((groups, amenity) => {
+    const key = amenity.category ?? "Other";
+    (groups[key] ??= []).push(amenity);
+    return groups;
+  }, {});
+
+  const price = formatPrice(property.price, property.currency, property.listingType);
+  const journey = !isOwner && (open || acceptedOffer) ? stepFromStatus(acceptedOffer?.status, acceptedOffer?.reservation?.status) : null;
 
   return (
-    <div className="container-page flex flex-col gap-8 py-8">
+    <div className="container-page flex flex-col gap-8 py-8 pb-28 lg:pb-8">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(structuredData) }} />
 
       <nav aria-label="Breadcrumb" className="text-sm text-muted-foreground">
@@ -180,72 +173,72 @@ export default async function PropertyDetailPage({ params }: PageProps) {
       <div className="grid gap-10 lg:grid-cols-[1fr_360px]">
         <div className="flex flex-col gap-10">
           <header className="flex flex-col gap-3">
-            <div className="flex flex-wrap items-center gap-2">
-              <Badge variant={property.listingType === "SALE" ? "default" : "secondary"}>{LISTING_TYPE_LABELS[property.listingType]}</Badge>
-              <Badge variant="outline">{PROPERTY_TYPE_LABELS[property.propertyType]}</Badge>
-              {property.status !== "ACTIVE" ? <Badge variant={statusBadgeVariant(property.status)}>{PROPERTY_STATUS_LABELS[property.status]}</Badge> : null}
-              {property.featured ? <Badge variant="warning">Featured</Badge> : null}
-            </div>
-            <h1 className="text-3xl font-bold sm:text-4xl">{property.title}</h1>
-            <p className="flex items-center gap-1.5 text-muted-foreground">
-              <MapPin className="size-4" aria-hidden="true" />
+            <h1 className="text-3xl sm:text-4xl">{property.title}</h1>
+            <p className="text-muted-foreground">
               {property.address}, {property.city}, {property.state} {property.postalCode}, {property.country}
             </p>
+            <div className="flex flex-wrap items-baseline gap-x-4 gap-y-2">
+              <p className="text-price text-3xl sm:text-4xl">{price}</p>
+              <span className="text-sm text-muted-foreground">{LISTING_TYPE_LABELS[property.listingType]}</span>
+              {property.status !== "ACTIVE" ? <Badge variant={statusBadgeVariant(property.status)}>{PROPERTY_STATUS_LABELS[property.status]}</Badge> : null}
+            </div>
             <div className="flex flex-wrap items-center gap-x-6 gap-y-1 text-sm text-muted-foreground">
-              <span className="flex items-center gap-1">
-                <Eye className="size-4" aria-hidden="true" /> {property.viewCount.toLocaleString()} views
-              </span>
-              <span className="flex items-center gap-1">
-                <Hash className="size-4" aria-hidden="true" /> Ref {property.id.slice(-8).toUpperCase()}
-              </span>
               <span>Listed {property.publishedAt ? formatRelative(property.publishedAt) : formatRelative(property.createdAt)}</span>
-              <span>Updated {formatDate(property.updatedAt)}</span>
+              {isOwner || isAdmin ? (
+                <>
+                  <span>{property.viewCount.toLocaleString()} views</span>
+                  <span>Ref {property.id.slice(-8).toUpperCase()}</span>
+                  <span>Updated {formatDate(property.updatedAt)}</span>
+                </>
+              ) : null}
             </div>
           </header>
 
           <section aria-labelledby="facts-heading" className="flex flex-col gap-4">
-            <h2 id="facts-heading" className="text-xl font-semibold">
+            <h2 id="facts-heading" className="text-xl">
               Key facts
             </h2>
-            <dl className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-              {facts.map((fact) => (
-                <div key={fact.label} className="flex items-center gap-3 rounded-lg border bg-card p-3">
-                  <fact.icon className="size-5 shrink-0 text-primary" aria-hidden="true" />
-                  <div>
-                    <dt className="text-xs text-muted-foreground">{fact.label}</dt>
-                    <dd className="text-sm font-semibold">{fact.value}</dd>
-                  </div>
+            {/* One strip: serif value over its label, hairlines between items, two columns on mobile. */}
+            <dl className="grid grid-cols-2 gap-y-5 border-y border-border py-5 sm:flex sm:flex-wrap sm:gap-y-6">
+              {facts.map((fact, index) => (
+                <div key={fact.label} className={cn("flex flex-col-reverse gap-0.5 px-4 sm:border-l sm:border-border", index % 2 === 0 ? "border-l-0" : "border-l border-border", index === 0 && "sm:border-l-0 sm:pl-0")}>
+                  <dt className="text-xs text-muted-foreground">{fact.label}</dt>
+                  <dd className="font-display text-xl font-semibold tabular-nums">{fact.value}</dd>
                 </div>
               ))}
             </dl>
           </section>
 
           <section aria-labelledby="description-heading" className="flex flex-col gap-3">
-            <h2 id="description-heading" className="text-xl font-semibold">
+            <h2 id="description-heading" className="text-xl">
               About this property
             </h2>
             <div className="prose prose-sm max-w-none whitespace-pre-line text-foreground/90 dark:prose-invert">{property.description}</div>
           </section>
 
           {property.amenities.length > 0 ? (
-            <section aria-labelledby="amenities-heading" className="flex flex-col gap-3">
-              <h2 id="amenities-heading" className="text-xl font-semibold">
+            <section aria-labelledby="amenities-heading" className="flex flex-col gap-5">
+              <h2 id="amenities-heading" className="text-xl">
                 Amenities
               </h2>
-              <ul className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-                {property.amenities.map((amenity) => (
-                  <li key={amenity.id} className="flex items-center gap-2 text-sm">
-                    <CheckCircle2 className="size-4 text-primary" aria-hidden="true" />
-                    {amenity.name}
-                  </li>
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {Object.entries(amenityGroups).map(([category, list]) => (
+                  <div key={category} className="flex flex-col gap-2">
+                    <h3 className="font-sans text-sm font-semibold tracking-normal text-muted-foreground">{category}</h3>
+                    <ul className="flex flex-col gap-1.5 text-sm">
+                      {list.map((amenity) => (
+                        <li key={amenity.id}>{amenity.name}</li>
+                      ))}
+                    </ul>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </section>
           ) : null}
 
           {property.floorPlanUrl || property.videoUrl || property.virtualTourUrl ? (
             <section aria-labelledby="media-heading" className="flex flex-col gap-3">
-              <h2 id="media-heading" className="text-xl font-semibold">
+              <h2 id="media-heading" className="text-xl">
                 Plans, video & tours
               </h2>
               <div className="flex flex-wrap gap-2">
@@ -275,7 +268,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
           ) : null}
 
           <section aria-labelledby="location-heading" className="flex flex-col gap-3">
-            <h2 id="location-heading" className="text-xl font-semibold">
+            <h2 id="location-heading" className="text-xl">
               Location
             </h2>
             <p className="text-sm text-muted-foreground">
@@ -284,7 +277,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
             {property.latitude !== null && property.longitude !== null ? (
               <PropertyMap
                 markers={[{ id: property.id, latitude: property.latitude, longitude: property.longitude, title: property.title }]}
-                className="h-80 overflow-hidden rounded-xl border"
+                className="h-80 overflow-hidden rounded-2xl border border-border"
                 zoom={14}
               />
             ) : (
@@ -293,11 +286,11 @@ export default async function PropertyDetailPage({ params }: PageProps) {
           </section>
         </div>
 
-        <aside className="flex flex-col gap-4 lg:sticky lg:top-24 lg:self-start">
+        <aside id="offer-panel" className="flex scroll-mt-24 flex-col gap-4 lg:sticky lg:top-24 lg:self-start">
           <Card>
             <CardContent className="flex flex-col gap-5">
               <div>
-                <p className="text-3xl font-bold text-primary">{formatPrice(property.price, property.currency, property.listingType)}</p>
+                <p className="text-price text-3xl">{price}</p>
                 <p className="mt-1 text-sm text-muted-foreground">Reservation deposit {formatMoney(property.depositAmount, property.currency)}</p>
               </div>
 
@@ -312,7 +305,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                     <Link href="/dashboard/properties">Manage listings</Link>
                   </Button>
                   <p className="text-xs text-muted-foreground">
-                    {property.counts.enquiries} enquiries · {property.counts.offers} offers · {property.counts.favorites} saves
+                    {property.counts.enquiries} enquiries, {property.counts.offers} offers and {property.counts.favorites} saves
                   </p>
                 </div>
               ) : open ? (
@@ -333,15 +326,15 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                     </div>
                   ) : (
                     <>
-                      <EnquiryDialog property={property} signedIn={signedIn} verified={verified} triggerProps={{ size: "lg" }} />
-                      <MessageSellerDialog property={property} signedIn={signedIn} verified={verified} />
                       {acceptedOffer ? (
-                        <Button asChild variant="secondary">
+                        <Button asChild size="lg" variant="secondary" className="w-full">
                           <Link href="/dashboard/offers">View your {acceptedOffer.status === "COUNTERED" ? "counteroffer" : "pending offer"}</Link>
                         </Button>
                       ) : (
-                        <OfferDialog property={property} signedIn={signedIn} verified={verified} />
+                        <OfferDialog property={property} signedIn={signedIn} verified={verified} triggerProps={{ variant: "default", size: "lg", className: "w-full" }} />
                       )}
+                      <EnquiryDialog property={property} signedIn={signedIn} verified={verified} triggerProps={{ variant: "outline", className: "w-full" }} />
+                      <MessageSellerDialog property={property} signedIn={signedIn} verified={verified} triggerProps={{ variant: "link" }} />
                     </>
                   )}
                 </div>
@@ -355,28 +348,33 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                 <FavoriteButton propertyId={property.id} initialFavorited={property.isFavorited} initialCount={property.favoriteCount} signedIn={signedIn} variant="full" />
                 <ShareButton title={property.title} url={url} />
               </div>
-              <p className="flex items-start gap-2 text-xs text-muted-foreground">
-                <ShieldCheck className="mt-0.5 size-3.5 shrink-0" aria-hidden="true" />
-                Reservation deposits are processed securely by Stripe (test mode). Reserving a property is not a legal transfer of ownership.
-              </p>
+              <p className="text-xs text-muted-foreground">Reservation deposits are processed securely by Stripe (test mode). Reserving a property is not a legal transfer of ownership.</p>
             </CardContent>
           </Card>
+
+          {journey ? (
+            <Card>
+              <CardContent className="flex flex-col gap-4">
+                <h2 className="text-lg">What happens next</h2>
+                <JourneyRail orientation="vertical" current={journey.current} complete={journey.complete} />
+              </CardContent>
+            </Card>
+          ) : null}
 
           <Card>
             <CardContent className="flex flex-col gap-4">
               <div className="flex items-center gap-3">
                 <UserAvatar name={property.owner.name} image={property.owner.image} className="size-12" />
-                <div className="min-w-0">
+                <div className="min-w-0 text-sm">
                   <Link href={`/profile/${property.owner.id}`} className="font-semibold hover:underline">
                     {property.owner.name ?? "Seller"}
                   </Link>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-muted-foreground">
                     {ROLE_LABELS[property.owner.role]}
-                    {property.owner.company ? ` · ${property.owner.company}` : ""}
+                    {property.owner.company ? ` at ${property.owner.company}` : ""}
                   </p>
-                  <p className="text-xs text-muted-foreground">
-                    {property.owner.emailVerified ? "Verified email · " : ""}Member since {formatDate(property.owner.createdAt, "MMM yyyy")}
-                  </p>
+                  {property.owner.emailVerified ? <p className="text-muted-foreground">Email verified</p> : null}
+                  <p className="text-muted-foreground">Member since {formatDate(property.owner.createdAt, "MMM yyyy")}</p>
                 </div>
               </div>
               {property.owner.bio ? <p className="line-clamp-4 text-sm text-muted-foreground">{property.owner.bio}</p> : null}
@@ -394,10 +392,18 @@ export default async function PropertyDetailPage({ params }: PageProps) {
         </aside>
       </div>
 
+      {/* Mobile: price and a jump link to the offer panel, hidden once the sidebar is visible. */}
+      <div className="fixed inset-x-0 bottom-0 z-30 flex items-center justify-between gap-4 border-t border-border bg-background/95 px-4 py-3 backdrop-blur lg:hidden">
+        <p className="text-price text-xl">{price}</p>
+        <Button asChild>
+          <a href="#offer-panel">Offer options</a>
+        </Button>
+      </div>
+
       {similar.length > 0 ? (
-        <section aria-labelledby="similar-heading" className="flex flex-col gap-4 border-t pt-10">
+        <section aria-labelledby="similar-heading" className="flex flex-col gap-4 border-t border-border pt-10">
           <div className="flex items-end justify-between">
-            <h2 id="similar-heading" className="text-2xl font-bold">
+            <h2 id="similar-heading" className="text-2xl">
               Similar properties
             </h2>
             <Link href={`/properties?location=${encodeURIComponent(property.city)}&listingType=${property.listingType}`} className="text-sm text-primary hover:underline">

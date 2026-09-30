@@ -4,7 +4,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const badgeVariants = cva(
-  "inline-flex w-fit shrink-0 items-center justify-center gap-1 overflow-hidden whitespace-nowrap rounded-md border px-2 py-0.5 text-xs font-medium transition-colors [&>svg]:pointer-events-none [&>svg]:size-3",
+  "inline-flex w-fit shrink-0 items-center justify-center gap-1 overflow-hidden whitespace-nowrap rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors [&>svg]:pointer-events-none [&>svg]:size-3",
   {
     variants: {
       variant: {
@@ -13,7 +13,8 @@ const badgeVariants = cva(
         destructive: "border-transparent bg-destructive text-destructive-foreground",
         outline: "text-foreground",
         success: "border-transparent bg-success/15 text-success",
-        warning: "border-transparent bg-warning/20 text-amber-800 dark:text-amber-200",
+        // Porch light: solid gold fill, navy text - never white text on gold.
+        warning: "border-transparent bg-gold text-gold-foreground",
         muted: "border-transparent bg-muted text-muted-foreground",
       },
     },

@@ -10,7 +10,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
 import { UserAvatar } from "@/components/ui/user-avatar";
 import { getCurrentUser } from "@/lib/auth/session";
-import { APP_NAME, ROLE_LABELS } from "@/lib/constants";
+import { APP_SHORT_NAME, ROLE_LABELS } from "@/lib/constants";
 import { formatDate } from "@/lib/format";
 import { prisma } from "@/lib/prisma";
 import { toPropertyCard } from "@/server/services/properties";
@@ -49,7 +49,7 @@ export default async function PublicProfilePage({ params }: PageProps) {
           <UserAvatar name={profile.name} image={profile.image} className="size-24 text-2xl" />
           <div className="flex flex-1 flex-col gap-3">
             <div className="flex flex-wrap items-center gap-2">
-              <h1 className="text-2xl font-bold">{profile.name ?? `${APP_NAME} member`}</h1>
+              <h1 className="text-2xl font-bold">{profile.name ?? `${APP_SHORT_NAME} member`}</h1>
               <Badge variant="secondary">{ROLE_LABELS[profile.role]}</Badge>
               {profile.emailVerified ? (
                 <Badge variant="success">

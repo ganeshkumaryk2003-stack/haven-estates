@@ -9,12 +9,14 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground shadow-xs hover:bg-primary/90",
-        destructive: "bg-destructive text-destructive-foreground shadow-xs hover:bg-destructive/90",
-        outline: "border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground",
-        secondary: "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
+        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        outline: "border border-input bg-card text-foreground hover:bg-accent hover:text-accent-foreground",
+        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        // Porch-light yellow: fill only, always with navy text (white on gold fails contrast).
+        gold: "bg-gold text-gold-foreground hover:bg-gold/90",
       },
       size: {
         default: "h-10 px-4 py-2",

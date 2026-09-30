@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { UserAvatar } from "@/components/ui/user-avatar";
-import { APP_NAME, CONTACT_METHOD_LABELS } from "@/lib/constants";
+import { APP_SHORT_NAME, CONTACT_METHOD_LABELS } from "@/lib/constants";
 import { formatRelative } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { markEnquiriesReadAction, updateEnquiryStatusAction } from "@/server/actions/engagement";
@@ -74,7 +74,7 @@ export function EnquiryList({ enquiries, direction }: { enquiries: EnquiryDTO[];
                 <span className="flex items-center gap-1.5">
                   <UserAvatar name={other.name} image={other.image} className="size-5 text-[9px]" />
                   <Link href={`/profile/${other.id}`} className="hover:underline">
-                    {other.name ?? `${APP_NAME} user`}
+                    {other.name ?? `${APP_SHORT_NAME} member`}
                   </Link>
                 </span>
                 <span>Prefers {CONTACT_METHOD_LABELS[enquiry.preferredContact].toLowerCase()}</span>

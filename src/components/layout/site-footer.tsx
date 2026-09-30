@@ -35,7 +35,7 @@ const columns = [
 
 export function SiteFooter() {
   return (
-    <footer className="mt-auto border-t bg-muted/30">
+    <footer className="mt-auto border-t border-border bg-muted/40">
       <div className="container-page grid gap-10 py-12 md:grid-cols-[2fr_1fr_1fr_1fr]">
         <div className="flex flex-col gap-4">
           <Logo />

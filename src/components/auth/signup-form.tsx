@@ -13,7 +13,7 @@ import { FormError, FormField, fieldA11y } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem, Separator } from "@/components/ui/misc";
-import { APP_NAME } from "@/lib/constants";
+import { APP_SHORT_NAME } from "@/lib/constants";
 import { signupAction } from "@/server/actions/auth";
 import { signupSchema, type SignupFormValues, type SignupInput } from "@/validations/auth";
 
@@ -50,7 +50,7 @@ export function SignupForm({ callbackUrl, googleEnabled }: { callbackUrl?: strin
     <Card>
       <CardHeader>
         <CardTitle className="text-2xl">Create your account</CardTitle>
-        <CardDescription>Join {APP_NAME} to browse, enquire, list and make offers.</CardDescription>
+        <CardDescription>Join {APP_SHORT_NAME} to browse, enquire, list and make offers.</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-5">
         <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4" noValidate>
@@ -70,7 +70,7 @@ export function SignupForm({ callbackUrl, googleEnabled }: { callbackUrl?: strin
             </FormField>
           </div>
           <fieldset className="flex flex-col gap-2">
-            <legend className="mb-1 text-sm font-medium">How will you use {APP_NAME}?</legend>
+            <legend className="mb-1 text-sm font-medium">How will you use {APP_SHORT_NAME}?</legend>
             <Controller
               control={form.control}
               name="role"

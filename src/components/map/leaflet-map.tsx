@@ -31,7 +31,7 @@ interface LeafletMapProps {
 // Leaflet's default icon paths break under bundlers; use an inline SVG pin instead.
 const pinIcon = L.divIcon({
   className: "",
-  html: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="40" viewBox="0 0 24 30" aria-hidden="true"><path d="M12 0C6.5 0 2 4.5 2 10c0 7 10 20 10 20s10-13 10-20C22 4.5 17.5 0 12 0z" fill="#0f766e" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="10" r="4" fill="#fff"/></svg>`,
+  html: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="40" viewBox="0 0 24 30" aria-hidden="true"><path d="M12 0C6.5 0 2 4.5 2 10c0 7 10 20 10 20s10-13 10-20C22 4.5 17.5 0 12 0z" fill="#2F54C4" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="10" r="4" fill="#fff"/></svg>`,
   iconSize: [32, 40],
   iconAnchor: [16, 40],
   popupAnchor: [0, -36],
@@ -85,7 +85,7 @@ export default function LeafletMap({ markers, center, zoom = 12, className, inte
                 ) : null}
                 <p className="text-sm font-semibold leading-tight">{marker.title}</p>
                 {marker.price !== undefined ? (
-                  <p className="text-sm font-bold text-[#0f766e]">{formatPrice(marker.price, marker.currency ?? DEFAULT_CURRENCY, marker.listingType ?? "SALE")}</p>
+                  <p className="text-price text-sm text-[#16233B]">{formatPrice(marker.price, marker.currency ?? DEFAULT_CURRENCY, marker.listingType ?? "SALE")}</p>
                 ) : null}
                 {marker.href ? (
                   <Link href={marker.href} className="text-xs font-medium underline">

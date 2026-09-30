@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Controller, useForm, useWatch, type FieldPath } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft, ArrowRight, Check, Eye, Save, Send } from "lucide-react";
+import { ArrowLeft, Check, Eye, Save, Send } from "lucide-react";
 import { toast } from "sonner";
 import { ImageUploader } from "@/components/properties/image-uploader";
 import { Button } from "@/components/ui/button";
@@ -264,7 +264,7 @@ export function PropertyForm({ amenities, property, emailVerified }: PropertyFor
       >
         <div className="rounded-xl border bg-card p-6">
           <div className="mb-6 flex flex-col gap-1">
-            <p className="text-xs font-semibold uppercase tracking-wider text-primary">
+            <p className="text-sm font-medium text-muted-foreground">
               Step {step + 1} of {STEPS.length}
             </p>
             <h2 className="text-xl font-semibold">{currentStep.title}</h2>
@@ -572,7 +572,7 @@ export function PropertyForm({ amenities, property, emailVerified }: PropertyFor
                   <Save /> {property && property.status !== "DRAFT" ? "Save changes" : "Save draft"}
                 </Button>
                 <Button type="button" onClick={() => void goTo(step + 1)} disabled={Boolean(submitting)}>
-                  Next <ArrowRight />
+                  Next
                 </Button>
               </>
             ) : (
@@ -612,7 +612,7 @@ function ReviewSummary({ form, amenities }: { form: ReturnType<typeof useForm<Pr
     <dl className="grid gap-3 sm:grid-cols-2">
       {rows.map(([label, value]) => (
         <div key={label} className="rounded-md border bg-muted/30 p-3">
-          <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{label}</dt>
+          <dt className="text-xs font-medium text-muted-foreground">{label}</dt>
           <dd className="mt-1 text-sm">{value}</dd>
         </div>
       ))}

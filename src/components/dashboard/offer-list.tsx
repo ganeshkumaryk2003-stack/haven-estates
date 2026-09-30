@@ -9,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { HandCoins } from "lucide-react";
 import { toast } from "sonner";
 import { z } from "zod";
+import { JourneyRail, stepFromStatus } from "@/components/offers/journey-rail";
 import { ReserveButton } from "@/components/properties/reserve-button";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -18,7 +19,7 @@ import { FormError, FormField, fieldA11y } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { UserAvatar } from "@/components/ui/user-avatar";
-import { APP_NAME, DEFAULT_CURRENCY, FINANCING_LABELS } from "@/lib/constants";
+import { APP_SHORT_NAME, DEFAULT_CURRENCY, FINANCING_LABELS } from "@/lib/constants";
 import { formatDate, formatMoney, formatRelative } from "@/lib/format";
 import { counterOfferAction, decideOfferAction } from "@/server/actions/engagement";
 import type { OfferDTO } from "@/types/dto";
@@ -73,6 +74,7 @@ export function OfferList({ offers, role, stripeEnabled }: OfferListProps) {
           const other = role === "seller" ? offer.buyer : offer.seller;
           const isOpen = offer.status === "PENDING" || offer.status === "COUNTERED";
           const busy = pending === offer.id;
+          const journey = stepFromStatus(offer.status);
           return (
             <li key={offer.id} className="flex flex-col gap-4 rounded-xl border bg-card p-4 lg:flex-row lg:items-start">
               <Link href={`/properties/${offer.property.slug}`} className="relative h-24 w-full shrink-0 overflow-hidden rounded-lg bg-muted lg:w-36">
@@ -84,6 +86,8 @@ export function OfferList({ offers, role, stripeEnabled }: OfferListProps) {
                     {offer.property.title}
                   </Link>
                   <Badge variant={STATUS_VARIANTS[offer.status]}>{offer.status.toLowerCase()}</Badge>
+                  {/* The DTO carries the offer status but not the reservation status, so the rail stops at "Accepted". */}
+                  {journey ? <JourneyRail size="mini" current={journey.current} complete={journey.complete} /> : null}
                   <span className="text-xs text-muted-foreground">{formatRelative(offer.createdAt)}</span>
                 </div>
                 <div className="mt-2 grid gap-x-6 gap-y-1 text-sm sm:grid-cols-2">
@@ -114,10 +118,9 @@ export function OfferList({ offers, role, stripeEnabled }: OfferListProps) {
                   <UserAvatar name={other.name} image={other.image} className="size-5 text-[9px]" />
                   {role === "seller" ? "From" : "To"}{" "}
                   <Link href={`/profile/${other.id}`} className="hover:underline">
-                    {other.name ?? `${APP_NAME} user`}
+                    {other.name ?? `${APP_SHORT_NAME} member`}
                   </Link>
-                  <span aria-hidden="true">·</span>
-                  <Link href={`/messages?to=${other.id}&property=${offer.property.id}`} className="hover:underline">
+                  <Link href={`/messages?to=${other.id}&property=${offer.property.id}`} className="ml-2 text-primary hover:underline">
                     Message
                   </Link>
                 </p>

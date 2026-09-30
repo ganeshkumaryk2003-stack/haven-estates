@@ -31,7 +31,7 @@ export async function SiteHeader() {
   ];
 
   return (
-    <header className="sticky top-0 z-40 border-b bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70">
+    <header className="sticky top-0 z-40 border-b border-border bg-background/92 backdrop-blur">
       <div className="container-page flex h-16 items-center gap-3">
         <MobileNav items={items} signedIn={Boolean(user)} />
         <Logo />

@@ -1,36 +1,25 @@
 import Link from "next/link";
-import { ArrowRight, Building, Building2, Factory, Home, LandPlot, Landmark, LayoutGrid, MapPinned, ShieldCheck, Store, Wallet } from "lucide-react";
+import { HeroDoorway } from "@/components/home/hero-doorway";
 import { HeroSearch } from "@/components/home/hero-search";
+import { HeroSkyline } from "@/components/home/hero-skyline";
+import { JourneyRail } from "@/components/offers/journey-rail";
 import { PropertyCard } from "@/components/properties/property-card";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { getCurrentUser } from "@/lib/auth/session";
-import { APP_NAME, PROPERTY_TYPES, PROPERTY_TYPE_LABELS, type PropertyTypeValue } from "@/lib/constants";
+import { PROPERTY_TYPES, PROPERTY_TYPE_LABELS, type PropertyTypeValue } from "@/lib/constants";
 import { formatNumber } from "@/lib/format";
 import { getFeaturedProperties, getMarketplaceStats, getPropertyTypeCounts, getRecentProperties } from "@/server/services/properties";
 
-const CATEGORY_ICONS: Record<PropertyTypeValue, typeof Home> = {
-  APARTMENT: Building2,
-  HOUSE: Home,
-  TOWNHOUSE: Building,
-  PLOT_RESIDENTIAL: LandPlot,
-  PLOT_COMMERCIAL: Landmark,
-  PLOT_SEMI_COMMERCIAL: LayoutGrid,
-  PLOT_INDUSTRIAL: Factory,
-  COMMERCIAL: Store,
-  OTHER: MapPinned,
-};
-
-const STEPS = [
-  { title: "Search & save", description: "Filter by location, price, size and amenities. Save favourites and share searches with a link." },
-  { title: "Enquire & chat", description: "Send an enquiry or message the seller in real time. Every contact creates a connection you can manage." },
-  { title: "Offer & reserve", description: "Make an offer, negotiate counteroffers, then reserve the property with a secure token deposit once accepted." },
+const HOW_IT_WORKS = [
+  "You choose how long an offer stays open.",
+  "A seller can counter once, and you accept or decline.",
+  "The deposit comes last and is taken by Stripe only after acceptance.",
 ];
 
-const TESTIMONIALS = [
-  { quote: "The offer flow was refreshingly clear. I knew exactly where things stood, and the token deposit receipt arrived instantly.", name: "Priya N.", role: "First-time buyer, Bengaluru" },
-  { quote: "Listing my 3 BHK took ten minutes. Enquiries and offers land in one dashboard instead of my WhatsApp.", name: "Rohan M.", role: "Seller, Pune" },
-  { quote: "I manage a dozen rentals here. Messaging, connections and notifications keep every conversation in one place.", name: "Anita R.", role: "Rental agent, Hyderabad" },
+const TRUST = [
+  "Verified accounts: email verification is required before anyone can contact you.",
+  "Secure deposits: reservation deposits are processed by Stripe; card details never touch our servers.",
+  "Map search: see every result on a map and share any search with a single link.",
 ];
 
 export default async function HomePage() {
@@ -40,31 +29,46 @@ export default async function HomePage() {
 
   return (
     <div className="flex flex-col">
-      {/* Hero */}
-      <section className="relative overflow-hidden border-b bg-[radial-gradient(ellipse_at_top_left,_var(--color-accent),_transparent_55%),radial-gradient(ellipse_at_bottom_right,_color-mix(in_oklch,var(--color-primary)_18%,transparent),_transparent_50%)]">
-        <div className="container-page flex flex-col gap-10 py-16 sm:py-24">
+      {/* Hero: dawn in light mode, dusk in dark mode (see --hero-* tokens). */}
+      <section className="relative overflow-hidden text-white" style={{ background: "linear-gradient(180deg, var(--hero-top) 0%, var(--hero-upper) 45%, var(--hero-mid) 100%)" }}>
+        {/* Dusk only: a pale moon with two faint halo rings in the top-right corner. */}
+        <svg aria-hidden="true" focusable="false" viewBox="0 0 200 200" className="pointer-events-none absolute top-6 right-6 hidden size-40 sm:top-10 sm:right-12 sm:size-52 dark:block">
+          <circle cx="100" cy="100" r="96" fill="none" stroke="#FCE7B8" strokeOpacity="0.08" strokeWidth="2" />
+          <circle cx="100" cy="100" r="70" fill="none" stroke="#FCE7B8" strokeOpacity="0.14" strokeWidth="2" />
+          <circle cx="100" cy="100" r="44" fill="#FCE7B8" />
+        </svg>
+
+        <div className="container-page relative z-10 flex flex-col gap-10 pt-16 pb-12 sm:pt-24 sm:pb-16">
           <div className="max-w-3xl">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-primary">Real estate across India, end to end</p>
-            <h1 className="text-balance text-4xl font-bold sm:text-5xl lg:text-6xl">Find a home you love. Reserve it with confidence.</h1>
-            <p className="mt-5 max-w-2xl text-balance text-lg text-muted-foreground">
-              {APP_NAME} connects buyers, tenants, sellers and agents across Indian cities with verified profiles, real-time messaging, transparent offers and secure token deposits.
+            <h1 className="font-display text-4xl font-semibold leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-6xl">
+              Find a home.
+              <br />
+              Make an offer.
+              <br />
+              Reserve it.
+            </h1>
+            <p className="mt-6 max-w-xl text-lg" style={{ color: "var(--hero-text-soft)" }}>
+              Every offer and counteroffer is on the record, and the deposit comes only after the seller says yes.
             </p>
           </div>
           <HeroSearch signedIn={Boolean(user)} />
-          <dl className="grid grid-cols-2 gap-6 sm:grid-cols-4">
+          <dl className="grid grid-cols-2 gap-x-6 gap-y-5 sm:grid-cols-4">
             {[
               { label: "Active listings", value: stats.activeListings },
               { label: "Cities covered", value: stats.cities },
-              { label: "Sellers & agents", value: stats.sellers },
+              { label: "Sellers and agents", value: stats.sellers },
               { label: "Reservations made", value: stats.reservations },
             ].map((stat) => (
-              <div key={stat.label}>
-                <dt className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{stat.label}</dt>
-                <dd className="text-2xl font-bold sm:text-3xl">{formatNumber(stat.value)}</dd>
+              <div key={stat.label} className="flex flex-col-reverse gap-0.5">
+                <dt className="text-sm" style={{ color: "var(--hero-text-muted)" }}>
+                  {stat.label}
+                </dt>
+                <dd className="font-display text-3xl font-semibold tabular-nums text-white">{formatNumber(stat.value)}</dd>
               </div>
             ))}
           </dl>
         </div>
+        <HeroSkyline />
       </section>
 
       {/* Featured */}
@@ -72,44 +76,40 @@ export default async function HomePage() {
         <section className="container-page flex flex-col gap-6 py-16" aria-labelledby="featured-heading">
           <div className="flex items-end justify-between gap-4">
             <div>
-              <h2 id="featured-heading" className="text-3xl font-bold">
+              <h2 id="featured-heading" className="text-3xl">
                 Featured homes
               </h2>
               <p className="mt-1 text-muted-foreground">Hand-picked listings from verified sellers.</p>
             </div>
-            <Button asChild variant="ghost">
-              <Link href="/properties">
-                View all <ArrowRight />
-              </Link>
+            <Button asChild variant="link">
+              <Link href="/properties">View all</Link>
             </Button>
           </div>
-          <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {featured.map((property, index) => (
-              <PropertyCard key={property.id} property={property} signedIn={Boolean(user)} priority={index < 3} />
+              <PropertyCard key={property.id} property={property} signedIn={Boolean(user)} priority={index < 3} size={index === 0 ? "large" : "default"} featuredTag={false} />
             ))}
           </div>
         </section>
       ) : null}
 
-      {/* Categories */}
-      <section className="border-y bg-muted/30" aria-labelledby="categories-heading">
+      {/* Browse by property type */}
+      <section className="border-y border-border bg-sky/60 dark:bg-sky" aria-labelledby="categories-heading">
         <div className="container-page flex flex-col gap-6 py-16">
-          <h2 id="categories-heading" className="text-3xl font-bold">
+          <h2 id="categories-heading" className="text-3xl">
             Browse by property type
           </h2>
-          <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-            {PROPERTY_TYPES.map((type) => {
-              const Icon = CATEGORY_ICONS[type];
-              return (
-                <li key={type}>
-                  <Link href={`/properties?propertyType=${type}`} className="flex flex-col items-center gap-2 rounded-xl border bg-card p-5 text-center transition-shadow hover:shadow-md focus-visible:outline-2 focus-visible:outline-ring">
-                    <Icon className="size-6 text-primary" aria-hidden="true" />
-                    <span className="text-sm font-semibold">{PROPERTY_TYPE_LABELS[type]}</span>
-                    <span className="text-xs text-muted-foreground">{countByType[type] ?? 0} listings</span>
-                  </Link>
-                </li>
-              );
-            })}
+          <ul className="grid gap-x-12 sm:grid-cols-2">
+            {PROPERTY_TYPES.map((type) => (
+              <li key={type} className="border-b border-border">
+                <Link href={`/properties?propertyType=${type}`} className="flex items-baseline justify-between gap-4 py-3.5 hover:text-primary focus-visible:outline-2 focus-visible:outline-ring">
+                  <span className="font-display text-lg font-semibold">{PROPERTY_TYPE_LABELS[type]}</span>
+                  <span className="text-sm tabular-nums text-muted-foreground">
+                    {formatNumber(countByType[type] ?? 0)} {countByType[type] === 1 ? "listing" : "listings"}
+                  </span>
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
       </section>
@@ -119,18 +119,16 @@ export default async function HomePage() {
         <section className="container-page flex flex-col gap-6 py-16" aria-labelledby="recent-heading">
           <div className="flex items-end justify-between gap-4">
             <div>
-              <h2 id="recent-heading" className="text-3xl font-bold">
+              <h2 id="recent-heading" className="text-3xl">
                 Recently listed
               </h2>
               <p className="mt-1 text-muted-foreground">Fresh on the market this week.</p>
             </div>
-            <Button asChild variant="ghost">
-              <Link href="/properties?sort=newest">
-                Newest first <ArrowRight />
-              </Link>
+            <Button asChild variant="link">
+              <Link href="/properties?sort=newest">Newest first</Link>
             </Button>
           </div>
-          <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
             {recent.map((property) => (
               <PropertyCard key={property.id} property={property} signedIn={Boolean(user)} />
             ))}
@@ -139,72 +137,41 @@ export default async function HomePage() {
       ) : null}
 
       {/* How it works */}
-      <section className="border-y bg-muted/30" aria-labelledby="how-heading">
+      <section className="border-y border-border bg-muted/40" aria-labelledby="how-heading">
         <div className="container-page flex flex-col gap-10 py-16">
           <div className="max-w-2xl">
-            <h2 id="how-heading" className="text-3xl font-bold">
+            <h2 id="how-heading" className="text-3xl">
               How it works
             </h2>
-            <p className="mt-2 text-muted-foreground">From the first search to a reserved home, every step happens inside {APP_NAME}.</p>
+            <p className="mt-2 text-muted-foreground">Five steps from the first question to a reserved home, and every one of them is on the record.</p>
           </div>
-          <ol className="grid gap-6 md:grid-cols-3">
-            {STEPS.map((step, index) => (
-              <li key={step.title} className="flex flex-col gap-3 rounded-xl border bg-card p-6">
-                <span className="flex size-9 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">{index + 1}</span>
-                <h3 className="text-lg font-semibold">{step.title}</h3>
-                <p className="text-sm text-muted-foreground">{step.description}</p>
+          <JourneyRail current={4} complete className="max-w-4xl" />
+          <ul className="grid gap-3 text-base md:grid-cols-3">
+            {HOW_IT_WORKS.map((line) => (
+              <li key={line} className="border-l-2 border-door pl-4">
+                {line}
               </li>
             ))}
-          </ol>
-          <div className="grid gap-4 sm:grid-cols-3">
-            {[
-              { icon: ShieldCheck, title: "Verified accounts", text: "Email verification is required before anyone can contact you." },
-              { icon: Wallet, title: "Secure deposits", text: "Reservation deposits are processed by Stripe; card details never touch our servers." },
-              { icon: MapPinned, title: "Map-first search", text: "See every result on a map and share any search with a single link." },
-            ].map((item) => (
-              <div key={item.title} className="flex items-start gap-3">
-                <item.icon className="mt-0.5 size-5 shrink-0 text-primary" aria-hidden="true" />
-                <div>
-                  <p className="font-semibold">{item.title}</p>
-                  <p className="text-sm text-muted-foreground">{item.text}</p>
-                </div>
-              </div>
+          </ul>
+          <ul className="flex flex-col gap-1.5 text-sm text-muted-foreground">
+            {TRUST.map((line) => (
+              <li key={line}>{line}</li>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="container-page flex flex-col gap-6 py-16" aria-labelledby="testimonials-heading">
-        <h2 id="testimonials-heading" className="text-3xl font-bold">
-          What people say
-        </h2>
-        <div className="grid gap-5 md:grid-cols-3">
-          {TESTIMONIALS.map((testimonial) => (
-            <Card key={testimonial.name}>
-              <CardContent className="flex flex-col gap-4">
-                <blockquote className="text-sm leading-relaxed">“{testimonial.quote}”</blockquote>
-                <footer className="text-xs text-muted-foreground">
-                  <span className="font-semibold text-foreground">{testimonial.name}</span> · {testimonial.role}
-                </footer>
-              </CardContent>
-            </Card>
-          ))}
+          </ul>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="container-page pb-20">
-        <div className="flex flex-col items-start gap-6 rounded-2xl bg-primary px-8 py-12 text-primary-foreground sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h2 className="text-3xl font-bold">Selling or renting out a property?</h2>
-            <p className="mt-2 max-w-xl text-primary-foreground/85">Create a listing in minutes, receive enquiries and offers in one dashboard, and let buyers reserve with a token deposit.</p>
+      <section className="container-page py-20">
+        <div className="relative overflow-hidden rounded-3xl bg-cta-panel px-8 pt-12 pb-12 text-white md:pr-72 md:pb-14">
+          <div className="max-w-xl">
+            <h2 className="text-3xl text-white">Selling or renting out a property?</h2>
+            <p className="mt-3 text-white/85">Create a listing in minutes, receive enquiries and offers in one dashboard, and let buyers reserve with a token deposit.</p>
+            <Button asChild size="lg" variant="gold" className="mt-8">
+              <Link href="/properties/new">List a property</Link>
+            </Button>
           </div>
-          <Button asChild size="lg" variant="secondary">
-            <Link href="/properties/new">
-              List a property <ArrowRight />
-            </Link>
-          </Button>
+          <HeroDoorway tone="white" className="absolute right-10 bottom-0 hidden md:block" />
         </div>
       </section>
     </div>

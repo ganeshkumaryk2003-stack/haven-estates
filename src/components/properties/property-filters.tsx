@@ -78,11 +78,11 @@ function FiltersForm({ filters, amenities, onApplied }: PropertyFiltersPanelProp
       <fieldset className="flex flex-col gap-2">
         <legend className="text-sm font-medium">Listing type</legend>
         <div className="grid grid-cols-3 gap-2">
-          <Button type="button" size="sm" variant={!draft.listingType ? "default" : "outline"} onClick={() => update("listingType", undefined)}>
+          <Button type="button" size="sm" className="rounded-full" variant={!draft.listingType ? "default" : "outline"} onClick={() => update("listingType", undefined)}>
             Any
           </Button>
           {LISTING_TYPES.map((type) => (
-            <Button key={type} type="button" size="sm" variant={draft.listingType === type ? "default" : "outline"} onClick={() => update("listingType", type)}>
+            <Button key={type} type="button" size="sm" className="rounded-full" variant={draft.listingType === type ? "default" : "outline"} onClick={() => update("listingType", type)}>
               {LISTING_TYPE_LABELS[type].replace("For ", "")}
             </Button>
           ))}

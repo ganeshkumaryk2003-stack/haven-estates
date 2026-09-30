@@ -1,6 +1,6 @@
 import "server-only";
 import type { Prisma } from "@/generated/prisma/client";
-import { APP_NAME, MAX_ATTACHMENT_SIZE_BYTES, MESSAGE_PAGE_SIZE } from "@/lib/constants";
+import { APP_SHORT_NAME, MAX_ATTACHMENT_SIZE_BYTES, MESSAGE_PAGE_SIZE } from "@/lib/constants";
 import { ForbiddenError, NotFoundError } from "@/lib/errors";
 import { prisma } from "@/lib/prisma";
 import { publishToUser, publishToUsers } from "@/lib/realtime";
@@ -233,7 +233,7 @@ export async function sendMessage(user: { id: string; role: string; name?: strin
     await notify({
       userId: recipient.userId,
       type: "NEW_MESSAGE",
-      title: `New message from ${user.name ?? `a ${APP_NAME} user`}`,
+      title: `New message from ${user.name ?? `a ${APP_SHORT_NAME} member`}`,
       body: preview,
       href: `/messages/${conversation.id}`,
       emailPreference: "emailOnMessage",

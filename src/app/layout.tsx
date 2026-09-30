@@ -1,12 +1,14 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Manrope } from "next/font/google";
+import { Figtree, Source_Serif_4 } from "next/font/google";
 import { Providers } from "@/components/providers";
 import { APP_DESCRIPTION, APP_FULL_NAME, APP_NAME } from "@/lib/constants";
 import { absoluteUrl } from "@/lib/utils";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
-const manrope = Manrope({ subsets: ["latin"], variable: "--font-display", display: "swap" });
+// Figtree for the interface, Source Serif 4 for headings and prices (the "opsz" axis lets the
+// browser pick optical sizes, so the serif stays crisp at 14px and elegant at 60px).
+const figtree = Figtree({ subsets: ["latin"], variable: "--font-ui", display: "swap" });
+const sourceSerif = Source_Serif_4({ subsets: ["latin"], variable: "--font-serif", display: "swap", axes: ["opsz"] });
 
 const DEFAULT_TITLE = `${APP_FULL_NAME} · Buy, rent and sell property across India`;
 
@@ -35,8 +37,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#fcfcfa" },
-    { media: "(prefers-color-scheme: dark)", color: "#171a21" },
+    { media: "(prefers-color-scheme: light)", color: "#FBFAF8" },
+    { media: "(prefers-color-scheme: dark)", color: "#0D1320" },
   ],
   width: "device-width",
   initialScale: 1,
@@ -44,7 +46,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth" className={`${inter.variable} ${manrope.variable}`}>
+    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth" className={`${figtree.variable} ${sourceSerif.variable}`}>
       <body className="flex min-h-screen flex-col">
         <Providers>{children}</Providers>
       </body>

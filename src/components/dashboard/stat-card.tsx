@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
@@ -7,37 +8,31 @@ interface StatCardProps {
   label: string;
   value: string | number;
   hint?: string;
+  /** Kept for API compatibility; the redesign shows the number without an icon chip. */
   icon: LucideIcon;
   href?: string;
   tone?: "default" | "primary" | "warning";
 }
 
-export function StatCard({ label, value, hint, icon: Icon, href, tone = "default" }: StatCardProps) {
+export function StatCard({ label, value, hint, href, tone = "default" }: StatCardProps) {
   const content = (
-    <CardContent className="flex items-start justify-between gap-3">
-      <div className="flex flex-col gap-1">
-        <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{label}</p>
-        <p className="text-2xl font-bold">{typeof value === "number" ? value.toLocaleString() : value}</p>
-        {hint ? <p className="text-xs text-muted-foreground">{hint}</p> : null}
+    <CardContent className="flex flex-col gap-1">
+      <div className="flex items-center justify-between gap-3">
+        <p className="text-sm text-muted-foreground">{label}</p>
+        {tone === "warning" ? <Badge variant="warning">Needs you</Badge> : null}
       </div>
-      <span
-        className={cn(
-          "flex size-10 shrink-0 items-center justify-center rounded-lg",
-          tone === "primary" && "bg-primary/10 text-primary",
-          tone === "warning" && "bg-warning/20 text-amber-700 dark:text-amber-300",
-          tone === "default" && "bg-muted text-muted-foreground",
-        )}
-      >
-        <Icon className="size-5" aria-hidden="true" />
-      </span>
+      <p className={cn("font-display text-3xl font-semibold tabular-nums", tone === "primary" && "text-primary")}>{typeof value === "number" ? value.toLocaleString() : value}</p>
+      {hint ? <p className="text-xs text-muted-foreground">{hint}</p> : null}
     </CardContent>
   );
+  // Porch-light left edge marks the cards that need a decision.
+  const cardClass = cn("h-full py-5", tone === "warning" && "border-l-[3px] border-l-gold");
   if (href) {
     return (
-      <Link href={href} className="rounded-xl focus-visible:outline-2 focus-visible:outline-ring">
-        <Card className="h-full py-5 transition-shadow hover:shadow-md">{content}</Card>
+      <Link href={href} className="rounded-[20px] focus-visible:outline-2 focus-visible:outline-ring">
+        <Card className={cn(cardClass, "transition-colors hover:border-input")}>{content}</Card>
       </Link>
     );
   }
-  return <Card className="py-5">{content}</Card>;
+  return <Card className={cardClass}>{content}</Card>;
 }

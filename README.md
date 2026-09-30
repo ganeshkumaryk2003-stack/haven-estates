@@ -1,4 +1,4 @@
-# Doorkey Realty
+# DoorKey Realtors
 
 An end-to-end real estate marketplace for the Indian market: browse and search flats, houses and plots (residential, commercial, semi-commercial and industrial), save favorites, enquire, message sellers in real time, make and negotiate offers, and reserve a property with a Stripe token deposit. Sellers and agents manage listings from a dashboard; administrators moderate listings, users, reports and transactions. Prices are in INR (lakh/crore grouping), addresses use PIN codes and the demo data covers Bengaluru, Pune, Hyderabad, Chennai, Kochi and Mumbai.
 
@@ -254,7 +254,7 @@ A minimal Dockerfile would be: `node:24-alpine`, `npm ci`, `npm run build`, `CMD
 
 # App
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
-NEXT_PUBLIC_APP_NAME="Doorkey"
+NEXT_PUBLIC_APP_NAME="DoorKey Realtors"
 
 # Database (matches docker-compose.yml)
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/haven?schema=public"
@@ -272,7 +272,7 @@ AUTH_GOOGLE_SECRET=""
 #   mailpit - deliver to the docker-compose Mailpit inbox at http://localhost:8025
 #   resend  - deliver through https://resend.com (requires RESEND_API_KEY)
 EMAIL_DRIVER="console"
-EMAIL_FROM="Doorkey Realty <no-reply@doorkey.local>"
+EMAIL_FROM="DoorKey Realtors <no-reply@doorkey.local>"
 MAILPIT_API_URL="http://localhost:8025"
 RESEND_API_KEY=""
 

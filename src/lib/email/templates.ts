@@ -1,4 +1,4 @@
-import { APP_FULL_NAME, APP_NAME } from "@/lib/constants";
+import { APP_FULL_NAME, APP_NAME, APP_SHORT_NAME } from "@/lib/constants";
 
 function escapeHtml(value: string) {
   return value
@@ -12,12 +12,12 @@ function escapeHtml(value: string) {
 function layout(title: string, bodyHtml: string, ctaLabel?: string, ctaUrl?: string) {
   const cta =
     ctaLabel && ctaUrl
-      ? `<p style="margin:28px 0"><a href="${ctaUrl}" style="background:#0f766e;color:#fff;padding:12px 20px;border-radius:8px;text-decoration:none;font-weight:600;display:inline-block">${escapeHtml(ctaLabel)}</a></p>
+      ? `<p style="margin:28px 0"><a href="${ctaUrl}" style="background:#2F54C4;color:#fff;padding:12px 20px;border-radius:8px;text-decoration:none;font-weight:600;display:inline-block">${escapeHtml(ctaLabel)}</a></p>
          <p style="color:#6b7280;font-size:13px">If the button does not work, copy this link:<br/><span style="word-break:break-all">${ctaUrl}</span></p>`
       : "";
-  return `<!doctype html><html><body style="margin:0;background:#f4f6f8;font-family:Inter,Segoe UI,Arial,sans-serif;color:#111827">
-  <div style="max-width:560px;margin:32px auto;background:#fff;border-radius:12px;padding:32px;border:1px solid #e5e7eb">
-    <p style="font-weight:700;color:#0f766e;letter-spacing:.02em;margin:0 0 20px">${escapeHtml(APP_FULL_NAME)}</p>
+  return `<!doctype html><html><body style="margin:0;background:#FBFAF8;font-family:Figtree,Segoe UI,Arial,sans-serif;color:#16233B">
+  <div style="max-width:560px;margin:32px auto;background:#fff;border-radius:20px;padding:32px;border:1px solid #E4E7EE">
+    <p style="font-weight:600;color:#2F54C4;letter-spacing:.02em;margin:0 0 20px">${escapeHtml(APP_FULL_NAME)}</p>
     <h1 style="font-size:20px;margin:0 0 16px">${escapeHtml(title)}</h1>
     ${bodyHtml}
     ${cta}
@@ -47,7 +47,7 @@ export function notificationEmail(name: string | null, title: string, body: stri
   const greeting = name ? `Hi ${escapeHtml(name)},` : "Hi,";
   return {
     subject: `${title} · ${APP_NAME}`,
-    html: layout(title, `<p>${greeting}</p><p>${escapeHtml(body)}</p>`, `Open in ${APP_NAME}`, url),
+    html: layout(title, `<p>${greeting}</p><p>${escapeHtml(body)}</p>`, `Open in ${APP_SHORT_NAME}`, url),
     text: `${greeting}\n\n${title}\n${body}\n\n${url}`,
   };
 }

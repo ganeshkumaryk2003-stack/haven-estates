@@ -1,10 +1,12 @@
 // Shared, client-safe constants and labels. Enum string values mirror prisma/schema.prisma
 // so this file can be imported by client components without pulling in Prisma.
 
-export const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? "Doorkey";
-// Caption shown under the wordmark and appended to the full brand name ("Doorkey Realty").
-export const APP_TAGLINE = "Realty";
-export const APP_FULL_NAME = `${APP_NAME} ${APP_TAGLINE}`;
+export const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? "DoorKey Realtors";
+// Short form for conversational copy ("Join DoorKey", "DoorKey member") and the wordmark.
+export const APP_SHORT_NAME = "DoorKey";
+// Second word of the wordmark, set small and muted next to APP_SHORT_NAME.
+export const APP_TAGLINE = "Realtors";
+export const APP_FULL_NAME = APP_NAME;
 export const APP_DESCRIPTION =
   "Buy, rent, sell and list flats, houses and plots across India with verified sellers, secure enquiries, offers and reservation deposits.";
 

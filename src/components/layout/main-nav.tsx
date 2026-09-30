@@ -24,8 +24,10 @@ export function MainNav({ items, className, onNavigate }: { items: NavItem[]; cl
                 onClick={onNavigate}
                 aria-current={active ? "page" : undefined}
                 className={cn(
-                  "flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground",
-                  active ? "bg-accent text-accent-foreground" : "text-muted-foreground",
+                  // Active item: a 2px porch-light underline instead of a filled pill.
+                  "relative flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:text-foreground",
+                  "after:absolute after:inset-x-3 after:-bottom-0.5 after:h-0.5 after:rounded-full after:bg-gold after:opacity-0 after:transition-opacity after:content-['']",
+                  active ? "text-foreground after:opacity-100" : "text-muted-foreground",
                 )}
               >
                 {item.label}

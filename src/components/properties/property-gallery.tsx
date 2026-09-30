@@ -46,10 +46,10 @@ export function PropertyGallery({ images, title }: { images: PropertyImageDTO[];
             setIndex(0);
             setOpen(true);
           }}
-          className={cn("group relative aspect-[16/10] overflow-hidden rounded-xl bg-muted md:col-span-2 md:row-span-2 md:aspect-auto", thumbnails.length === 0 && "md:col-span-4")}
+          className={cn("group relative aspect-[16/10] overflow-hidden rounded-2xl bg-muted md:col-span-2 md:row-span-2 md:aspect-auto", thumbnails.length === 0 && "md:col-span-4")}
           aria-label="Open photo gallery"
         >
-          <Image src={cover.url} alt={cover.alt ?? title} fill priority sizes="(min-width: 768px) 50vw, 100vw" className="object-cover transition-transform duration-300 group-hover:scale-[1.02]" />
+          <Image src={cover.url} alt={cover.alt ?? title} fill priority sizes="(min-width: 768px) 50vw, 100vw" className="object-cover" />
         </button>
         {thumbnails.map((image, thumbIndex) => (
           <button
@@ -59,10 +59,10 @@ export function PropertyGallery({ images, title }: { images: PropertyImageDTO[];
               setIndex(thumbIndex + 1);
               setOpen(true);
             }}
-            className="group relative hidden aspect-[4/3] overflow-hidden rounded-xl bg-muted md:block"
+            className="group relative hidden aspect-[4/3] overflow-hidden rounded-2xl bg-muted md:block"
             aria-label={`Open photo ${thumbIndex + 2} of ${images.length}`}
           >
-            <Image src={image.url} alt={image.alt ?? `${title} photo ${thumbIndex + 2}`} fill sizes="25vw" className="object-cover transition-transform duration-300 group-hover:scale-[1.03]" />
+            <Image src={image.url} alt={image.alt ?? `${title} photo ${thumbIndex + 2}`} fill sizes="25vw" className="object-cover" />
             {thumbIndex === thumbnails.length - 1 && images.length > 5 ? (
               <span className="absolute inset-0 flex items-center justify-center bg-black/50 text-sm font-semibold text-white">+{images.length - 5} more</span>
             ) : null}
